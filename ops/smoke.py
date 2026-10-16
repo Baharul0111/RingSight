@@ -14,6 +14,13 @@ def loaded(deadline=600):
                 health = json.load(response)
                 if health.get("accounts", 0) > 0 and health.get("seed_complete", True):
                     return health
+        except urllib.error.HTTPError as error:
+            try:
+                health = json.load(error)
+                if health.get("accounts", 0) > 0 and health.get("seed_complete"):
+                    return health
+            except (ValueError, OSError):
+                pass
         except (OSError, urllib.error.URLError):
             pass
         time.sleep(3)

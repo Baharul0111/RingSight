@@ -58,7 +58,7 @@ class GraphDB:
 
     @staticmethod
     def connect(url: str, *, timeout: int = 25) -> FalkorDB:
-        return FalkorDB.from_url(url, socket_timeout=timeout, socket_connect_timeout=5,
+        return FalkorDB.from_url(url, protocol=2, socket_timeout=timeout, socket_connect_timeout=5,
                                 health_check_interval=30, max_connections=16,
                                 retry=Retry(ExponentialBackoff(cap=2), 3),
                                 retry_on_error=[ConnectionError, TimeoutError])
@@ -119,6 +119,8 @@ class GraphDB:
         # Servers return nested [key,value] pairs. Some clients decode to a map.
         if isinstance(result, dict):
             return {str(k): plain(v) for k, v in result.items()}
+        if isinstance(result, list) and result and isinstance(result[0], str):
+            return {str(k): plain(v) for k, v in zip(result[::2], result[1::2])}
         return {str(item[0]): float(item[1]) for item in result if isinstance(item, (tuple, list)) and len(item) == 2}
 
     async def memory(self, tenant: str) -> dict[str, Any]:

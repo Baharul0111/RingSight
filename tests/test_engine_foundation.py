@@ -31,7 +31,7 @@ def scratch():
 
 def test_engine_pinned_and_wcc_casing(scratch):
     database, graph, report = scratch
-    assert database.sync_version() == "4.22.1"
+    assert database.sync_version() == os.getenv("RS_EXPECT_ENGINE", "4.22.1")
     for casing in ("WCC", "wcc"):
         result = database.sync_read(graph, f"CALL algo.{casing}({{nodeLabels:['Account'],relationshipTypes:['TX']}}) YIELD node,componentId RETURN node.id AS id,componentId")
         assert len(result) == 3

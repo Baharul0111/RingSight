@@ -72,6 +72,8 @@ async def record_finding(payload):
     except ValidationError as ex:return error('validation','Finding input failed validation.',fields=[e['loc'] for e in ex.errors()])
     ctx=get_context();selected,err=validate_evidence(p.evidence_tool_call_ids)
     if err:return err
+    if ctx.tool_count>=10:return error('budget_exhausted','The investigation reached its ten-tool-call limit.')
+    ctx.tool_count+=1
     hits=guard_write(p.text)
     if hits:return await write_trace('rs_record_finding',p.model_dump(),error('instruction_like_content',f'Text contains instruction-like content: pattern {hits[0]["name"]} matched {hits[0]["span"]!r} — rephrase without it.',matches=hits),len(hits))
     state=await tenant_state(ctx.identity.tenant)
@@ -103,6 +105,8 @@ async def propose_action(payload):
     except ValidationError as ex:return error('validation','Action input failed validation.',fields=[e['loc'] for e in ex.errors()])
     ctx=get_context();selected,err=validate_evidence(p.evidence_tool_call_ids)
     if err:return err
+    if ctx.tool_count>=10:return error('budget_exhausted','The investigation reached its ten-tool-call limit.')
+    ctx.tool_count+=1
     hits=guard_write(p.rationale)+guard_write(json.dumps(p.draft or {}))
     if hits:return await write_trace('rs_propose_action',{'kind':p.kind},error('instruction_like_content',f'Text contains instruction-like content: pattern {hits[0]["name"]} matched {hits[0]["span"]!r} — rephrase without it.',matches=hits),len(hits))
     state=await tenant_state(ctx.identity.tenant)
@@ -119,7 +123,11 @@ async def propose_action(payload):
     for fid in p.finding_ids:
         if not await db.read(ctx.identity.tenant,'MATCH (f:Finding {id:$id})-[:MADE_IN]->(s:Session {id:$sid}) RETURN f.id AS id',{'id':fid,'sid':ctx.session_id}):return error('invalid_finding','Finding must be from this session.')
     if p.kind in {'sar_draft','str_draft'}:
-        if not p.draft:return error('draft_required','A report proposal requires a draft preview.')
+        if not p.draft:
+            from server.narrative import build_draft
+            cov=next((c.get('rows',[{}])[0] for c in ctx.calls.values() if c.get('tool')=='rs_coverage_status' and c.get('rows')), {})
+            try:p.draft=build_draft(p.kind,p.target_ids,list(selected.values()),cov)
+            except ValueError:return error('transactions_required','A report needs at least one complete itemised transaction.')
         txs=(p.draft.get('when') or {}).get('transactions',p.draft.get('transactions',[]))
         if not txs:return error('transactions_required','A report needs at least one itemised transaction.')
         if any((t.get('tx_id') or t.get('id')) not in ids for t in txs):return error('unsupported_transaction','Every report transaction must appear in this session evidence.')
@@ -128,8 +136,11 @@ async def propose_action(payload):
         if check['status']!='pass':return error('unsupported_draft','Draft contains unsupported claims.',unsupported=check['unsupported'])
     restrictions=[]
     # These control reads always run server-side; they never trust a model-supplied restriction.
-    for target in p.target_ids:
-        restrictions.append(await call_tool('rs_check_restrictions',{'entity_id':target,'as_of':ctx.as_of}))
+    ctx.internal_read=True
+    try:
+        for target in p.target_ids:
+            restrictions.append(await call_tool('rs_check_restrictions',{'entity_id':target,'as_of':ctx.as_of}))
+    finally:ctx.internal_read=False
     now=int(time.time());pid=str(uuid.uuid4());key=hashlib.sha256(json.dumps([ctx.identity.tenant,p.kind,sorted(p.target_ids),sorted(p.evidence_tool_call_ids)],sort_keys=True).encode()).hexdigest()
     draft=p.draft or {}
     rows=await db.write(ctx.identity.tenant,"MERGE (pa:PendingAction {idem_key:$key}) ON CREATE SET pa.id=$pid,pa.kind=$kind,pa.status='pending',pa.rationale=$rationale,pa.proposed_by=$model,pa.created_at=$now,pa.evidence_tool_call_ids=$ev,pa.restriction_check_json=$rc,pa.draft_json=$draft,pa.case_id=$cid WITH pa MATCH (s:Session {id:$sid}) MERGE (pa)-[:IN]->(s) WITH pa UNWIND $targets AS tid MATCH (a:Account {id:tid}) MERGE (pa)-[:TARGETS]->(a) RETURN DISTINCT pa.id AS pending_id,pa.status AS status,pa.kind AS kind",{'key':key,'pid':pid,'kind':p.kind,'rationale':p.rationale,'model':__import__('server.config',fromlist=['settings']).settings.planner,'now':now,'ev':p.evidence_tool_call_ids,'rc':json.dumps(restrictions),'draft':json.dumps(draft),'cid':p.case_id,'sid':ctx.session_id,'targets':p.target_ids})

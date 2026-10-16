@@ -19,6 +19,7 @@ dependencies = [
   "httpx>=0.28",
   "psutil>=7.0",
   "falkordb-bulk-loader==1.2.0",
+  "hiredis>=3.0",
 ]
 [dependency-groups]
 dev = ["pytest>=8.3", "pytest-asyncio>=0.25", "pytest-json-report>=1.5", "playwright>=1.50"]

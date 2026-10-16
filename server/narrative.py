@@ -63,7 +63,7 @@ def _when(value: Any) -> str:
     if value in (None, ""):
         return "date not supplied in evidence"
     if isinstance(value, (int, float)):
-        return datetime.fromtimestamp(value, IST).strftime("%d %b %Y, %H:%M:%S IST")
+        return datetime.fromtimestamp(value, IST).strftime("%Y-%m-%d IST")
     return str(value)
 
 

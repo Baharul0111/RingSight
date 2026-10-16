@@ -1,0 +1,150 @@
+{
+  "accounts": 25000,
+  "algorithms": [
+    {
+      "elapsed_s": 0.516,
+      "procedure": "degrees_or_timestamp"
+    },
+    {
+      "elapsed_s": 0.136,
+      "procedure": "CALL algo.pageRank('Account','TX')"
+    },
+    {
+      "elapsed_s": 0.2575,
+      "procedure": "CALL algo.betweenness({nodeLabels:['Account'], relationshipTypes:['TX'], samplingSize:256, samplingSeed:42})"
+    },
+    {
+      "elapsed_s": 0.1376,
+      "procedure": "CALL algo.WCC({nodeLabels:['Account'], relationshipTypes:['TX']})"
+    },
+    {
+      "elapsed_s": 0.2634,
+      "procedure": "CALL algo.labelPropagation({nodeLabels:['Account'], relationshipTypes:['TX'], maxIterations:10})"
+    },
+    {
+      "elapsed_s": 0.1494,
+      "procedure": "CALL algo.WCC({nodeLabels:['Account'], relationshipTypes:['SHARES_STRONG']})"
+    },
+    {
+      "elapsed_s": 0.1423,
+      "procedure": "degrees_or_timestamp"
+    },
+    {
+      "elapsed_s": 0.2806,
+      "procedure": "degrees_or_timestamp"
+    }
+  ],
+  "engine": "4.22.1",
+  "graph": "rs_bank_a",
+  "graph_mb": 39,
+  "manifest": {
+    "as_of": 1792108799,
+    "csv_sha256": "5dd231fcd84544dd526fddd8e54347adf71e4ae7c91856b8d18d5f756f61ad36",
+    "edges": {
+      "AT_BANK": 25000,
+      "HAS_ADDRESS": 2473,
+      "HAS_PHONE": 3189,
+      "ON": 63,
+      "OWNS": 25000,
+      "PAID": 30000,
+      "SHARES": 1100,
+      "SHARES_STRONG": 236,
+      "TX": 32500,
+      "USES_DEVICE": 9485
+    },
+    "nodes": {
+      "Account": 25000,
+      "Address": 2473,
+      "Alert": 60,
+      "Bank": 1,
+      "Device": 8726,
+      "IngestionDay": 1080,
+      "Merchant": 100,
+      "Person": 12636,
+      "Phone": 2831,
+      "Rail": 6,
+      "Restriction": 3
+    },
+    "start": 1776556800
+  },
+  "memory": {
+    "amortized_edge_attributes_by_type_sz_mb": {
+      "AT_BANK": 0,
+      "FLOW": 2,
+      "HAS_ADDRESS": 0,
+      "HAS_PHONE": 0,
+      "ON": 0,
+      "OWNS": 0,
+      "PAID": 0,
+      "SHARES": 0,
+      "SHARES_STRONG": 0,
+      "TX": 2,
+      "USES_DEVICE": 0
+    },
+    "amortized_edge_block_sz_mb": 1,
+    "amortized_node_attributes_by_label_sz_mb": {
+      "Account": 5,
+      "Address": 0,
+      "Alert": 0,
+      "Bank": 0,
+      "Case": 0,
+      "Decision": 0,
+      "Device": 0,
+      "Finding": 0,
+      "IngestionDay": 0,
+      "Merchant": 0,
+      "PendingAction": 0,
+      "Person": 1,
+      "Phone": 0,
+      "Rail": 0,
+      "Restriction": 0,
+      "Session": 0,
+      "Spend": 0,
+      "Tenant": 0,
+      "ToolCall": 0
+    },
+    "amortized_node_block_sz_mb": 0,
+    "amortized_unlabeled_nodes_attributes_sz_mb": 0,
+    "indices_sz_mb": 14,
+    "label_matrices_sz_mb": 1,
+    "relation_matrices_sz_mb": 6,
+    "total_graph_sz_mb": 39
+  },
+  "reseed_s": 3.677,
+  "schema": {
+    "constraints": [
+      {
+        "kind": "NODE",
+        "label": "Account",
+        "property": "id",
+        "supported": true
+      },
+      {
+        "kind": "NODE",
+        "label": "Person",
+        "property": "id",
+        "supported": true
+      },
+      {
+        "kind": "NODE",
+        "label": "PendingAction",
+        "property": "idem_key",
+        "supported": true
+      },
+      {
+        "kind": "NODE",
+        "label": "Finding",
+        "property": "idem_key",
+        "supported": true
+      },
+      {
+        "kind": "RELATIONSHIP",
+        "label": "TX",
+        "property": "id",
+        "supported": true
+      }
+    ]
+  },
+  "seed_version": "rs-synthetic-v1",
+  "snapshot_findings": 0
+}

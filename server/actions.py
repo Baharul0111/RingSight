@@ -27,6 +27,14 @@ async def pending_list(offset=0,limit=50):
     rows=await db.read(ctx.identity.tenant,'MATCH (p:PendingAction) OPTIONAL MATCH (p)-[:TARGETS]->(a:Account) OPTIONAL MATCH (p)-[:IN]->(s:Session) RETURN p.id AS pending_id,p.kind AS kind,p.status AS status,p.rationale AS rationale,p.created_at AS created_at,p.restriction_check_json AS restrictions_json,p.draft_json AS draft_json,p.evidence_tool_call_ids AS evidence_tool_call_ids,p.case_id AS case_id,s.id AS session_id,collect(DISTINCT a.id) AS targets ORDER BY created_at DESC SKIP $offset LIMIT $limit',{'offset':offset,'limit':limit})
     for row in rows:
         row['restrictions']=decode(row.pop('restrictions_json',None),[]);row['draft']=decode(row.pop('draft_json',None),{})
+    call_ids=list({cid for row in rows for cid in (row.get('evidence_tool_call_ids') or [])})
+    calls=await db.read(ctx.identity.tenant,'MATCH (t:ToolCall) WHERE t.id IN $ids RETURN t.id AS id,t.rows_json AS rows_json',{'ids':call_ids}) if call_ids else []
+    from server.verifier import flatten
+    paths={c['id']:[v for k,v in flatten(decode(c.get('rows_json'),[])) if k in {'path_ids','node_ids','accounts'} and isinstance(v,list) and all(isinstance(x,str) for x in v)] for c in calls}
+    decisions=await db.read(ctx.identity.tenant,'MATCH (d:Decision)-[:ON]->(p:PendingAction) WHERE p.id IN $ids RETURN p.id AS pending_id,d.decision AS decision,d.decided_by AS decided_by,d.role AS role,d.at AS at,d.reason AS reason',{'ids':[r['pending_id'] for r in rows]}) if rows else []
+    for row in rows:
+        row['evidence_paths']=[path for cid in (row.get('evidence_tool_call_ids') or []) for path in paths.get(cid,[])][:20]
+        row['decision']=next(({k:v for k,v in d.items() if k!='pending_id'} for d in decisions if d['pending_id']==row['pending_id']),None)
     return rows
 
 async def approve(pending_id,decision,reason,modified_draft=None):

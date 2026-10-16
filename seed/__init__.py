@@ -71,19 +71,41 @@ def create_schema(database: GraphDB, graph: str) -> dict[str, Any]:
     return {"constraints": constraints}
 
 
-def precompute(database: GraphDB, graph: str) -> list[dict[str, Any]]:
+def precompute(database: GraphDB, graph: str, *, progress=None, sampling_size: int | None = None) -> list[dict[str, Any]]:
     records = []
+    sample = sampling_size or int(os.getenv("FALKORDB_BETWEENNESS_SAMPLES", "32"))
+    if not 1 <= sample <= 256:
+        raise ValueError("Betweenness sampling size must be 1..256")
     for query in statements("precompute.cypher"):
+        query = query.replace("samplingSize:32", f"samplingSize:{sample}")
+        procedure = query.split(" YIELD")[0] if query.startswith("CALL") else "flow_projection" if ":FLOW" in query else "degrees_or_timestamp"
+        if progress:
+            progress(procedure, {"stage": "starting"})
         started = time.monotonic()
-        database.sync_write(graph, query, {"now": int(time.time())}, timeout=20000)
-        records.append({"procedure": query.split(" YIELD")[0] if query.startswith("CALL") else "degrees_or_timestamp",
+        if "$account_ids" in query:
+            # The all-account double aggregation transiently exceeded Cloud
+            # Free's memory envelope despite a <40MB final graph. Indexed
+            # batches preserve the identical graph-derived degree values.
+            offset = 0
+            while True:
+                page = database.sync_read(graph, "MATCH (a:Account) RETURN a.id AS id ORDER BY a.id SKIP $offset LIMIT 500", {"offset": offset})
+                if not page:
+                    break
+                database.sync_write(graph, query, {"account_ids": [r["id"] for r in page]}, timeout=20000)
+                offset += len(page)
+        else:
+            database.sync_write(graph, query, {"now": int(time.time())}, timeout=20000)
+        records.append({"procedure": procedure,
                         "elapsed_s": round(time.monotonic() - started, 4)})
+        if progress:
+            progress(procedure, {"stage": "complete", "elapsed_s": records[-1]["elapsed_s"]})
     return records
 
 
 def seed_graph(graph: str = "rs_bank_a", accounts: int = 25000, force: bool = False,
                redis_url: str | None = None, *, output: Path | str | None = None,
-               cap: float | None = None, toy: bool = True) -> dict[str, Any]:
+               cap: float | None = None, toy: bool = True, progress=None,
+               sampling_size: int | None = None) -> dict[str, Any]:
     """Load a single explicitly selected graph; other tenant keys are untouched.
 
     A populated completed graph is reused by default. `force` is explicit for
@@ -108,13 +130,17 @@ def seed_graph(graph: str = "rs_bank_a", accounts: int = 25000, force: bool = Fa
             manifest = write_dataset(dataset, directory)
             # Save only the answer keys and manifest outside the graph; CSVs
             # can be regenerated and need not inflate a public repository.
-            if output is None:
+            if output is None and graph == "rs_bank_a":
                 (ROOT / "data").mkdir(exist_ok=True)
                 for name in ("rings", "injections", "restricted", "name_variants", "manifest"):
                     (ROOT / "data" / f"{name}.json").write_bytes((directory / f"{name}.json").read_bytes())
             bulk_load(database, graph, directory, list(dataset.nodes), [k for k, v in dataset.edges.items() if v])
+            if progress:
+                progress("bulk_load", {"stage": "complete"})
             schema = create_schema(database, graph)
-            algorithms = precompute(database, graph)
+            if progress:
+                progress("schema", {"stage": "complete"})
+            algorithms = precompute(database, graph, progress=progress, sampling_size=sampling_size)
             now = int(time.time())
             tenant = graph.removeprefix("rs_")
             daily_cap = float(cap if cap is not None else os.getenv("DAILY_USD_CAP", "8"))
@@ -124,9 +150,12 @@ def seed_graph(graph: str = "rs_bank_a", accounts: int = 25000, force: bool = Fa
             restored = restore_snapshot(database, graph)
             memory = database.sync_memory(graph)
             mb = memory.get("total_graph_sz_mb", 0)
+            if accounts <= 25000 and mb > 40:
+                raise RuntimeError("Synthetic shipment exceeds the measured 40 MB graph limit")
             elapsed = time.monotonic() - started
-            database.sync_write(graph, "MERGE (m:Meta {seed_version:$version}) SET m.seed_complete=true,m.seeded_at=$now,m.reseed_s=$elapsed,m.graph_mb=$mb,m.accounts=$accounts,m.synthetic=true",
-                                {"version": SEED_VERSION, "now": now, "elapsed": elapsed, "mb": mb, "accounts": accounts})
+            actual_sample = sampling_size or int(os.getenv("FALKORDB_BETWEENNESS_SAMPLES", "32"))
+            database.sync_write(graph, "MERGE (m:Meta {seed_version:$version}) SET m.seed_complete=true,m.seeded_at=$now,m.reseed_s=$elapsed,m.graph_mb=$mb,m.accounts=$accounts,m.synthetic=true,m.betweenness_samples=$sample",
+                                {"version": SEED_VERSION, "now": now, "elapsed": elapsed, "mb": mb, "accounts": accounts, "sample": actual_sample})
             result = {"graph": graph, "accounts": accounts, "graph_mb": mb, "reseed_s": round(elapsed, 3),
                       "memory": memory, "engine": database.sync_version(), "algorithms": algorithms,
                       "schema": schema, "snapshot_findings": restored, "seed_version": SEED_VERSION,
@@ -152,7 +181,8 @@ def seed_toy(database: GraphDB, cap: float = 8) -> None:
 
 class SeedManager:
     """One background subprocess, with a real cancellation/kill deadline."""
-    def __init__(self, database: GraphDB | None = None, accounts: int | None = None):
+    def __init__(self, database: GraphDB | None = None, accounts: int | None = None,
+                 *, minimum_deadline_s: float = 900):
         self.database = database or db
         self.accounts = accounts or int(os.getenv("ACCOUNTS", "25000"))
         self.task: asyncio.Task | None = None
@@ -161,6 +191,7 @@ class SeedManager:
         self.failed = False
         self.last_error: str | None = None
         self._lock = asyncio.Lock()
+        self.minimum_deadline_s = minimum_deadline_s
 
     @property
     def status(self) -> dict[str, Any]:
@@ -175,16 +206,16 @@ class SeedManager:
                 return self.status
             if self.failed and not force:
                 return self.status
-            if not force:
-                try:
-                    meta = await self.database.read(tenant, "MATCH (m:Meta) RETURN m.seed_complete AS complete,m.reseed_s AS reseed_s LIMIT 1", timeout=2000)
+            try:
+                meta = await self.database.read(tenant, "MATCH (m:Meta) RETURN m.seed_complete AS complete,m.reseed_s AS reseed_s LIMIT 1", timeout=2000)
+                if meta and meta[0].get("reseed_s"):
+                    self.expected_s = float(meta[0]["reseed_s"])
+                if not force:
                     count = await self.database.read(tenant, "MATCH (a:Account) RETURN count(a) AS n", timeout=2000)
                     if meta and meta[0]["complete"] and count and count[0]["n"]:
                         return self.status
-                    if meta and meta[0].get("reseed_s"):
-                        self.expected_s = float(meta[0]["reseed_s"])
-                except ResponseError:
-                    pass  # Empty/missing graph is the one automatic-reseed case.
+            except ResponseError:
+                pass  # Empty/missing graph is the one automatic-reseed case.
             self.started_at = time.monotonic()
             self.failed = False
             self.last_error = None
@@ -201,7 +232,7 @@ class SeedManager:
             process = await asyncio.create_subprocess_exec(sys.executable, "-m", "seed", "--graph", graph,
                           "--accounts", str(self.accounts), "--force", "--quiet", cwd=ROOT, env=environment,
                           stdout=asyncio.subprocess.DEVNULL, stderr=asyncio.subprocess.DEVNULL)
-            async with asyncio.timeout(max(900, 3 * self.expected_s)):
+            async with asyncio.timeout(max(self.minimum_deadline_s, 3 * self.expected_s)):
                 code = await process.wait()
             if code:
                 self.failed = True

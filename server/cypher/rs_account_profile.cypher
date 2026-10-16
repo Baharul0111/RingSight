@@ -3,7 +3,7 @@ OPTIONAL MATCH (a)<-[i:TX]-(s:Account) WHERE i.ts > $from AND i.ts <= $as_of
 WITH a, count(i) AS in_n, coalesce(sum(i.amount),0) AS in_sum, count(DISTINCT s) AS in_cp, max(i.amount) AS in_max
 OPTIONAL MATCH (a)-[o:TX]->(r:Account) WHERE o.ts > $from AND o.ts <= $as_of
 WITH a, in_n, in_sum, in_cp, in_max, count(o) AS out_n, coalesce(sum(o.amount),0) AS out_sum, count(DISTINCT r) AS out_cp
-OPTIONAL MATCH (p:Person)-[:OWNS]->(a) WHERE p IS NULL OR coalesce(p.opened_at,0) <= $as_of
+OPTIONAL MATCH (p:Person)-[own:OWNS]->(a) WHERE coalesce(own.since,0) <= $as_of
 WITH a, in_n, in_sum, in_cp, in_max, out_n, out_sum, out_cp, collect(DISTINCT p.id) AS owners
 OPTIONAL MATCH (a)-[u:USES_DEVICE]->(d:Device) WHERE u.first_seen <= $as_of
 WITH a, in_n, in_sum, in_cp, in_max, out_n, out_sum, out_cp, owners, collect(DISTINCT {id:d.id,degree:d.degree}) AS devices

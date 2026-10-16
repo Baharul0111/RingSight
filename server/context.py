@@ -20,6 +20,9 @@ class Investigation:
     calls: dict[str,dict]=field(default_factory=dict)
     queue: asyncio.Queue | None=None
     tool_count: int=0
+    internal_read: bool=False
+    requested_depth: int=4
+    question: str=''
     model_requests: int=0
     usd: float=0.0
     input_tokens: int=0

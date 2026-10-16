@@ -1208,6 +1208,74 @@ Total ≈ 1.5 h, inside the existing blocks; none is on the must-ship cut list a
 
 Research notes with every link: `research/papers.md`, `research/github.md`, `research/web.md`, `research/huggingface.md`, `research/industry.md`; proposals and cross-exam in the same folder.
 
+## Implementation amendment — measured graph envelope (16 Oct 2026)
+
+Actual `GRAPH.MEMORY USAGE` on the pinned v4.22.1 engine invalidated the
+§3.2/§3.7 size estimate: 25,000 accounts with 149,999 TX consumed **72 MB**,
+including 36 MB of indexes. The shipment keeps the mandatory 25,000 accounts,
+180 complete UTC days, all six loaded rails, 35 rings, all seven typologies,
+legitimate merchant/payroll/exchange controls, 60 alerts, three restrictions,
+three name-variant pairs, two IMPS count mismatches and 20 injected memos.
+Background density is reduced to **32,500 TX** and 30,000 PAID. Ordinary
+synthetic households may own two accounts (12,636 Person nodes); their OWNS
+adjacency is retained without redundantly materialising every household in
+SHARES. Device/phone/address projections and the planted ring projections are
+materialised and weighted as specified. No ground-truth labels enter the graph.
+
+Measured after all range/full-text indexes, unique constraints, PageRank,
+sampled-256 betweenness, WCC, label propagation, SHARES_STRONG WCC, degrees and
+the FLOW projection below:
+
+| Accounts | TX | Total graph MB | Local full reseed seconds | Ship |
+|---:|---:|---:|---:|---|
+| 10,000 | 13,000 | 16 | 1.784 | sizing probe |
+| 25,000 | 32,500 | 39 | 3.771 | yes |
+| 50,000 | 65,000 | 77 | 7.420 | no |
+
+These are local measurements, not a live latency promise. Exact output,
+including intermediate failed size candidates, is committed in
+`evals/results/sizing.json`; Cloud timing is recorded separately. The data
+window is frozen at 2026-04-19 00:00:00 through 2026-10-15 23:59:59 UTC, making
+it deterministic and placing the planted ring events before the demo's date.
+Memos are deterministic synthetic templates and adversarial fixtures; no
+claim is made that an Opus Batch generated them.
+
+The actual C-engine max-flow probe rejects a TX relation containing parallel
+edges (`relationship type must not contain multi-edges (tensors)`). Preserve
+every raw TX as evidence and build one aggregate FLOW edge per ordered account
+pair at seed/algorithm-refresh time:
+
+```cypher
+MATCH (a:Account)-[t:TX]->(b:Account)
+WITH a,b,sum(t.amount) AS amount,count(t) AS n,max(t.ts) AS last,min(t.ts) AS first
+MERGE (a)-[f:FLOW]->(b)
+SET f.id='FLOW-'+toString(id(a))+'-'+toString(id(b)),
+    f.amount=amount,f.w=n,f.ts=last,f.first_ts=first,f.computed_at=$now
+```
+
+`algo.maxFlow` runs on FLOW with `capacityProperty:'amount'` or `'w'`; original
+TX rows provide the transfer evidence. The result declares this aggregate
+snapshot's computed time and that it is not a point-in-time algorithm. It
+abstains for an `as_of` preceding the projection's latest transfer. Future raw
+TX do not enter FLOW until an explicit algorithm refresh. The day-one probe
+also proved that a path predicate referencing `a` after WITH must retain `a`
+in that WITH (or use the validated `$id`), which the shipped templates do.
+Credentials are passed to the pinned bulk loader through its Python API;
+they never appear in process arguments or output. GRAPH.BULK buffers remain
+capped at 64 MB. Meta.seed_complete is the final successful seed write.
+
+**Cloud working-memory correction:** the matrix above initially used 256
+betweenness samples. An isolated v4.22.1 server with Redis maxmemory 100 MB
+measured a **326,641,976-byte allocation peak** during sampled-256
+betweenness, while the final graph stayed below 40 MB. Cloud v4.22.0 restarted
+empty during that precompute. Consequently the shipped seed/refresh default
+is **32 deterministic samples**, seed 42, still labelled `exact:false`.
+`Meta.betweenness_samples` records the setting; an explicit
+`FALKORDB_BETWEENNESS_SAMPLES` override may choose 1..256 for larger local
+instances. This does not raise any spend or database quota. Raw memory-stage
+evidence is in `evals/results/memory-ceiling.json`; successful Cloud seed
+timings and stages are recorded separately in `cloud-foundation.json`.
+
 
 ## Implementation amendment — 16 October 2026
 

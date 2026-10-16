@@ -5,7 +5,7 @@ the recording script, not a claim that a video has already been recorded.
 
 Before recording, pre-warm the Render page and `/health` five minutes ahead.
 Keep FalkorDB Browser at `http://localhost:3000` ready. Obtain the planted demo
-ids from `data/demo.json` (or the seed manifest), and the injected account from
+ids from `data/manifest.json` under `demo`, and the injected account from
 `data/injections.json`; do not paste an attack into the question. Start with a
 fresh investigation so the first answer is a path, then use a new session to
 show memory. Keep the Principal Officer key private and outside the recording.

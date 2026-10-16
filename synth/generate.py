@@ -284,7 +284,7 @@ def generate(accounts: int = 25000, tx: int | None = None, seed: int = 42) -> Da
 
     background = [a for a in ids if a not in planted]
     retail = [a for a in background if arows[a]["type"] in ("retail", "business")]
-    target_tx = tx if tx is not None else accounts * 3 // 2
+    target_tx = tx if tx is not None else accounts * 13 // 10
     ordinary_memos = ("Monthly rent", "Invoice payment", "Groceries", "Salary credit", "School fee", "Travel reimbursement", "Family transfer", "Utility payment")
     # Legitimate busy merchants, payroll and exchanges are essential controls.
     for merchant_index, merchant in enumerate(merchant_ids):

@@ -115,6 +115,11 @@ async def test_depth_and_exact_identifier_hops(context):
     assert exit_row["path_ids"] == ["ACC-1","DEV-1","ACC-2","PER-1","ACC-9"]
     assert {n["id"] for n in two["path_nodes"]} >= set(exit_row["path_ids"])
     assert len(two["path_edges"]) >= 4
+    incoming = await invoke("rs_neighbourhood", {"account_id":"ACC-1","direction":"in","hops":1})
+    for row in incoming["rows"]:
+        for edge in row["edges"]:
+            assert edge["target"] == "ACC-1"
+            assert edge["source"] == row["neighbour"]
 
 
 @pytest.mark.asyncio
@@ -180,3 +185,14 @@ async def test_dense_guard_prevents_explosive_traversal(context):
     assert result["reason"] == "hub_too_dense"
     result = await run_tool("rs_cycles", {"account_id":"ACC-10"})
     assert result["reason"] == "hub_too_dense"
+
+
+@pytest.mark.asyncio
+async def test_historical_answers_do_not_reuse_later_global_snapshots(context):
+    for name,args in [("rs_hub_rank",{"scope":"global"}), ("rs_ring_members",{"account_id":"ACC-1"})]:
+        result=await run_tool(name,dict(args,as_of=AS_OF-1))
+        assert result["reason"]=="historical_snapshot_unavailable"
+        assert result["rows"]==[]
+    profile=await invoke("rs_account_profile",{"account_id":"ACC-1","as_of":AS_OF-1})
+    assert not {"pagerank","ring_id","wcc_id","lpa_id","peer_baseline","in_deg","out_deg"} & set(profile["rows"][0])
+    assert profile["rows"][0]["in_n"]>0

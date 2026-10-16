@@ -1,0 +1,60 @@
+name: Graph contracts and console
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  contracts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        engine: [v4.22.1, '6.0.2']
+    services:
+      falkordb:
+        image: falkordb/falkordb:${{ matrix.engine }}
+        ports: ['6380:6379']
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 5s --health-timeout 5s --health-retries 20
+    env:
+      RS_TEST_REDIS_URL: redis://127.0.0.1:6380
+      RS_EXPECT_ENGINE: ${{ matrix.engine == 'v4.22.1' && '4.22.1' || matrix.engine }}
+      ENV: demo
+      GUARD: deterministic
+      ACCOUNTS: '500'
+      MODEL_PLANNER: claude-sonnet-5-5
+      MODEL_JUDGE: claude-sonnet-5-5
+      MODEL_NARRATIVE: claude-opus-5-5
+      MODEL_PROBE: claude-haiku-5-5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          version: '0.9.24'
+          python-version: '3.12'
+          enable-cache: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: ui/package-lock.json
+      - name: Install Python dependencies
+        run: uv sync --frozen
+      - name: Build and test console
+        working-directory: ui
+        run: |
+          npm ci --no-audit --no-fund
+          npm test
+          npm run build
+      - name: Run local graph and safety contracts
+        run: uv run python -m pytest --json-report --json-report-file=evals/results/ci-${{ matrix.engine }}.json
+      - name: Preserve measured results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: graph-contracts-${{ matrix.engine }}
+          path: evals/results/

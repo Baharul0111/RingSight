@@ -14,7 +14,7 @@ DEFAULT_PATH = ROOT / "data" / "findings_snapshot.json"
 def export_snapshot(database: GraphDB, graph: str = "rs_bank_a", path: Path = DEFAULT_PATH) -> int:
     records = database.sync_read(graph, "MATCH (f:Finding) OPTIONAL MATCH (f)-[:ABOUT]->(e) RETURN properties(f) AS finding,collect({id:e.id,labels:labels(e)}) AS entities LIMIT 2000")
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps({"schema": 1, "synthetic": True, "findings": records}, indent=2, sort_keys=True) + "\n")
+    path.write_text(json.dumps({"schema": 1, "graph": graph, "synthetic": True, "findings": records}, indent=2, sort_keys=True) + "\n")
     return len(records)
 
 
@@ -22,6 +22,9 @@ def restore_snapshot(database: GraphDB, graph: str = "rs_bank_a", path: Path = D
     if not path.exists():
         return 0
     data = json.loads(path.read_text())
+    # A bank A demo snapshot can never be replayed into another bank graph.
+    if data.get("graph", "rs_bank_a") != graph:
+        return 0
     records = data.get("findings", [])[:2000]
     count = 0
     for record in records:

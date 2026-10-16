@@ -31,7 +31,7 @@ read_srv = FastMCP("rs-read")
 R = {"readOnlyHint": True, "destructiveHint": False, "idempotentHint": True, "openWorldHint": False}
 _DIRECTORY = Path(__file__).parent / "cypher"
 _QUERIES = {p.stem: p.read_text() for p in _DIRECTORY.glob("rs_*.cypher")}
-_NAME_CACHE: dict[str, tuple[float, list[str]]] = {}
+_NAME_CACHE: dict[str, tuple[float, set[str]]] = {}
 
 
 def query(name: str, **templates: Any) -> str:
@@ -89,6 +89,14 @@ async def _dense(account_id: str) -> dict | None:
     if rows and rows[0]["degree"] > 500:
         return {"outcome": "tool_error", "reason": "hub_too_dense", "hint": "Narrow window_days or use rs_fan_pattern / rs_hub_rank", "rows": []}
     return None
+
+
+async def _snapshot_available(as_of: int) -> tuple[bool, int | None]:
+    # Rail coverage is fixed by ingestion. Ad-hoc future-edge test insertions
+    # cannot change the declared coverage of a precomputed snapshot.
+    rows = await read("MATCH (r:Rail) RETURN max(r.last_loaded) AS through")
+    through = rows[0].get("through") if rows else None
+    return through is None or as_of >= through, through
 
 
 def _result(rows: list[dict], reason: str = "no_path_within_depth", **extra) -> dict:
@@ -183,6 +191,12 @@ async def _profile(args: ProfileInput) -> dict:
         rows[0]["peer_baseline"] = peers[0] if peers else {}
         rows[0]["edges"] = await read("MATCH (a:Account {id:$id})-[t:TX]-(b:Account) WHERE t.ts>$from AND t.ts<=$as_of RETURN t.id AS id,startNode(t).id AS source,endNode(t).id AS target,t.amount AS amount,t.ts AS ts,t.rail AS rail,t.memo AS memo,'TX' AS type ORDER BY t.ts DESC LIMIT $limit", {"id": args.account_id, "from": start, "as_of": args.as_of, "limit": args.limit})
         rows[0]["path_ids"] = [args.account_id]
+        snapshot, through = await _snapshot_available(args.as_of)
+        if not snapshot:
+            for key in ("in_deg", "out_deg", "pagerank", "betweenness", "wcc_id", "lpa_id", "ring_id", "peer_baseline"):
+                rows[0].pop(key, None)
+            rows[0]["snapshot_warning"] = "Global algorithm properties and peer degree baselines are omitted before the snapshot coverage end. Dated transfer counts remain valid."
+            rows[0]["algorithm_snapshot_through"] = through
     return _result(rows)
 
 
@@ -264,6 +278,9 @@ async def _ring(args: RingInput) -> dict:
     unknown = await _anchors([args.account_id])
     if unknown:
         return unknown
+    available, through = await _snapshot_available(args.as_of)
+    if not available:
+        return {"outcome": "tool_error", "reason": "historical_snapshot_unavailable", "hint": "The precomputed community includes data after this as_of. Use dated neighbourhood or path tools instead.", "rows": [], "snapshot_through": through}
     prop = {"shared_ids": "ring_id", "money_wcc": "wcc_id", "money_lpa": "lpa_id"}[args.basis]
     size = await read(query("rs_ring_members", prop=prop), {"id": args.account_id, "min": args.min_size, "max": args.max_size})
     if not size or not size[0]["in_bounds"]:
@@ -280,9 +297,14 @@ async def _ring(args: RingInput) -> dict:
 
 
 async def _hubs(args: HubInput) -> dict:
+    available, through = await _snapshot_available(args.as_of)
+    if not available:
+        return {"outcome": "tool_error", "reason": "historical_snapshot_unavailable", "hint": "These precomputed ranks include data after this as_of. Use dated account profiles instead.", "rows": [], "snapshot_through": through}
     scope = "" if args.scope == "global" else " {" + ("ring_id" if args.scope == "ring" else "wcc_id") + ":$sid}"
-    rows = await read(query("rs_hub_rank", scope=scope, metric=args.metric), {"sid": args.scope_id, "inc": args.include_legit_hubs, "limit": args.top_k})
-    return _result(rows, "scope_not_in_graph", exact=args.metric != "betweenness", algorithm={"pagerank": "algo.pageRank", "betweenness": "algo.betweenness (sampled 256)", "in_deg": "degree", "out_deg": "degree"}[args.metric], computed_at=rows[0].get("computed_at") if rows else None)
+    rows = await read(query("rs_hub_rank", scope=scope, metric=args.metric), {"sid": args.scope_id, "inc": args.include_legit_hubs, "limit": args.top_k, "exact": args.metric != "betweenness"})
+    meta = await read("MATCH (m:Meta) RETURN m.betweenness_samples AS samples LIMIT 1") if args.metric == "betweenness" else []
+    samples = meta[0].get("samples") if meta else None
+    return _result(rows, "scope_not_in_graph", exact=args.metric != "betweenness", sampling_size=samples, algorithm={"pagerank": "algo.pageRank", "betweenness": "algo.betweenness (sampled" + (f" {samples}" if samples else "") + ")", "in_deg": "degree", "out_deg": "degree"}[args.metric], computed_at=rows[0].get("computed_at") if rows else None)
 
 
 async def _flow(args: FlowInput) -> dict:
@@ -398,7 +420,7 @@ async def _sanitize(value: Any, key: str = "", names: set[str] | None = None) ->
             out.append(clean)
             hits += n
         return out, hits
-    if isinstance(value, str) and key in {"memo", "text", "rationale", "decision_reason"}:
+    if isinstance(value, str) and (key in {"memo", "text", "rationale", "decision_reason"} or (key == "source" and not value.startswith(("ACC-", "PER-", "DEV-", "MER-")))):
         if key == "memo":
             value = re.sub(r"(?<!\w)(?:\+?\d[\d ()-]{8,}\d)(?!\w)", "<phone>", value)
             value = re.sub(r"[\w.+-]+@[\w.-]+\.[A-Za-z]{2,}", "<email>", value)
@@ -406,6 +428,8 @@ async def _sanitize(value: Any, key: str = "", names: set[str] | None = None) ->
                 value = re.sub(r"\b[\w']+\b", lambda m: "<name>" if m.group(0).lower() in names else m.group(0), value)
         guarded, hits = guard_read(value, field=key, source="graph")
         return guarded, hits if isinstance(hits, int) else len(hits)
+    if isinstance(value, float) and value.is_integer() and key in {"amount", "total", "in_sum", "out_sum", "drain_sum", "scattered", "gathered", "internal_amount", "amount_after_closure_request", "maxFlow"}:
+        return int(value), 0
     return value, 0
 
 
@@ -429,7 +453,10 @@ def _paths_from_rows(rows: list[dict]) -> tuple[list[dict], list[dict]]:
                         kinds = value.get("link_kinds", [])
                         for i, (a, b) in enumerate(zip(v, v[1:])):
                             kind = kinds[i] if i < len(kinds) and isinstance(kinds[i], str) else "LINK"
-                            edges[f"{a}:{b}:{kind}"] = {"source": a, "target": b, "type": kind}
+                            src, dst = a, b
+                            if (kind == "OWNS" and a.startswith("ACC-")) or (kind == "USES_DEVICE" and a.startswith("DEV-")) or (kind in {"HAS_PHONE", "HAS_ADDRESS"} and b.startswith("PER-")):
+                                src, dst = b, a
+                            edges[f"{a}:{b}:{kind}"] = {"source": src, "target": dst, "type": kind}
                 elif k in {"source", "target", "from", "to", "id", "linked", "account", "collector", "gatherer"}:
                     node(v)
                 visit(v)
@@ -483,8 +510,10 @@ async def run_tool(name: str, args: dict | None = None) -> dict:
             tenant = ctx.identity.tenant
             cached = _NAME_CACHE.get(tenant)
             if not cached or time.monotonic() - cached[0] > 600:
-                values = await read("MATCH (p:Person) RETURN p.name_norm AS value LIMIT 50000")
-                names = {word.lower() for r in values for word in (r.get("value") or "").split() if len(word) >= 3}
+                # Return one collection row: the free-tier resultset row cap
+                # must not truncate a tenant's server-only name dictionary.
+                values = await read("MATCH (p:Person) RETURN collect(p.name_norm) AS values")
+                names = {word.lower() for row in values for value in row.get("values", []) for word in str(value or "").split() if len(word) >= 3}
                 _NAME_CACHE[tenant] = (time.monotonic(), names)
             else:
                 names = cached[1]
@@ -524,7 +553,7 @@ _DESCRIPTIONS = {
     "rs_scatter_gather": "Detect a source scattering to several mules which then gather, or a collector gathering then scattering. Exact transfer legs and temporal ordering support every pattern; absence never establishes innocence. input_example: {\"account_id\":\"ACC-4471\",\"mode\":\"scatter_gather\"}.",
     "rs_path_between": "Find directed shortest paths with FalkorDB algo.SPpaths and a bounded temporal evidence query. Future algorithm candidates are never exposed; no path is qualified by max_hops. input_example: {\"src_id\":\"ACC-4471\",\"dst_id\":\"ACC-55820\",\"max_hops\":4}.",
     "rs_ring_members": "Read precomputed shared-identifier or money communities and their internal evidence. A count-before-collect guard refuses giant components and computed_at shows algorithm freshness. input_example: {\"account_id\":\"ACC-4471\",\"basis\":\"shared_ids\"}.",
-    "rs_hub_rank": "Rank accounts by graph-native precomputed PageRank, sampled betweenness or degree. Merchants, payroll and exchanges are excluded by default and betweenness is explicitly approximate. input_example: {\"scope\":\"global\",\"metric\":\"pagerank\"}.",
+    "rs_hub_rank": "Rank accounts by graph-native precomputed PageRank, sampled betweenness or degree. Merchants, payroll and exchanges are excluded by default, sample size comes from Meta and historical snapshots are refused. input_example: {\"scope\":\"global\",\"metric\":\"pagerank\"}.",
     "rs_money_flow": "Run FalkorDB max-flow on the dated, aggregated seed-time FLOW projection using amount or transfer-count capacity. Calls before the projection coverage end are refused, later raw transfers are excluded, and point_in_time:false clearly labels snapshot scope. input_example: {\"source_ids\":[\"ACC-4471\"],\"sink_ids\":[\"ACC-55820\"]}.",
     "rs_shared_identifiers": "Follow shared devices, phones, addresses and owners with identifier-degree guards. Materialized multi-hop links are expanded into actual identifier ids so every displayed hop is auditable. input_example: {\"account_id\":\"ACC-4471\",\"hops\":2}.",
     "rs_check_restrictions": "Check dated restrictions and activity after a closure request for a resolved entity. This never changes an account and every proposed action repeats this check server-side. input_example: {\"entity_id\":\"ACC-4471\"}.",

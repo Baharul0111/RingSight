@@ -1,0 +1,19 @@
+{
+  "suite": "ui-browser",
+  "status": "passed",
+  "target": "local browser with mocked API fixtures, no model calls and no live graph claims",
+  "checks": {
+    "key_once_stored_and_url_stripped": "passed",
+    "streamed_trace_money_ist_and_guard": "passed",
+    "depth_four_hidden_exit_path_and_canvas": "passed",
+    "named_approval_reason_and_identity_not_client_fields": "passed",
+    "analyst_cannot_approve_report": "passed",
+    "dated_unreviewed_memory_and_superseding_feedback": "passed",
+    "unknown_suggestions_and_missing_rail_abstention": "passed",
+    "all_model_budget_rate_timeout_halt_states_offer_manual_tools": "passed",
+    "manual_tool_works_after_model_failure": "passed",
+    "mobile_no_horizontal_page_overflow": "passed",
+    "zero_browser_runtime_errors": "passed"
+  },
+  "elapsed_s": 3.247
+}

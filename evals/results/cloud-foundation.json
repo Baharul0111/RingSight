@@ -1,0 +1,321 @@
+{
+  "events": [
+    {
+      "stage": "complete",
+      "stage_name": "bulk_load",
+      "used_memory": 23560168,
+      "used_memory_peak": 36510416,
+      "used_memory_rss": 68243456
+    },
+    {
+      "stage": "complete",
+      "stage_name": "schema",
+      "used_memory": 50156560,
+      "used_memory_peak": 53696672,
+      "used_memory_rss": 107696128
+    },
+    {
+      "stage": "starting",
+      "stage_name": "flow_projection",
+      "used_memory": 50156560,
+      "used_memory_peak": 53696672,
+      "used_memory_rss": 107696128
+    },
+    {
+      "elapsed_s": 1.1143,
+      "stage": "complete",
+      "stage_name": "flow_projection",
+      "used_memory": 56643712,
+      "used_memory_peak": 100732728,
+      "used_memory_rss": 172269568
+    },
+    {
+      "stage": "starting",
+      "stage_name": "CALL algo.pageRank('Account','TX')",
+      "used_memory": 56643712,
+      "used_memory_peak": 100732728,
+      "used_memory_rss": 172269568
+    },
+    {
+      "elapsed_s": 0.2823,
+      "stage": "complete",
+      "stage_name": "CALL algo.pageRank('Account','TX')",
+      "used_memory": 57965600,
+      "used_memory_peak": 100732728,
+      "used_memory_rss": 187736064
+    },
+    {
+      "stage": "starting",
+      "stage_name": "CALL algo.betweenness({nodeLabels:['Account'], relationshipTypes:['TX'], samplingSize:32, samplingSeed:42})",
+      "used_memory": 57965600,
+      "used_memory_peak": 100732728,
+      "used_memory_rss": 188129280
+    },
+    {
+      "elapsed_s": 0.2312,
+      "stage": "complete",
+      "stage_name": "CALL algo.betweenness({nodeLabels:['Account'], relationshipTypes:['TX'], samplingSize:32, samplingSeed:42})",
+      "used_memory": 58927032,
+      "used_memory_peak": 100732728,
+      "used_memory_rss": 189227008
+    },
+    {
+      "stage": "starting",
+      "stage_name": "CALL algo.WCC({nodeLabels:['Account'], relationshipTypes:['TX']})",
+      "used_memory": 58927032,
+      "used_memory_peak": 100732728,
+      "used_memory_rss": 189227008
+    },
+    {
+      "elapsed_s": 0.3702,
+      "stage": "complete",
+      "stage_name": "CALL algo.WCC({nodeLabels:['Account'], relationshipTypes:['TX']})",
+      "used_memory": 59827264,
+      "used_memory_peak": 100732728,
+      "used_memory_rss": 195194880
+    },
+    {
+      "stage": "starting",
+      "stage_name": "CALL algo.labelPropagation({nodeLabels:['Account'], relationshipTypes:['TX'], maxIterations:10})",
+      "used_memory": 59827264,
+      "used_memory_peak": 100732728,
+      "used_memory_rss": 195194880
+    },
+    {
+      "elapsed_s": 1.7526,
+      "stage": "complete",
+      "stage_name": "CALL algo.labelPropagation({nodeLabels:['Account'], relationshipTypes:['TX'], maxIterations:10})",
+      "used_memory": 60550080,
+      "used_memory_peak": 100732728,
+      "used_memory_rss": 190775296
+    },
+    {
+      "stage": "starting",
+      "stage_name": "CALL algo.WCC({nodeLabels:['Account'], relationshipTypes:['SHARES_STRONG']})",
+      "used_memory": 60550080,
+      "used_memory_peak": 100732728,
+      "used_memory_rss": 190775296
+    },
+    {
+      "elapsed_s": 0.3011,
+      "stage": "complete",
+      "stage_name": "CALL algo.WCC({nodeLabels:['Account'], relationshipTypes:['SHARES_STRONG']})",
+      "used_memory": 62887512,
+      "used_memory_peak": 100732728,
+      "used_memory_rss": 193994752
+    },
+    {
+      "stage": "starting",
+      "stage_name": "degrees_or_timestamp",
+      "used_memory": 62887512,
+      "used_memory_peak": 100732728,
+      "used_memory_rss": 193994752
+    },
+    {
+      "elapsed_s": 0.3051,
+      "stage": "complete",
+      "stage_name": "degrees_or_timestamp",
+      "used_memory": 63562680,
+      "used_memory_peak": 100732728,
+      "used_memory_rss": 194486272
+    },
+    {
+      "stage": "starting",
+      "stage_name": "degrees_or_timestamp",
+      "used_memory": 63562680,
+      "used_memory_peak": 100732728,
+      "used_memory_rss": 194486272
+    },
+    {
+      "elapsed_s": 8.4023,
+      "stage": "complete",
+      "stage_name": "degrees_or_timestamp",
+      "used_memory": 67313000,
+      "used_memory_peak": 100732728,
+      "used_memory_rss": 166830080
+    }
+  ],
+  "result": {
+    "accounts": 25000,
+    "algorithms": [
+      {
+        "elapsed_s": 1.1143,
+        "procedure": "flow_projection"
+      },
+      {
+        "elapsed_s": 0.2823,
+        "procedure": "CALL algo.pageRank('Account','TX')"
+      },
+      {
+        "elapsed_s": 0.2312,
+        "procedure": "CALL algo.betweenness({nodeLabels:['Account'], relationshipTypes:['TX'], samplingSize:32, samplingSeed:42})"
+      },
+      {
+        "elapsed_s": 0.3702,
+        "procedure": "CALL algo.WCC({nodeLabels:['Account'], relationshipTypes:['TX']})"
+      },
+      {
+        "elapsed_s": 1.7526,
+        "procedure": "CALL algo.labelPropagation({nodeLabels:['Account'], relationshipTypes:['TX'], maxIterations:10})"
+      },
+      {
+        "elapsed_s": 0.3011,
+        "procedure": "CALL algo.WCC({nodeLabels:['Account'], relationshipTypes:['SHARES_STRONG']})"
+      },
+      {
+        "elapsed_s": 0.3051,
+        "procedure": "degrees_or_timestamp"
+      },
+      {
+        "elapsed_s": 8.4023,
+        "procedure": "degrees_or_timestamp"
+      }
+    ],
+    "engine": "4.22.0",
+    "graph": "rs_bank_a",
+    "graph_mb": 39,
+    "manifest": {
+      "as_of": 1792108799,
+      "csv_sha256": "5dd231fcd84544dd526fddd8e54347adf71e4ae7c91856b8d18d5f756f61ad36",
+      "edges": {
+        "AT_BANK": 25000,
+        "HAS_ADDRESS": 2473,
+        "HAS_PHONE": 3189,
+        "ON": 63,
+        "OWNS": 25000,
+        "PAID": 30000,
+        "SHARES": 1100,
+        "SHARES_STRONG": 236,
+        "TX": 32500,
+        "USES_DEVICE": 9485
+      },
+      "nodes": {
+        "Account": 25000,
+        "Address": 2473,
+        "Alert": 60,
+        "Bank": 1,
+        "Device": 8726,
+        "IngestionDay": 1080,
+        "Merchant": 100,
+        "Person": 12636,
+        "Phone": 2831,
+        "Rail": 6,
+        "Restriction": 3
+      },
+      "start": 1776556800
+    },
+    "memory": {
+      "amortized_edge_attributes_by_type_sz_mb": [
+        "TX",
+        2,
+        "OWNS",
+        0,
+        "AT_BANK",
+        0,
+        "USES_DEVICE",
+        0,
+        "HAS_PHONE",
+        0,
+        "HAS_ADDRESS",
+        0,
+        "SHARES",
+        0,
+        "SHARES_STRONG",
+        0,
+        "PAID",
+        0,
+        "ON",
+        0,
+        "FLOW",
+        2
+      ],
+      "amortized_edge_block_sz_mb": 1,
+      "amortized_node_attributes_by_label_sz_mb": [
+        "Account",
+        5,
+        "Person",
+        1,
+        "Bank",
+        0,
+        "Merchant",
+        0,
+        "Device",
+        0,
+        "Phone",
+        0,
+        "Address",
+        0,
+        "Rail",
+        0,
+        "IngestionDay",
+        0,
+        "Restriction",
+        0,
+        "Alert",
+        0,
+        "Finding",
+        0,
+        "PendingAction",
+        0,
+        "Case",
+        0,
+        "Tenant",
+        0,
+        "Spend",
+        0,
+        "Session",
+        0,
+        "ToolCall",
+        0,
+        "Decision",
+        0
+      ],
+      "amortized_node_block_sz_mb": 0,
+      "amortized_unlabeled_nodes_attributes_sz_mb": 0,
+      "indices_sz_mb": 14,
+      "label_matrices_sz_mb": 1,
+      "relation_matrices_sz_mb": 6,
+      "total_graph_sz_mb": 39
+    },
+    "reseed_s": 21.169,
+    "schema": {
+      "constraints": [
+        {
+          "kind": "NODE",
+          "label": "Account",
+          "property": "id",
+          "supported": true
+        },
+        {
+          "kind": "NODE",
+          "label": "Person",
+          "property": "id",
+          "supported": true
+        },
+        {
+          "kind": "NODE",
+          "label": "PendingAction",
+          "property": "idem_key",
+          "supported": true
+        },
+        {
+          "kind": "NODE",
+          "label": "Finding",
+          "property": "idem_key",
+          "supported": true
+        },
+        {
+          "kind": "RELATIONSHIP",
+          "label": "TX",
+          "property": "id",
+          "supported": true
+        }
+      ]
+    },
+    "seed_version": "rs-synthetic-v1",
+    "snapshot_findings": 0
+  },
+  "status": "passed",
+  "synthetic": true,
+  "target": "Cloud initial synthetic seed; sampled32 plus bounded500-account degree batches"
+}

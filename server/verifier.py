@@ -41,6 +41,18 @@ def verify(text,calls,shape=None,cited_ids=None):
     unsupported=[]
     for identifier in ID_RE.findall(text):
         if identifier not in ids:unsupported.append(identifier)
+    # Remove typed identifiers, currency and dates before checking ordinary
+    # quantities (counts, percentages and depths). No ungrounded number is prose.
+    remaining=ID_RE.sub('',text)
+    remaining=MONEY_RE.sub('',remaining)
+    remaining=DATE_RE.sub('',remaining)
+    remaining=re.sub(r'[0-9a-f]{8}-[0-9a-f-]{27,}', '', remaining, flags=re.I)
+    for token in re.findall(r'(?<![\w-])\d+(?:\.\d+)?(?![\w-])',remaining):
+        value=float(token)
+        if not any(abs(value-x)<=max(.001,abs(x)*.01) for x in numbers):unsupported.append(token)
+    allowed_titles={'Principal Officer','Not in','The graph','The available','Review the','Graph evidence','Human review','No path','The returned','An analyst','This account','This finding','Unknown account','The account','A hold','A named'}
+    for name in re.findall(r'\b[A-Z][a-z]+(?: [A-Z][a-z]+)+\b',text):
+        if name not in allowed_titles and name not in str(selected):unsupported.append(name)
     normalizations=[]
     for match in MONEY_RE.finditer(text):
         paise=parse_amount(*match.groups()); normalizations.append({'text':match.group(0),'paise':paise})
@@ -55,6 +67,13 @@ def verify(text,calls,shape=None,cited_ids=None):
 def template_answer(calls):
     usable=[c for c in calls.values() if c.get('outcome')=='answered_with_path' and c.get('path_nodes') and c.get('rows_total',0)>0]
     if usable:
-        nodes=usable[-1]['path_nodes']; ids=[n.get('id') if isinstance(n,dict) else str(n) for n in nodes]
-        return 'The graph returned this evidence path: '+' → '.join(dict.fromkeys(filter(None,ids)))+'. Review the transfer evidence before deciding.'
+        paths=[]
+        for call in usable:
+            for key,value in flatten(call.get('rows',[])):
+                if key in {'path_ids','node_ids','accounts'} and isinstance(value,list) and all(isinstance(x,str) for x in value):paths.append(value)
+        if paths:
+            path=max(paths,key=len)
+            return 'The graph returned this evidence path: '+' → '.join(path)+'. Review the transfer evidence before deciding.'
+        ids=[n.get('id') if isinstance(n,dict) else str(n) for n in usable[-1]['path_nodes']]
+        return 'The graph returned evidence involving '+', '.join(dict.fromkeys(filter(None,ids)))+'. Review the individual paths and transfer evidence before deciding.'
     return 'The available graph evidence is insufficient. Not in the graph ≠ nothing wrong.'

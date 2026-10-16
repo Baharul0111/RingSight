@@ -81,8 +81,53 @@ def model(name):
     provider=AnthropicProvider(anthropic_client=AsyncAnthropic(timeout=20,max_retries=2))
     return BudgetedModel(AnthropicModel(name,provider=provider))
 
+def compact(value,key=''):
+    """Project bounded model context; full rows remain in graph audit and UI."""
+    if isinstance(value,str):
+        if key=='':
+            try:return compact(json.loads(value))
+            except (ValueError,TypeError):pass
+        return value
+    if isinstance(value,list):return [compact(v,key) for v in value[:(20 if key in {'path_ids','node_ids','accounts','edges','members'} else 8)]]
+    if isinstance(value,dict):
+        out={}
+        for k,v in value.items():
+            if k in {'path_nodes','path_edges','coverage_warning','args','name','elapsed_ms','rows_json'}:continue
+            if k=='days':out['delta_days']=[compact(d) for d in v if d.get('delta')][:8];continue
+            out[k]=compact(v,k)
+        if isinstance(value.get('rows'),list) and len(value['rows'])>8:out['model_rows_truncated']=True
+        return out
+    return value
+
+async def process_tool(ctx,original,name,args):
+    # Evidence/as_of is the server context. A model cannot move the clock forward.
+    if name in __import__('server.mcp_read',fromlist=['INPUT_MODELS']).INPUT_MODELS:
+        args=dict(args,as_of=get_context().as_of)
+    if name=='rs_neighbourhood':args['hops']=get_context().requested_depth
+    if name=='rs_shared_identifiers':args['hops']=1 if get_context().requested_depth==1 else min(args.get('hops',2),2)
+    return compact(await original(name,args))
+
+async def prepare_turn(runctx,tools):
+    """Select a small stage from the frozen catalogue for strict compilation."""
+    ctx=get_context();q=ctx.question.lower()
+    used={c.get('tool') for c in ctx.calls.values()}
+    reads=used-{'rs_resolve_entity','rs_recall_findings','rs_coverage_status','rs_record_finding','rs_propose_action','rs_check_restrictions'}
+    if not reads:
+        allowed={'rs_account_profile','rs_neighbourhood','rs_shared_identifiers'}
+        if 'cycle' in q:allowed={'rs_account_profile','rs_cycles','rs_neighbourhood'}
+        elif any(w in q for w in ['scatter','gather','mule']):allowed={'rs_account_profile','rs_scatter_gather','rs_shared_identifiers'}
+        elif any(w in q for w in ['fan-in','fan-out','fan in','fan out','drain']):allowed={'rs_account_profile','rs_fan_pattern','rs_neighbourhood'}
+        elif any(w in q for w in ['hub','pagerank','betweenness']):allowed={'rs_account_profile','rs_hub_rank','rs_ring_members'}
+        elif any(w in q for w in ['maximum flow','max flow','max-flow']):allowed={'rs_account_profile','rs_money_flow','rs_path_between'}
+        elif any(w in q for w in ['path between','shortest path']):allowed={'rs_path_between','rs_neighbourhood','rs_shared_identifiers'}
+        elif 'restriction' in q:allowed={'rs_account_profile','rs_check_restrictions','rs_neighbourhood'}
+    else:
+        allowed={'rs_record_finding','rs_propose_action','rs_ring_members','rs_cycles'}
+        if ctx.tool_count>=8:allowed={'rs_record_finding','rs_propose_action'}
+    return [tool for tool in tools if tool.name in allowed]
+
 def make_agent():
-    return Agent(model(settings.planner),toolsets=[MCPToolset(agent_srv,prefer_tasks=False)],output_type=PromptedOutput(Answer),system_prompt=SYSTEM,retries=1,model_settings=AnthropicModelSettings(anthropic_cache_tool_definitions='1h',anthropic_cache_instructions='1h',max_tokens=1024,timeout=20),tool_timeout=12)
+    return Agent(model(settings.planner),toolsets=[MCPToolset(agent_srv,prefer_tasks=False,process_tool_call=process_tool).prepared(prepare_turn)],output_type=PromptedOutput(Answer),system_prompt=SYSTEM,retries=1,model_settings=AnthropicModelSettings(anthropic_cache_tool_definitions='1h',anthropic_cache_instructions='1h',max_tokens=1024,timeout=20),tool_timeout=12)
 
 def evidence_digest(calls):
     digest=[]
@@ -134,7 +179,7 @@ async def partial(reason):
     return await finish(Answer(shape='not_in_graph',text=template_answer(ctx.calls)+' The investigation stopped before completing every check.',reason=reason,path_tool_call_ids=cited),{'verdict':'weak'},{'status':'replaced','unsupported':[]})
 
 async def investigate(question,depth=4):
-    ctx=get_context();await create_session(ctx)
+    ctx=get_context();ctx.question=question;ctx.requested_depth=depth;await create_session(ctx)
     ids=list(dict.fromkeys(re.findall(r'\b(?:ACC|PER|DEV|MER|AL)-[A-Za-z0-9]+\b',question,re.I)))[:10]
     facts=[];resolved=[]
     if not ids:
@@ -152,9 +197,9 @@ async def investigate(question,depth=4):
     facts.append(coverage)
     if coverage['outcome']=='not_in_graph':return await finish(Answer(shape='not_in_graph',text=f'{rail} is not loaded in this bank graph. Not in the graph ≠ nothing wrong.',reason=coverage.get('reason','rail_not_ingested'),path_tool_call_ids=[coverage['tool_call_id']]))
     # Input names are resolved server-side, then replaced before model egress.
-    names=await db.read(ctx.identity.tenant,'MATCH (p:Person) RETURN p.name_norm AS name LIMIT 30000')
-    safe_question=scrub(question,[r['name'] for r in names if r.get('name')])
-    prompt=json.dumps({'question':safe_question,'requested_depth':depth,'as_of':ctx.as_of,'preflight':facts})
+    names=await db.read(ctx.identity.tenant,'MATCH (p:Person) RETURN collect(DISTINCT p.name_norm) AS names')
+    safe_question=scrub(question,names[0]['names'] if names else [])
+    prompt=json.dumps({'question':safe_question,'requested_depth':depth,'as_of':ctx.as_of,'preflight':compact(facts)})
     try:
         async with asyncio.timeout(60):
             agent=make_agent()
