@@ -1,0 +1,18 @@
+name: Daily investigation probe
+on:
+  schedule:
+    - cron: '17 3 * * *'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  investigate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v4
+      - name: Ask the depth-one demo question
+        env:
+          HEALTH_URL: ${{ secrets.HEALTH_URL }}
+          JUDGE_KEY: ${{ secrets.JUDGE_KEY }}
+        run: python3 ops/daily_probe.py

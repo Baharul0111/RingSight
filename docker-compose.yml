@@ -1,0 +1,47 @@
+services:
+  falkordb:
+    image: falkordb/falkordb:v4.22.1
+    ports:
+      - "127.0.0.1:6379:6379"
+      - "127.0.0.1:3000:3000"
+    environment:
+      FALKORDB_PASSWORD: "${FALKORDB_PASSWORD:-change-me-local}"
+      REDIS_ARGS: "--requirepass ${FALKORDB_PASSWORD:-change-me-local} --appendonly yes --appendfsync everysec --maxmemory 2gb --maxmemory-policy noeviction"
+      FALKORDB_ARGS: "THREAD_COUNT 4 CACHE_SIZE 50 TIMEOUT_DEFAULT 10000 TIMEOUT_MAX 20000 QUERY_MEM_CAPACITY 52428800 RESULTSET_SIZE 2000"
+    volumes:
+      - falkordb_data:/var/lib/falkordb/data
+      - falkordb_data:/data
+    healthcheck:
+      test: ["CMD-SHELL", "REDISCLI_AUTH=$${FALKORDB_PASSWORD:-change-me-local} redis-cli ping | grep -q PONG"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 20s
+  seed:
+    build: .
+    env_file: .env
+    environment:
+      FALKORDB_HOST: falkordb
+      FALKORDB_PORT: "6379"
+      REDIS_URL: "redis://:${FALKORDB_PASSWORD:-change-me-local}@falkordb:6379"
+      GRAPH_NAME: rs_bank_a
+    command: ["sh", "-c", "python -m seed --graph rs_bank_a --accounts $${ACCOUNTS:-25000}"]
+    depends_on:
+      falkordb:
+        condition: service_healthy
+  app:
+    build: .
+    ports: ["127.0.0.1:8000:8000"]
+    env_file: .env
+    environment:
+      FALKORDB_HOST: falkordb
+      FALKORDB_PORT: "6379"
+      REDIS_URL: "redis://:${FALKORDB_PASSWORD:-change-me-local}@falkordb:6379"
+      GRAPH_NAME: rs_bank_a
+      PUBLIC_URL: http://localhost:8000
+    depends_on:
+      seed:
+        condition: service_completed_successfully
+    restart: unless-stopped
+volumes:
+  falkordb_data: {}

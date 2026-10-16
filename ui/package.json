@@ -1,0 +1,9 @@
+{
+  "name": "ringsight-console",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {"dev": "vite --host 127.0.0.1", "build": "vite build", "test": "vitest run"},
+  "dependencies": {"react": "^19.1.1", "react-dom": "^19.1.1", "react-force-graph-2d": "1.29.2"},
+  "devDependencies": {"@vitejs/plugin-react": "^4.4.1", "vite": "^6.3.5", "vitest": "^3.2.4"}
+}

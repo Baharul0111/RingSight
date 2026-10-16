@@ -1,0 +1,30 @@
+[project]
+name = "ringsight"
+version = "0.1.0"
+description = "Evidence-first graph investigation with human approval"
+requires-python = ">=3.12,<3.14"
+dependencies = [
+  "FalkorDB==1.8.0",
+  "fastmcp==4.1.0",
+  "mcp==2.3.0",
+  "pydantic-ai-slim[anthropic]==2.56.0",
+  "anthropic==1.15.0",
+  "fastapi>=0.115",
+  "uvicorn[standard]>=0.34",
+  "jinja2>=3.1.6",
+  "rapidfuzz>=3.12",
+  "numpy>=2.2",
+  "networkx>=3.4",
+  "python-dotenv>=1.0",
+  "httpx>=0.28",
+  "psutil>=7.0",
+  "falkordb-bulk-loader==1.2.0",
+]
+[dependency-groups]
+dev = ["pytest>=8.3", "pytest-asyncio>=0.25", "pytest-json-report>=1.5", "playwright>=1.50"]
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+pythonpath = ["."]
+[tool.uv]
+package = false

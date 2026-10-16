@@ -1,0 +1,47 @@
+[
+  {
+    "pairs": [
+      {
+        "account": "ACC-1",
+        "id": "PER-10000",
+        "name": "Laxmi"
+      },
+      {
+        "account": "ACC-2",
+        "id": "PER-10001",
+        "name": "Lakshmi"
+      }
+    ],
+    "ring_id": "RING-01"
+  },
+  {
+    "pairs": [
+      {
+        "account": "ACC-9",
+        "id": "PER-10008",
+        "name": "Rahul Enterprises Pvt Ltd"
+      },
+      {
+        "account": "ACC-10",
+        "id": "PER-10009",
+        "name": "RAHUL ENTERPRISES PRIVATE LIMITED"
+      }
+    ],
+    "ring_id": "RING-02"
+  },
+  {
+    "pairs": [
+      {
+        "account": "ACC-17",
+        "id": "PER-10016",
+        "name": "Mohammed Ali"
+      },
+      {
+        "account": "ACC-18",
+        "id": "PER-10017",
+        "name": "Muhammad Ali"
+      }
+    ],
+    "ring_id": "RING-03"
+  }
+]

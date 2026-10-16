@@ -1,0 +1,41 @@
+services:
+  - type: web
+    name: ringsight
+    runtime: docker
+    plan: free
+    region: oregon
+    healthCheckPath: /live
+    autoDeployTrigger: commit
+    envVars:
+      - key: ENV
+        value: demo
+      - key: GUARD
+        value: deterministic
+      - key: ACCOUNTS
+        value: "25000"
+      - key: GRAPH_NAME
+        value: rs_bank_a
+      - key: DAILY_USD_CAP
+        value: "8"
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      - key: REDIS_URL
+        sync: false
+      - key: MCP_READ_TOKEN
+        sync: false
+      - key: JUDGE_KEY
+        sync: false
+      - key: PO_DEMO_KEY
+        sync: false
+      - key: ADMIN_TOKEN
+        sync: false
+      - key: MODEL_PLANNER
+        sync: false
+      - key: MODEL_JUDGE
+        sync: false
+      - key: MODEL_NARRATIVE
+        sync: false
+      - key: MODEL_PROBE
+        sync: false
+      - key: PUBLIC_URL
+        sync: false

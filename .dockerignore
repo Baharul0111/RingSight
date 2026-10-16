@@ -1,0 +1,13 @@
+.env
+.env.*
+!.env.example
+.git
+.venv
+ui/node_modules
+ui/dist
+.pytest_cache
+__pycache__
+evals/results
+research
+*.log
+.DS_Store

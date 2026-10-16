@@ -1,0 +1,16 @@
+.env
+.env.*
+!.env.example
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.coverage
+htmlcov/
+node_modules/
+ui/dist/
+.DS_Store
+*.log
+data/generated/
+artifacts/private/
+.playwright/

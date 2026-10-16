@@ -1,0 +1,24 @@
+[
+  {
+    "account": "ACC-10477",
+    "id": "RES-1",
+    "in_force_from": 1776556800,
+    "kind": "VREQ",
+    "source": "synthetic_control"
+  },
+  {
+    "account": "ACC-7",
+    "id": "RES-2",
+    "in_force_from": 1791935999,
+    "kind": "closure_pending",
+    "source": "synthetic_control"
+  },
+  {
+    "account": "ACC-15",
+    "id": "RES-3",
+    "in_force_from": 1776556800,
+    "in_force_to": 1789516799,
+    "kind": "freeze",
+    "source": "synthetic_control"
+  }
+]

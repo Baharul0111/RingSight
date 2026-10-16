@@ -1,0 +1,6 @@
+name = "ringsight-ping"
+main = "cloudflare-worker.js"
+compatibility_date = "2026-10-16"
+[triggers]
+crons = ["8-59/15 * * * *"]
+# Set HEALTH_URL to the public Render URL + /health in Worker settings.

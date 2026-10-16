@@ -1,0 +1,29 @@
+RingSight
+Copyright 2026 Baharul Islam
+RingSight's original application code is licensed under MIT (LICENSE).
+
+AMLSim typology attribution
+The synthetic generator is an independently implemented Python port of
+typology ideas and branches from IBM/AMLSim:
+https://github.com/IBM/AMLSim
+Copyright IBM Corp. 2017–2026 and AMLSim contributors.
+AMLSim is licensed under the Apache License, Version 2.0. A copy is included
+at licenses/AMLSim-Apache-2.0.txt. The RingSight port replaces the Java simulator
+and its configuration pipeline with deterministic Python data generation,
+adds graph identifiers, controls, synthetic injections and eval ground truth,
+and retains seven AML typology families. It uses no real customer data.
+
+FalkorDB notice
+FalkorDB is a separately supplied database engine licensed under the Server
+Side Public License, Version 1 (SSPLv1), not the MIT licence above.
+https://github.com/FalkorDB/FalkorDB/blob/master/LICENSE.txt
+https://www.mongodb.com/legal/licensing/server-side-public-license
+The local Compose configuration downloads falkordb/falkordb:v4.22.1. That
+database image is not relicensed by this repository. Offering FalkorDB's
+functionality as a service may trigger SSPL section 13 obligations. The default
+pilot model has the bank operate its database and uses RingSight as software
+and a tool catalogue. Any paid startup-hosted pilot needs written commercial
+terms from FalkorDB before deployment.
+
+Other dependencies retain their own licences. In particular falkordb-py,
+React, Vite, react-force-graph-2d and NetworkX are not RingSight-authored code.

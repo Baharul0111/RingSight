@@ -1,0 +1,1304 @@
+[
+  {
+    "accounts": [
+      "ACC-4471",
+      "ACC-10477",
+      "ACC-1",
+      "ACC-2",
+      "ACC-3",
+      "ACC-4",
+      "ACC-5",
+      "ACC-6",
+      "ACC-55820"
+    ],
+    "expected_tools": [
+      "rs_fan_pattern"
+    ],
+    "hub_account": "ACC-4471",
+    "name_variant_pairs": [
+      {
+        "account": "ACC-1",
+        "id": "PER-10000",
+        "name": "Laxmi"
+      },
+      {
+        "account": "ACC-2",
+        "id": "PER-10001",
+        "name": "Lakshmi"
+      }
+    ],
+    "ring_id": "RING-01",
+    "seed_account": "ACC-4471",
+    "tx_ids": [
+      "TX-1",
+      "TX-2",
+      "TX-3",
+      "TX-4",
+      "TX-5",
+      "TX-6",
+      "TX-7",
+      "TX-8",
+      "TX-9",
+      "TX-10",
+      "TX-11",
+      "TX-12"
+    ],
+    "typology": "fan_in",
+    "window": [
+      1792097999,
+      1792101599
+    ]
+  },
+  {
+    "accounts": [
+      "ACC-7",
+      "ACC-8",
+      "ACC-9",
+      "ACC-10",
+      "ACC-11",
+      "ACC-12",
+      "ACC-13",
+      "ACC-14"
+    ],
+    "expected_tools": [
+      "rs_fan_pattern"
+    ],
+    "hub_account": "ACC-7",
+    "name_variant_pairs": [
+      {
+        "account": "ACC-9",
+        "id": "PER-10008",
+        "name": "Rahul Enterprises Pvt Ltd"
+      },
+      {
+        "account": "ACC-10",
+        "id": "PER-10009",
+        "name": "RAHUL ENTERPRISES PRIVATE LIMITED"
+      }
+    ],
+    "ring_id": "RING-02",
+    "seed_account": "ACC-7",
+    "tx_ids": [
+      "TX-13",
+      "TX-14",
+      "TX-15",
+      "TX-16",
+      "TX-17",
+      "TX-18",
+      "TX-19"
+    ],
+    "typology": "fan_in",
+    "window": [
+      1792094399,
+      1792097999
+    ]
+  },
+  {
+    "accounts": [
+      "ACC-15",
+      "ACC-16",
+      "ACC-17",
+      "ACC-18",
+      "ACC-19",
+      "ACC-20",
+      "ACC-21",
+      "ACC-22"
+    ],
+    "expected_tools": [
+      "rs_fan_pattern"
+    ],
+    "hub_account": "ACC-15",
+    "name_variant_pairs": [
+      {
+        "account": "ACC-17",
+        "id": "PER-10016",
+        "name": "Mohammed Ali"
+      },
+      {
+        "account": "ACC-18",
+        "id": "PER-10017",
+        "name": "Muhammad Ali"
+      }
+    ],
+    "ring_id": "RING-03",
+    "seed_account": "ACC-15",
+    "tx_ids": [
+      "TX-20",
+      "TX-21",
+      "TX-22",
+      "TX-23",
+      "TX-24",
+      "TX-25",
+      "TX-26"
+    ],
+    "typology": "fan_in",
+    "window": [
+      1792090799,
+      1792094399
+    ]
+  },
+  {
+    "accounts": [
+      "ACC-23",
+      "ACC-24",
+      "ACC-25",
+      "ACC-26",
+      "ACC-27",
+      "ACC-28",
+      "ACC-29",
+      "ACC-30"
+    ],
+    "expected_tools": [
+      "rs_fan_pattern"
+    ],
+    "hub_account": "ACC-23",
+    "name_variant_pairs": [],
+    "ring_id": "RING-04",
+    "seed_account": "ACC-23",
+    "tx_ids": [
+      "TX-27",
+      "TX-28",
+      "TX-29",
+      "TX-30",
+      "TX-31",
+      "TX-32",
+      "TX-33"
+    ],
+    "typology": "fan_in",
+    "window": [
+      1792087199,
+      1792090799
+    ]
+  },
+  {
+    "accounts": [
+      "ACC-31",
+      "ACC-32",
+      "ACC-33",
+      "ACC-34",
+      "ACC-35",
+      "ACC-36",
+      "ACC-37",
+      "ACC-38"
+    ],
+    "expected_tools": [
+      "rs_fan_pattern"
+    ],
+    "hub_account": "ACC-31",
+    "name_variant_pairs": [],
+    "ring_id": "RING-05",
+    "seed_account": "ACC-31",
+    "tx_ids": [
+      "TX-34",
+      "TX-35",
+      "TX-36",
+      "TX-37",
+      "TX-38",
+      "TX-39",
+      "TX-40"
+    ],
+    "typology": "fan_in",
+    "window": [
+      1792083599,
+      1792087199
+    ]
+  },
+  {
+    "accounts": [
+      "ACC-39",
+      "ACC-40",
+      "ACC-41",
+      "ACC-42",
+      "ACC-43",
+      "ACC-44",
+      "ACC-45",
+      "ACC-46"
+    ],
+    "expected_tools": [
+      "rs_fan_pattern"
+    ],
+    "hub_account": "ACC-39",
+    "name_variant_pairs": [],
+    "ring_id": "RING-06",
+    "seed_account": "ACC-39",
+    "tx_ids": [
+      "TX-41",
+      "TX-42",
+      "TX-43",
+      "TX-44",
+      "TX-45",
+      "TX-46",
+      "TX-47"
+    ],
+    "typology": "fan_out",
+    "window": [
+      1792097999,
+      1792101599
+    ]
+  },
+  {
+    "accounts": [
+      "ACC-47",
+      "ACC-48",
+      "ACC-49",
+      "ACC-50",
+      "ACC-51",
+      "ACC-52",
+      "ACC-53",
+      "ACC-54"
+    ],
+    "expected_tools": [
+      "rs_fan_pattern"
+    ],
+    "hub_account": "ACC-47",
+    "name_variant_pairs": [],
+    "ring_id": "RING-07",
+    "seed_account": "ACC-47",
+    "tx_ids": [
+      "TX-48",
+      "TX-49",
+      "TX-50",
+      "TX-51",
+      "TX-52",
+      "TX-53",
+      "TX-54"
+    ],
+    "typology": "fan_out",
+    "window": [
+      1792094399,
+      1792097999
+    ]
+  },
+  {
+    "accounts": [
+      "ACC-55",
+      "ACC-56",
+      "ACC-57",
+      "ACC-58",
+      "ACC-59",
+      "ACC-60",
+      "ACC-61",
+      "ACC-62"
+    ],
+    "expected_tools": [
+      "rs_fan_pattern"
+    ],
+    "hub_account": "ACC-55",
+    "name_variant_pairs": [],
+    "ring_id": "RING-08",
+    "seed_account": "ACC-55",
+    "tx_ids": [
+      "TX-55",
+      "TX-56",
+      "TX-57",
+      "TX-58",
+      "TX-59",
+      "TX-60",
+      "TX-61"
+    ],
+    "typology": "fan_out",
+    "window": [
+      1792090799,
+      1792094399
+    ]
+  },
+  {
+    "accounts": [
+      "ACC-63",
+      "ACC-64",
+      "ACC-65",
+      "ACC-66",
+      "ACC-67",
+      "ACC-68",
+      "ACC-69",
+      "ACC-70"
+    ],
+    "expected_tools": [
+      "rs_fan_pattern"
+    ],
+    "hub_account": "ACC-63",
+    "name_variant_pairs": [],
+    "ring_id": "RING-09",
+    "seed_account": "ACC-63",
+    "tx_ids": [
+      "TX-62",
+      "TX-63",
+      "TX-64",
+      "TX-65",
+      "TX-66",
+      "TX-67",
+      "TX-68"
+    ],
+    "typology": "fan_out",
+    "window": [
+      1792087199,
+      1792090799
+    ]
+  },
+  {
+    "accounts": [
+      "ACC-71",
+      "ACC-72",
+      "ACC-73",
+      "ACC-74",
+      "ACC-75",
+      "ACC-76",
+      "ACC-77",
+      "ACC-78"
+    ],
+    "expected_tools": [
+      "rs_fan_pattern"
+    ],
+    "hub_account": "ACC-71",
+    "name_variant_pairs": [],
+    "ring_id": "RING-10",
+    "seed_account": "ACC-71",
+    "tx_ids": [
+      "TX-69",
+      "TX-70",
+      "TX-71",
+      "TX-72",
+      "TX-73",
+      "TX-74",
+      "TX-75"
+    ],
+    "typology": "fan_out",
+    "window": [
+      1792083599,
+      1792087199
+    ]
+  },
+  {
+    "accounts": [
+      "ACC-79",
+      "ACC-80",
+      "ACC-81"
+    ],
+    "expected_tools": [
+      "rs_cycles"
+    ],
+    "hub_account": "ACC-79",
+    "name_variant_pairs": [],
+    "ring_id": "RING-11",
+    "seed_account": "ACC-79",
+    "tx_ids": [
+      "TX-76",
+      "TX-77",
+      "TX-78"
+    ],
+    "typology": "cycle",
+    "window": [
+      1792097999,
+      1792101599
+    ]
+  },
+  {
+    "accounts": [
+      "ACC-82",
+      "ACC-83",
+      "ACC-84",
+      "ACC-85"
+    ],
+    "expected_tools": [
+      "rs_cycles"
+    ],
+    "hub_account": "ACC-82",
+    "name_variant_pairs": [],
+    "ring_id": "RING-12",
+    "seed_account": "ACC-82",
+    "tx_ids": [
+      "TX-79",
+      "TX-80",
+      "TX-81",
+      "TX-82"
+    ],
+    "typology": "cycle",
+    "window": [
+      1792094399,
+      1792097999
+    ]
+  },
+  {
+    "accounts": [
+      "ACC-86",
+      "ACC-87",
+      "ACC-88",
+      "ACC-89",
+      "ACC-90"
+    ],
+    "expected_tools": [
+      "rs_cycles"
+    ],
+    "hub_account": "ACC-86",
+    "name_variant_pairs": [],
+    "ring_id": "RING-13",
+    "seed_account": "ACC-86",
+    "tx_ids": [
+      "TX-83",
+      "TX-84",
+      "TX-85",
+      "TX-86",
+      "TX-87"
+    ],
+    "typology": "cycle",
+    "window": [
+      1792090799,
+      1792094399
+    ]
+  },
+  {
+    "accounts": [
+      "ACC-91",
+      "ACC-92",
+      "ACC-93"
+    ],
+    "expected_tools": [
+      "rs_cycles"
+    ],
+    "hub_account": "ACC-91",
+    "name_variant_pairs": [],
+    "ring_id": "RING-14",
+    "seed_account": "ACC-91",
+    "tx_ids": [
+      "TX-88",
+      "TX-89",
+      "TX-90"
+    ],
+    "typology": "cycle",
+    "window": [
+      1792087199,
+      1792090799
+    ]
+  },
+  {
+    "accounts": [
+      "ACC-94",
+      "ACC-95",
+      "ACC-96",
+      "ACC-97"
+    ],
+    "expected_tools": [
+      "rs_cycles"
+    ],
+    "hub_account": "ACC-94",
+    "name_variant_pairs": [],
+    "ring_id": "RING-15",
+    "seed_account": "ACC-94",
+    "tx_ids": [
+      "TX-91",
+      "TX-92",
+      "TX-93",
+      "TX-94"
+    ],
+    "typology": "cycle",
+    "window": [
+      1792083599,
+      1792087199
+    ]
+  },
+  {
+    "accounts": [
+      "ACC-98",
+      "ACC-99",
+      "ACC-100",
+      "ACC-101",
+      "ACC-102",
+      "ACC-103",
+      "ACC-104",
+      "ACC-105"
+    ],
+    "expected_tools": [
+      "rs_ring_members"
+    ],
+    "hub_account": "ACC-98",
+    "name_variant_pairs": [],
+    "ring_id": "RING-16",
+    "seed_account": "ACC-98",
+    "tx_ids": [
+      "TX-95",
+      "TX-96",
+      "TX-97",
+      "TX-98",
+      "TX-99",
+      "TX-100",
+      "TX-101",
+      "TX-102",
+      "TX-103",
+      "TX-104",
+      "TX-105",
+      "TX-106",
+      "TX-107",
+      "TX-108",
+      "TX-109",
+      "TX-110"
+    ],
+    "typology": "bipartite",
+    "window": [
+      1792097999,
+      1792101599
+    ]
+  },
+  {
+    "accounts": [
+      "ACC-106",
+      "ACC-107",
+      "ACC-108",
+      "ACC-109",
+      "ACC-110",
+      "ACC-111",
+      "ACC-112",
+      "ACC-113"
+    ],
+    "expected_tools": [
+      "rs_ring_members"
+    ],
+    "hub_account": "ACC-106",
+    "name_variant_pairs": [],
+    "ring_id": "RING-17",
+    "seed_account": "ACC-106",
+    "tx_ids": [
+      "TX-111",
+      "TX-112",
+      "TX-113",
+      "TX-114",
+      "TX-115",
+      "TX-116",
+      "TX-117",
+      "TX-118",
+      "TX-119",
+      "TX-120",
+      "TX-121",
+      "TX-122",
+      "TX-123",
+      "TX-124",
+      "TX-125",
+      "TX-126"
+    ],
+    "typology": "bipartite",
+    "window": [
+      1792094399,
+      1792097999
+    ]
+  },
+  {
+    "accounts": [
+      "ACC-114",
+      "ACC-115",
+      "ACC-116",
+      "ACC-117",
+      "ACC-118",
+      "ACC-119",
+      "ACC-120",
+      "ACC-121"
+    ],
+    "expected_tools": [
+      "rs_ring_members"
+    ],
+    "hub_account": "ACC-114",
+    "name_variant_pairs": [],
+    "ring_id": "RING-18",
+    "seed_account": "ACC-114",
+    "tx_ids": [
+      "TX-127",
+      "TX-128",
+      "TX-129",
+      "TX-130",
+      "TX-131",
+      "TX-132",
+      "TX-133",
+      "TX-134",
+      "TX-135",
+      "TX-136",
+      "TX-137",
+      "TX-138",
+      "TX-139",
+      "TX-140",
+      "TX-141",
+      "TX-142"
+    ],
+    "typology": "bipartite",
+    "window": [
+      1792090799,
+      1792094399
+    ]
+  },
+  {
+    "accounts": [
+      "ACC-122",
+      "ACC-123",
+      "ACC-124",
+      "ACC-125",
+      "ACC-126",
+      "ACC-127",
+      "ACC-128",
+      "ACC-129"
+    ],
+    "expected_tools": [
+      "rs_ring_members"
+    ],
+    "hub_account": "ACC-122",
+    "name_variant_pairs": [],
+    "ring_id": "RING-19",
+    "seed_account": "ACC-122",
+    "tx_ids": [
+      "TX-143",
+      "TX-144",
+      "TX-145",
+      "TX-146",
+      "TX-147",
+      "TX-148",
+      "TX-149",
+      "TX-150",
+      "TX-151",
+      "TX-152",
+      "TX-153",
+      "TX-154",
+      "TX-155",
+      "TX-156",
+      "TX-157",
+      "TX-158"
+    ],
+    "typology": "bipartite",
+    "window": [
+      1792087199,
+      1792090799
+    ]
+  },
+  {
+    "accounts": [
+      "ACC-130",
+      "ACC-131",
+      "ACC-132",
+      "ACC-133",
+      "ACC-134",
+      "ACC-135",
+      "ACC-136",
+      "ACC-137"
+    ],
+    "expected_tools": [
+      "rs_ring_members"
+    ],
+    "hub_account": "ACC-130",
+    "name_variant_pairs": [],
+    "ring_id": "RING-20",
+    "seed_account": "ACC-130",
+    "tx_ids": [
+      "TX-159",
+      "TX-160",
+      "TX-161",
+      "TX-162",
+      "TX-163",
+      "TX-164",
+      "TX-165",
+      "TX-166",
+      "TX-167",
+      "TX-168",
+      "TX-169",
+      "TX-170",
+      "TX-171",
+      "TX-172",
+      "TX-173",
+      "TX-174"
+    ],
+    "typology": "bipartite",
+    "window": [
+      1792083599,
+      1792087199
+    ]
+  },
+  {
+    "accounts": [
+      "ACC-138",
+      "ACC-139",
+      "ACC-140",
+      "ACC-141",
+      "ACC-142",
+      "ACC-143",
+      "ACC-144",
+      "ACC-145",
+      "ACC-146"
+    ],
+    "expected_tools": [
+      "rs_neighbourhood",
+      "rs_ring_members"
+    ],
+    "hub_account": "ACC-138",
+    "name_variant_pairs": [],
+    "ring_id": "RING-21",
+    "seed_account": "ACC-138",
+    "tx_ids": [
+      "TX-175",
+      "TX-176",
+      "TX-177",
+      "TX-178",
+      "TX-179",
+      "TX-180",
+      "TX-181",
+      "TX-182",
+      "TX-183",
+      "TX-184",
+      "TX-185",
+      "TX-186",
+      "TX-187",
+      "TX-188",
+      "TX-189",
+      "TX-190",
+      "TX-191",
+      "TX-192"
+    ],
+    "typology": "stack",
+    "window": [
+      1792097999,
+      1792101599
+    ]
+  },
+  {
+    "accounts": [
+      "ACC-147",
+      "ACC-148",
+      "ACC-149",
+      "ACC-150",
+      "ACC-151",
+      "ACC-152",
+      "ACC-153",
+      "ACC-154",
+      "ACC-155"
+    ],
+    "expected_tools": [
+      "rs_neighbourhood",
+      "rs_ring_members"
+    ],
+    "hub_account": "ACC-147",
+    "name_variant_pairs": [],
+    "ring_id": "RING-22",
+    "seed_account": "ACC-147",
+    "tx_ids": [
+      "TX-193",
+      "TX-194",
+      "TX-195",
+      "TX-196",
+      "TX-197",
+      "TX-198",
+      "TX-199",
+      "TX-200",
+      "TX-201",
+      "TX-202",
+      "TX-203",
+      "TX-204",
+      "TX-205",
+      "TX-206",
+      "TX-207",
+      "TX-208",
+      "TX-209",
+      "TX-210"
+    ],
+    "typology": "stack",
+    "window": [
+      1792094399,
+      1792097999
+    ]
+  },
+  {
+    "accounts": [
+      "ACC-156",
+      "ACC-157",
+      "ACC-158",
+      "ACC-159",
+      "ACC-160",
+      "ACC-161",
+      "ACC-162",
+      "ACC-163",
+      "ACC-164"
+    ],
+    "expected_tools": [
+      "rs_neighbourhood",
+      "rs_ring_members"
+    ],
+    "hub_account": "ACC-156",
+    "name_variant_pairs": [],
+    "ring_id": "RING-23",
+    "seed_account": "ACC-156",
+    "tx_ids": [
+      "TX-211",
+      "TX-212",
+      "TX-213",
+      "TX-214",
+      "TX-215",
+      "TX-216",
+      "TX-217",
+      "TX-218",
+      "TX-219",
+      "TX-220",
+      "TX-221",
+      "TX-222",
+      "TX-223",
+      "TX-224",
+      "TX-225",
+      "TX-226",
+      "TX-227",
+      "TX-228"
+    ],
+    "typology": "stack",
+    "window": [
+      1792090799,
+      1792094399
+    ]
+  },
+  {
+    "accounts": [
+      "ACC-165",
+      "ACC-166",
+      "ACC-167",
+      "ACC-168",
+      "ACC-169",
+      "ACC-170",
+      "ACC-171",
+      "ACC-172",
+      "ACC-173"
+    ],
+    "expected_tools": [
+      "rs_neighbourhood",
+      "rs_ring_members"
+    ],
+    "hub_account": "ACC-165",
+    "name_variant_pairs": [],
+    "ring_id": "RING-24",
+    "seed_account": "ACC-165",
+    "tx_ids": [
+      "TX-229",
+      "TX-230",
+      "TX-231",
+      "TX-232",
+      "TX-233",
+      "TX-234",
+      "TX-235",
+      "TX-236",
+      "TX-237",
+      "TX-238",
+      "TX-239",
+      "TX-240",
+      "TX-241",
+      "TX-242",
+      "TX-243",
+      "TX-244",
+      "TX-245",
+      "TX-246"
+    ],
+    "typology": "stack",
+    "window": [
+      1792087199,
+      1792090799
+    ]
+  },
+  {
+    "accounts": [
+      "ACC-174",
+      "ACC-175",
+      "ACC-176",
+      "ACC-177",
+      "ACC-178",
+      "ACC-179",
+      "ACC-180",
+      "ACC-181",
+      "ACC-182"
+    ],
+    "expected_tools": [
+      "rs_neighbourhood",
+      "rs_ring_members"
+    ],
+    "hub_account": "ACC-174",
+    "name_variant_pairs": [],
+    "ring_id": "RING-25",
+    "seed_account": "ACC-174",
+    "tx_ids": [
+      "TX-247",
+      "TX-248",
+      "TX-249",
+      "TX-250",
+      "TX-251",
+      "TX-252",
+      "TX-253",
+      "TX-254",
+      "TX-255",
+      "TX-256",
+      "TX-257",
+      "TX-258",
+      "TX-259",
+      "TX-260",
+      "TX-261",
+      "TX-262",
+      "TX-263",
+      "TX-264"
+    ],
+    "typology": "stack",
+    "window": [
+      1792083599,
+      1792087199
+    ]
+  },
+  {
+    "accounts": [
+      "ACC-183",
+      "ACC-184",
+      "ACC-185",
+      "ACC-186",
+      "ACC-187",
+      "ACC-188",
+      "ACC-189",
+      "ACC-190"
+    ],
+    "expected_tools": [
+      "rs_scatter_gather"
+    ],
+    "hub_account": "ACC-183",
+    "name_variant_pairs": [],
+    "ring_id": "RING-26",
+    "seed_account": "ACC-183",
+    "tx_ids": [
+      "TX-265",
+      "TX-266",
+      "TX-267",
+      "TX-268",
+      "TX-269",
+      "TX-270",
+      "TX-271",
+      "TX-272",
+      "TX-273",
+      "TX-274",
+      "TX-275",
+      "TX-276"
+    ],
+    "typology": "scatter_gather",
+    "window": [
+      1792097999,
+      1792101599
+    ]
+  },
+  {
+    "accounts": [
+      "ACC-191",
+      "ACC-192",
+      "ACC-193",
+      "ACC-194",
+      "ACC-195",
+      "ACC-196",
+      "ACC-197",
+      "ACC-198"
+    ],
+    "expected_tools": [
+      "rs_scatter_gather"
+    ],
+    "hub_account": "ACC-191",
+    "name_variant_pairs": [],
+    "ring_id": "RING-27",
+    "seed_account": "ACC-191",
+    "tx_ids": [
+      "TX-277",
+      "TX-278",
+      "TX-279",
+      "TX-280",
+      "TX-281",
+      "TX-282",
+      "TX-283",
+      "TX-284",
+      "TX-285",
+      "TX-286",
+      "TX-287",
+      "TX-288"
+    ],
+    "typology": "scatter_gather",
+    "window": [
+      1792094399,
+      1792097999
+    ]
+  },
+  {
+    "accounts": [
+      "ACC-199",
+      "ACC-200",
+      "ACC-201",
+      "ACC-202",
+      "ACC-203",
+      "ACC-204",
+      "ACC-205",
+      "ACC-206"
+    ],
+    "expected_tools": [
+      "rs_scatter_gather"
+    ],
+    "hub_account": "ACC-199",
+    "name_variant_pairs": [],
+    "ring_id": "RING-28",
+    "seed_account": "ACC-199",
+    "tx_ids": [
+      "TX-289",
+      "TX-290",
+      "TX-291",
+      "TX-292",
+      "TX-293",
+      "TX-294",
+      "TX-295",
+      "TX-296",
+      "TX-297",
+      "TX-298",
+      "TX-299",
+      "TX-300"
+    ],
+    "typology": "scatter_gather",
+    "window": [
+      1792090799,
+      1792094399
+    ]
+  },
+  {
+    "accounts": [
+      "ACC-207",
+      "ACC-208",
+      "ACC-209",
+      "ACC-210",
+      "ACC-211",
+      "ACC-212",
+      "ACC-213",
+      "ACC-214"
+    ],
+    "expected_tools": [
+      "rs_scatter_gather"
+    ],
+    "hub_account": "ACC-207",
+    "name_variant_pairs": [],
+    "ring_id": "RING-29",
+    "seed_account": "ACC-207",
+    "tx_ids": [
+      "TX-301",
+      "TX-302",
+      "TX-303",
+      "TX-304",
+      "TX-305",
+      "TX-306",
+      "TX-307",
+      "TX-308",
+      "TX-309",
+      "TX-310",
+      "TX-311",
+      "TX-312"
+    ],
+    "typology": "scatter_gather",
+    "window": [
+      1792087199,
+      1792090799
+    ]
+  },
+  {
+    "accounts": [
+      "ACC-215",
+      "ACC-216",
+      "ACC-217",
+      "ACC-218",
+      "ACC-219",
+      "ACC-220",
+      "ACC-221",
+      "ACC-222"
+    ],
+    "expected_tools": [
+      "rs_scatter_gather"
+    ],
+    "hub_account": "ACC-215",
+    "name_variant_pairs": [],
+    "ring_id": "RING-30",
+    "seed_account": "ACC-215",
+    "tx_ids": [
+      "TX-313",
+      "TX-314",
+      "TX-315",
+      "TX-316",
+      "TX-317",
+      "TX-318",
+      "TX-319",
+      "TX-320",
+      "TX-321",
+      "TX-322",
+      "TX-323",
+      "TX-324"
+    ],
+    "typology": "scatter_gather",
+    "window": [
+      1792083599,
+      1792087199
+    ]
+  },
+  {
+    "accounts": [
+      "ACC-223",
+      "ACC-224",
+      "ACC-225",
+      "ACC-226",
+      "ACC-227",
+      "ACC-228",
+      "ACC-229",
+      "ACC-230",
+      "ACC-231"
+    ],
+    "expected_tools": [
+      "rs_scatter_gather"
+    ],
+    "hub_account": "ACC-223",
+    "name_variant_pairs": [],
+    "ring_id": "RING-31",
+    "seed_account": "ACC-223",
+    "tx_ids": [
+      "TX-325",
+      "TX-326",
+      "TX-327",
+      "TX-328",
+      "TX-329",
+      "TX-330",
+      "TX-331",
+      "TX-332"
+    ],
+    "typology": "gather_scatter",
+    "window": [
+      1792097999,
+      1792101599
+    ]
+  },
+  {
+    "accounts": [
+      "ACC-232",
+      "ACC-233",
+      "ACC-234",
+      "ACC-235",
+      "ACC-236",
+      "ACC-237",
+      "ACC-238",
+      "ACC-239",
+      "ACC-240"
+    ],
+    "expected_tools": [
+      "rs_scatter_gather"
+    ],
+    "hub_account": "ACC-232",
+    "name_variant_pairs": [],
+    "ring_id": "RING-32",
+    "seed_account": "ACC-232",
+    "tx_ids": [
+      "TX-333",
+      "TX-334",
+      "TX-335",
+      "TX-336",
+      "TX-337",
+      "TX-338",
+      "TX-339",
+      "TX-340"
+    ],
+    "typology": "gather_scatter",
+    "window": [
+      1792094399,
+      1792097999
+    ]
+  },
+  {
+    "accounts": [
+      "ACC-241",
+      "ACC-242",
+      "ACC-243",
+      "ACC-244",
+      "ACC-245",
+      "ACC-246",
+      "ACC-247",
+      "ACC-248",
+      "ACC-249"
+    ],
+    "expected_tools": [
+      "rs_scatter_gather"
+    ],
+    "hub_account": "ACC-241",
+    "name_variant_pairs": [],
+    "ring_id": "RING-33",
+    "seed_account": "ACC-241",
+    "tx_ids": [
+      "TX-341",
+      "TX-342",
+      "TX-343",
+      "TX-344",
+      "TX-345",
+      "TX-346",
+      "TX-347",
+      "TX-348"
+    ],
+    "typology": "gather_scatter",
+    "window": [
+      1792090799,
+      1792094399
+    ]
+  },
+  {
+    "accounts": [
+      "ACC-250",
+      "ACC-251",
+      "ACC-252",
+      "ACC-253",
+      "ACC-254",
+      "ACC-255",
+      "ACC-256",
+      "ACC-257",
+      "ACC-258"
+    ],
+    "expected_tools": [
+      "rs_scatter_gather"
+    ],
+    "hub_account": "ACC-250",
+    "name_variant_pairs": [],
+    "ring_id": "RING-34",
+    "seed_account": "ACC-250",
+    "tx_ids": [
+      "TX-349",
+      "TX-350",
+      "TX-351",
+      "TX-352",
+      "TX-353",
+      "TX-354",
+      "TX-355",
+      "TX-356"
+    ],
+    "typology": "gather_scatter",
+    "window": [
+      1792087199,
+      1792090799
+    ]
+  },
+  {
+    "accounts": [
+      "ACC-259",
+      "ACC-260",
+      "ACC-261",
+      "ACC-262",
+      "ACC-263",
+      "ACC-264",
+      "ACC-265",
+      "ACC-266",
+      "ACC-267"
+    ],
+    "expected_tools": [
+      "rs_scatter_gather"
+    ],
+    "hub_account": "ACC-259",
+    "name_variant_pairs": [],
+    "ring_id": "RING-35",
+    "seed_account": "ACC-259",
+    "tx_ids": [
+      "TX-357",
+      "TX-358",
+      "TX-359",
+      "TX-360",
+      "TX-361",
+      "TX-362",
+      "TX-363",
+      "TX-364"
+    ],
+    "typology": "gather_scatter",
+    "window": [
+      1792083599,
+      1792087199
+    ]
+  }
+]
