@@ -60,6 +60,20 @@ async def test_hold_and_close_refusals(ctx):
     closed=await proposal('close_proposal',empty);assert closed['reason']=='invalid_evidence'
     ev=await shared();closed=await proposal('close_proposal',ev);assert closed['reason']=='affirmative_evidence_required'
 
+async def test_unsupported_hold_is_refused_with_grounded_repair_not_applied(ctx):
+    from server.verifier import verify
+    ev=await shared()
+    payload={'kind':'hold_proposal','target_ids':['ACC-4471'],'evidence_tool_call_ids':[ev['tool_call_id']],
+        'rationale':'Invented Alice moved ₹99 crore through these accounts. Recommend the Principal Officer assess this synthetic hold recommendation.'}
+    refused=await propose_action(payload)
+    assert refused['reason']=='unsupported_claim' and refused['unsupported']
+    assert verify(refused['repair_text'],{ev['tool_call_id']:ev})['status']=='pass'
+    assert not await db.read(TENANT,'MATCH (p:PendingAction)-[:IN]->(s:Session {id:$sid}) RETURN p.id AS id',{'sid':ctx.session_id})
+    logged=await db.read(TENANT,'MATCH (t:ToolCall {id:$id}) RETURN t.result_json AS result',{'id':refused['tool_call_id']})
+    assert json.loads(logged[0]['result'])['repair_text']==refused['repair_text']
+    repaired=await propose_action(payload|{'rationale':refused['repair_text']})
+    assert repaired.get('kind')=='hold_proposal' and repaired.get('status')=='pending',repaired
+
 async def test_approval_restrictions_no_status_write(ctx):
     before=await db.read(TENANT,'MATCH (a:Account) RETURN a.id AS id,a.status AS status ORDER BY id')
     ev=await shared();proposed=await proposal('hold_proposal',ev,target_ids=['ACC-10477'])

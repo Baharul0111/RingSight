@@ -187,6 +187,16 @@ async def _recall(args: RecallInput) -> dict:
                 continue
         row["memory_label"] = f"learned {row['date_learned']}, author {row.get('author')}, reviewed: {'yes' if row.get('reviewed') else 'no'}"
         bounded.append(row)
+    # Some6.0.2 OPTIONAL MATCH plans dropped an otherwise valid Finding when
+    # no pending action/decision existed. Enrich mandatory finding rows with
+    # separate fixed queries; missing optional context is an empty list.
+    finding_ids=[row['id'] for row in bounded]
+    supersessions=await read(query('rs_recall_supersedes'),{'ids':finding_ids}) if finding_ids else []
+    actions=await read(query('rs_recall_actions'),{'ids':finding_ids}) if finding_ids else []
+    decisions=await read(query('rs_recall_decisions'),{'ids':finding_ids}) if finding_ids else []
+    for row in bounded:
+        row['supersedes']=next((item['supersedes'] for item in supersessions if item['finding_id']==row['id']),None)
+        row['actions']=[{key:item[key] for key in ('pending','kind','status')} | {'decision':next((decision['decision'] for decision in decisions if decision['finding_id']==row['id'] and decision['pending']==item['pending']),None)} for item in actions if item['finding_id']==row['id']]
     call_ids=list(dict.fromkeys(cid for row in bounded for cid in (row.get('evidence_tool_call_ids') or [])))[:100]
     old_calls=await read('MATCH (t:ToolCall) WHERE t.id IN $ids RETURN t.id AS id,t.rows_json AS rows_json',{'ids':call_ids}) if call_ids else []
     old_rows={}
@@ -360,7 +370,7 @@ async def _ring(args: RingInput) -> dict:
     for row in rows:
         row["edges"] = edges + shares
         row["computed_at"] = size[0]["computed_at"]
-        row["members"] = row.get("members", [])[:args.limit]
+        row["members"] = sorted(row.get("members", []),key=lambda member:member['id'])[:args.limit]
     return _result(rows, computed_at=size[0]["computed_at"], algorithm="algo.WCC" if args.basis != "money_lpa" else "algo.labelPropagation", typology_hit=bool(rows), typology="shared_identifier" if args.basis == "shared_ids" else args.basis)
 
 

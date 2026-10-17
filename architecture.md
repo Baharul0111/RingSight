@@ -1379,6 +1379,20 @@ same time/amount condition as a filter over each adjacency instead. Tests
 reproduce the missing-inbound failure with the index and verify the fix,
 including true transfer direction, three-hop routes and future-edge pruning.
 
+**Repeated-session context correction:** full historical ToolCall rows stay
+in recalled Findings and the UI, but the planner receives each finding's
+guarded text, dates, author/review status and at most four original evidence
+paths. Historical tool-call handles are omitted from this projection. This
+prevents repeated sessions from exhausting the 60k cumulative input-token
+limit by duplicating old profiles/coverage on every turn. Current tool-call
+handles remain present. An explicit action may record a finding before its
+proposal; a successful finding does not hide the proposal tool. A refused
+proposal may be corrected once with the returned validation hint, inside
+the existing ten-tool, request, spend and wall-clock limits. Successful
+proposals are never repeated. Refusal reasons and their result JSON are
+retained in ToolCall and streamed to the human, so a refusal is diagnosable
+without exposing prompts or credentials in execution logs.
+
 **Cycle endpoint projection correction:** the first full model evaluation
 stopped after 45 path cases and exposed nine cases whose cycle rows assigned
 different targets to the same transfer id. The former projection paired
@@ -1402,3 +1416,10 @@ incoming/outgoing pair is a valid pattern witness, but several witnesses can
 contain the same transfer; summing the joined rows inflated reported movement.
 The queries retain all pattern legs and derive totals from distinct transfer
 maps, preserving equal-value transfers that have different ids.
+
+Unsupported action prose is refused with the offending claims and an
+evidence-only `repair_text` built from the selected rows. The planner may
+resubmit that wording within its single repair attempt; the original request
+does not create a pending action. A rejected private write does not invalidate
+successful graph reads or hide their paths. Read failures still prevent a
+supported-path fallback. Both attempts remain in the graph audit trail.

@@ -8,7 +8,7 @@ from fastmcp import FastMCP
 from pydantic import BaseModel,ConfigDict,Field,ValidationError
 from server.context import get_context,internal_control
 from server.guard import guard_write
-from server.verifier import verify,evidence_sets
+from server.verifier import verify,evidence_sets,template_answer
 from server.safety import tenant_state
 
 write_srv=FastMCP('rs-write')
@@ -54,8 +54,10 @@ async def write_trace(name,args,result,hits=0):
     from server.db import db
     ctx=get_context();tid=str(uuid.uuid4());now=int(time.time())
     trace={'tool':name,'args':args,'tool_call_id':tid,'rows':[] if result.get('is_error') else [result],'rows_total':0 if result.get('is_error') else 1,'rows_returned':0 if result.get('is_error') else 1,'outcome':result.get('outcome','pending'),'elapsed_ms':0,'guard_hits':hits,'path_nodes':[],'path_edges':[]}
+    if result.get('is_error'):
+        trace.update({key:result[key] for key in ('reason','hint','unsupported','matches','repair_text') if key in result})
     if ctx.session_id:
-        await db.write(ctx.identity.tenant,'MATCH (s:Session {id:$sid}) CREATE (t:ToolCall {id:$tid,seq:$seq,tool:$tool,args_json:$args,rows_total:$n,rows_returned:$n,truncated:false,elapsed_ms:0,rows_sha256:$hash,guard_hits:$hits,at:$now})-[:IN]->(s) RETURN t.id AS id',{'sid':ctx.session_id,'tid':tid,'seq':len(ctx.calls)+1,'tool':name,'args':json.dumps(args,sort_keys=True),'n':trace['rows_total'],'hash':hashlib.sha256(json.dumps(result,sort_keys=True).encode()).hexdigest(),'hits':hits,'now':now})
+        await db.write(ctx.identity.tenant,'MATCH (s:Session {id:$sid}) CREATE (t:ToolCall {id:$tid,seq:$seq,tool:$tool,args_json:$args,rows_total:$n,rows_returned:$n,truncated:false,elapsed_ms:0,rows_sha256:$hash,result_json:$result,error_reason:$reason,guard_hits:$hits,at:$now})-[:IN]->(s) RETURN t.id AS id',{'sid':ctx.session_id,'tid':tid,'seq':len(ctx.calls)+1,'tool':name,'args':json.dumps(args,sort_keys=True),'n':trace['rows_total'],'hash':hashlib.sha256(json.dumps(result,sort_keys=True).encode()).hexdigest(),'result':json.dumps(result,sort_keys=True),'reason':result.get('reason'),'hits':hits,'now':now})
         ctx.calls[tid]=trace
         await ctx.emit('tool',trace)
     return dict(result,tool_call_id=tid)
@@ -117,7 +119,9 @@ async def propose_action(payload):
     ids,_,_,_=evidence_sets(selected)
     if not set(p.target_ids)<=ids:return error('unsupported_target','Targets must appear in session evidence.')
     checked=verify(p.rationale,selected)
-    if checked['status']!='pass':return error('unsupported_claim','Rationale contains values absent from evidence.',unsupported=checked['unsupported'])
+    if checked['status']!='pass':
+        repair=template_answer(selected)+' A named human must assess this evidence before any action is applied.'
+        return error('unsupported_claim','Rationale contains values absent from evidence. Resubmit using the evidence-only repair_text if it expresses the intended recommendation.',unsupported=checked['unsupported'],repair_text=repair)
     if p.kind=='hold_proposal' and not any(multi_pattern(c) for c in selected.values()):return error('multi_edge_required','A hold recommendation requires a multi-edge cycle, ring, shared-identifier, mule or fan pattern; a single transfer is insufficient.')
     all_reads=[c for c in ctx.calls.values() if c.get('tool') not in {'rs_record_finding','rs_propose_action'}]
     if p.kind=='close_proposal' and (len({c.get('tool') for c in selected.values() if c.get('rows_total',0)>0})<2 or any(multi_pattern(c) for c in all_reads)):return error('affirmative_evidence_required','Closing requires at least two distinct non-empty checks and no suspicious pattern in this session.')

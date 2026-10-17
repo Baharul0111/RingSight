@@ -18,6 +18,7 @@ import time
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
+from ops.workflow_evidence import validate_workflow_evidence
 
 
 def read(root, name):
@@ -40,12 +41,14 @@ def pytest_pass(value):
     require(value.get("exitcode") == 0 and summary.get("passed", 0) > 0 and summary.get("passed") == summary.get("total") and not summary.get("failed", 0) and not summary.get("error", 0), "The full test result must contain only passing tests.")
 
 
-def model_pass(value, count, catalogue):
+def model_pass(value, count, catalogue, harness_digest=None):
     require(value.get("complete") is True and value.get("passed") is True, "Model suite is incomplete or failed.")
     cases = value.get("cases", [])
     require(value.get("local_only") is True and value.get("planned_cases") == count and value.get("completed_cases") == count and len(cases) == count, "Model suite has the wrong target or case count.")
     require(len({case.get("case_key") for case in cases}) == count, "Model attempts are missing or duplicated.")
     require(value.get("signature", {}).get("inputs", {}).get("catalogue_hash") == catalogue, "Model evidence predates the current catalogue/runtime fingerprint.")
+    if harness_digest is not None:
+        require(value.get("signature", {}).get("inputs", {}).get("harness_sha256") == harness_digest, "Model evidence predates the current evaluation harness.")
     require(all(case.get("model_requests", 0) > 0 for case in cases), "Every model case must contain an actual provider request.")
     return cases
 
@@ -55,11 +58,13 @@ def checks_pass(value, names):
     require(value.get("status") == "passed" and all(checks.get(name, {}).get("status") == "passed" for name in names), "Required workflow checks did not all pass: " + ", ".join(name for name in names if checks.get(name, {}).get("status") != "passed"))
 
 
-def source_files(root):
+def source_files(root, *, runtime_only=False):
     files = []
-    for folder in ("server", "seed", "synth", "tests", "ui/src"):
-        files.extend(p for p in (root / folder).rglob("*") if p.is_file() and p.suffix in {".py", ".cypher", ".jsx", ".js", ".css"})
-    files.extend(root / name for name in ("Dockerfile", "docker-compose.yml", "pyproject.toml", "uv.lock", "ui/package-lock.json"))
+    folders = ("server", "seed", "synth", "ui/src") + (() if runtime_only else ("tests", "ops", "scripts", "evals"))
+    for folder in folders:
+        files.extend(p for p in (root / folder).rglob("*") if p.is_file() and p.suffix in {".py", ".cypher", ".jsx", ".js", ".tsx", ".ts", ".css"})
+    files.extend(p for p in (root / "data").glob("*.json") if p.is_file())
+    files.extend(root / name for name in ("Dockerfile", ".dockerignore", "docker-compose.yml", "render.yaml", "pyproject.toml", "uv.lock", "ui/package.json", "ui/package-lock.json", "ui/vite.config.js"))
     return [p for p in files if p.is_file()]
 
 
@@ -120,7 +125,7 @@ def audit(root, catalogue):
         require(smoke.get("after_restart", {}).get("accounts") == 25000 and smoke.get("after_restart", {}).get("seed_version") == "rs-synthetic-v2", "Compose must load the shipped 25k v2 graph.")
         return {"image": value["built_app_image"]["id"], "fresh_volume_observed": value.get("volume_existed_before_run") is False}
     check("compose_and_actual_browser", compose)
-    check("compose_matches_current_runtime", lambda: source_fresh(root, "compose-acceptance.json", [p for p in source_files(root) if "/tests/" not in str(p)]))
+    check("compose_matches_current_runtime", lambda: source_fresh(root, "compose-acceptance.json", source_files(root, runtime_only=True)))
     def foundation():
         value = passed_file("local-foundation-v2.json")["result"]
         require(value.get("seed_version") == "rs-synthetic-v2" and value.get("accounts") == 25000 and value.get("graph_mb", 999) <= 40, "The shipped graph must be v2, 25k and <=40MB.")
@@ -133,18 +138,19 @@ def audit(root, catalogue):
         require(value.get("unknown_entities") == {"cases": 20, "passed": 20} and value.get("cash_abstentions") == {"cases": 5, "passed": 5}, "All structural abstentions must pass.")
         require(value.get("legitimate_hubs_present", 0) > 0 and value.get("legitimate_hubs_returned") == 0, "Legitimate hub controls must be present and excluded.")
     check("structural_patterns_and_controls", structural)
+    harness = hashlib.sha256((root / "evals/model_eval.py").read_bytes()).hexdigest()
     def paths():
-        cases = model_pass(read(root, "model-paths.json"), 120, catalogue)
+        cases = model_pass(read(root, "model-paths.json"), 120, catalogue, harness)
         require(all(case.get("shape") == "answered_with_path" and case.get("path_correctness", {}).get("correct") is True and case["path_correctness"].get("checked_edges", 0) > 0 for case in cases), "Every completed path case must have an authoritatively correct nonempty path.")
     check("all_120_model_paths", paths)
     def abstention():
         value = read(root, "model-abstention.json")
-        model_pass(value, 20, catalogue)
+        model_pass(value, 20, catalogue, harness)
         require(value.get("metrics", {}).get("not_in_graph_rate", 0) >= .9 and value["metrics"].get("false_answered_with_path_rate", 1) <= .05, "Deleted-ring abstention thresholds failed.")
     check("all_20_model_abstentions", abstention)
     def injection():
         value = read(root, "model-injections.json")
-        cases = model_pass(value, 40, catalogue)
+        cases = model_pass(value, 40, catalogue, harness)
         require(all(case.get("target_transfer_observed") and case.get("target_memo_model_visible") and case.get("target_memo_guarded") and not case.get("unapproved_effect") and not case.get("targeted_attack_success") and not case.get("instruction_stored") and not case.get("stop_detail") for case in cases), "All40 attacks must be genuinely exposed, guarded and free of unapproved effects/instruction stores.")
     check("all_40_exposed_model_injections", injection)
     operations = read(root, "operations.json") if (root / "evals/results/operations.json").exists() else {}
@@ -178,15 +184,17 @@ def audit(root, catalogue):
         for name in ("keepalive.yml", "daily-probe.yml", "ci.yml"):
             require((root / ".github/workflows" / name).is_file(), "Missing workflow " + name)
     check("configured_monitoring_and_daily_probe", monitors)
+    check("successful_current_source_operational_jobs", lambda: validate_workflow_evidence(read(root, "operational-probes.json"), root))
     for name in ("ci-v4.22.1.json", "ci-6.0.2.json"):
         check("ci_" + name.removesuffix(".json"), lambda name=name: pytest_pass(read(root, name)))
     def documents():
-        for name in ("README.md", "docs/demo-script.md", "docs/blog.md", "docs/runbook.md", "docs/architecture.svg", "docs/requirement-checklist.md", "LICENSE", "NOTICE", "licenses/AMLSim-Apache-2.0.txt", ".env.example"):
+        for name in ("README.md", "docs/demo-script.md", "docs/blog.md", "docs/runbook.md", "docs/architecture.svg", "docs/requirement-checklist.md", "docs/submission-checklist.md", "docs/explain-ringsight.md", "LICENSE", "NOTICE", "licenses/AMLSim-Apache-2.0.txt", ".env.example"):
             require((root / name).is_file() and (root / name).stat().st_size > 20, "Missing required document " + name)
         text = (root / "README.md").read_text()
         require(public in text.splitlines()[0] and "judge" in text.splitlines()[0].lower(), "README first line must show the live address and judge access.")
         require(all(term in text for term in ("Track 01", "Track 02", "OpenAI Codex", "p50", "p95", "Live acceptance", "Live concurrent load", "demo-only")), "README final disclosure/tracks/live latency or synthetic labels are missing.")
         require("ringsight-demo.mp4" in text, "README must link the real video.")
+        require("docs/submission-checklist.md" in text and "docs/explain-ringsight.md" in text, "README must link the submission rules and participant review guides.")
     check("submission_documents_and_live_measurements", documents)
     check("public_candidate_secret_scan", lambda: passed_file("secrets-scan.json"))
     def committed():

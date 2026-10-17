@@ -93,6 +93,17 @@ def compact(value,key=''):
         return value
     if isinstance(value,list):return [compact(v,key) for v in value[:(20 if key in {'path_ids','node_ids','accounts','edges','members'} else 8)]]
     if isinstance(value,dict):
+        if 'date_learned' in value and 'reviewed' in value and 'evidence' in value:
+            # A recalled finding retains its original full evidence in the
+            # graph/UI. Re-sending every old profile/coverage result on every
+            # model turn duplicates thousands of tokens and old call handles.
+            fields={'id','text','typology','confidence','author','reviewed','date_learned','valid_from','valid_to','supersedes','actions','about','memory_label'}
+            out={k:compact(v,k) for k,v in value.items() if k in fields}
+            paths=[]
+            for field,path in flatten(value.get('evidence',[])):
+                if field in {'path_ids','node_ids','accounts'} and isinstance(path,list) and all(isinstance(v,str) for v in path) and path not in paths:paths.append(path)
+            out['evidence_paths']=paths[:4]
+            return out
         out={}
         for k,v in value.items():
             if k in {'path_nodes','path_edges','coverage_warning','args','name','elapsed_ms','rows_json'}:continue
@@ -130,10 +141,17 @@ async def prepare_turn(runctx,tools):
         allowed=remaining
     else:
         explicit_action=any(w in q for w in ('propose','recommend','hold','link to a case','report','sar','str draft','flag','close','escalate'))
-        attempted=bool(used&{'rs_record_finding','rs_propose_action'})
+        proposals=[c for c in ctx.calls.values() if c.get('tool')=='rs_propose_action']
+        records=[c for c in ctx.calls.values() if c.get('tool')=='rs_record_finding']
         # Finish after the evidence round for ordinary questions. The server
         # records a guarded finding and pending review action after judging.
-        allowed={'rs_record_finding','rs_propose_action'} if explicit_action and not attempted else set()
+        allowed=set()
+        if explicit_action and ctx.tool_count<10:
+            if proposals:
+                if len(proposals)==1 and proposals[-1].get('outcome')=='tool_error':allowed={'rs_propose_action'}
+            else:
+                allowed={'rs_propose_action'}
+                if not records or (len(records)==1 and records[-1].get('outcome')=='tool_error'):allowed.add('rs_record_finding')
     return [tool for tool in tools if tool.name in allowed]
 
 def make_agent():
@@ -141,7 +159,7 @@ def make_agent():
 
 def evidence_answer(calls):
     """Replace malformed narration only when actual graph paths survived."""
-    if any(c.get('outcome')=='tool_error' for c in calls.values()):return None
+    if any(c.get('outcome')=='tool_error' and c.get('tool') not in {'rs_record_finding','rs_propose_action'} for c in calls.values()):return None
     cited={k:c for k,c in calls.items() if c.get('path_edges') and c.get('rows_total',0)>0 and c.get('tool') not in {'rs_resolve_entity','rs_coverage_status','rs_recall_findings','rs_record_finding','rs_propose_action'}}
     if not cited:return None
     return Answer(shape='answered_with_path',text=template_answer(cited)+' These connections do not establish laundering; a named analyst must assess them.',path_tool_call_ids=list(cited))
@@ -260,7 +278,7 @@ async def _investigate(question,depth=4):
                 output_replaced=True
             if answer.shape=='insufficient_evidence':
                 path_calls=[k for k,c in ctx.calls.items() if c.get('path_edges') and c.get('rows_total',0)>0]
-                if path_calls and not any(c.get('outcome')=='tool_error' for c in ctx.calls.values()):
+                if path_calls and not any(c.get('outcome')=='tool_error' and c.get('tool') not in {'rs_record_finding','rs_propose_action'} for c in ctx.calls.values()):
                     answer.shape='answered_with_path';answer.path_tool_call_ids=path_calls
                     answer.text=template_answer(ctx.calls)+' These connections do not establish laundering; a named analyst must assess them.'
                 else:return await partial('budget_exhausted','planner_insufficient_evidence:'+str(answer.reason))

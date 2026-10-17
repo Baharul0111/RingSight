@@ -11,12 +11,12 @@ WORKDIR /app
 RUN pip install --no-cache-dir uv==0.9.24 && groupadd --gid 10001 ringsight && useradd --uid 10001 --gid ringsight --create-home ringsight
 COPY pyproject.toml uv.lock ./
 RUN uv sync --frozen --no-dev
+RUN mkdir -p /app/artifacts/private && chown ringsight:ringsight /app /app/artifacts /app/artifacts/private
 COPY --chown=ringsight:ringsight server ./server
 COPY --chown=ringsight:ringsight synth ./synth
 COPY --chown=ringsight:ringsight seed ./seed
 COPY --chown=ringsight:ringsight data ./data
 COPY --from=ui --chown=ringsight:ringsight /ui/dist ./ui/dist
-RUN chown -R ringsight:ringsight /app
 ENV PATH="/app/.venv/bin:$PATH"
 USER ringsight
 EXPOSE 8000

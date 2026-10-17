@@ -6,7 +6,7 @@ import time
 
 import pytest
 
-from ops.check_completion import checks_pass, model_pass, pytest_pass, source_fresh
+from ops.check_completion import checks_pass, model_pass, pytest_pass, source_files, source_fresh
 
 
 def test_model_badge_or_short_trial_cannot_substitute_for_complete_evidence():
@@ -54,3 +54,25 @@ def test_current_source_edit_invalidates_older_passing_result(tmp_path):
     source.write_text("changed = True\n")
     with pytest.raises(AssertionError, match="source/test edit"):
         source_fresh(tmp_path, "pytest.json", [source])
+
+
+def test_changed_model_harness_invalidates_otherwise_complete_report():
+    value = {"complete": True, "passed": True, "local_only": True,
+             "planned_cases": 1, "completed_cases": 1,
+             "signature": {"inputs": {"catalogue_hash": "current", "harness_sha256": "old"}},
+             "cases": [{"case_key": "one", "model_requests": 1}]}
+    with pytest.raises(AssertionError, match="evaluation harness"):
+        model_pass(value, 1, "current", "new")
+    assert model_pass(value, 1, "current", "old") == value["cases"]
+
+
+def test_test_freshness_includes_ops_and_eval_but_compose_only_needs_image_sources(tmp_path):
+    for name in ("ops/proof.py", "evals/model_eval.py", "tests/test_proof.py",
+                 "server/app.py", "data/findings_snapshot.json"):
+        path = tmp_path / name
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text("{}" if path.suffix == ".json" else "x = 1\n")
+    all_files = {str(path.relative_to(tmp_path)) for path in source_files(tmp_path)}
+    image_files = {str(path.relative_to(tmp_path)) for path in source_files(tmp_path, runtime_only=True)}
+    assert all_files == {"ops/proof.py", "evals/model_eval.py", "tests/test_proof.py", "server/app.py", "data/findings_snapshot.json"}
+    assert image_files == {"server/app.py", "data/findings_snapshot.json"}

@@ -69,7 +69,7 @@ async def test_staged_catalogue_preserves_fixed_names_and_budget():
         ctx.question='Propose a hold after checking the cycle.'
         second=await prepare_turn(None,tools)
         assert {t.name for t in second}=={'rs_record_finding','rs_propose_action'}
-        ctx.calls['write']={'tool':'rs_propose_action'}
+        ctx.calls['write']={'tool':'rs_propose_action','outcome':'pending'}
         assert await prepare_turn(None,tools)==[]
     finally:current_context.reset(token)
 
@@ -139,6 +139,12 @@ def test_bad_model_narration_can_only_be_replaced_by_a_verified_real_path():
     assert evidence_answer({'empty':dict(call,rows=[],rows_total=0,path_edges=[])}) is None
     assert evidence_answer({'preflight':dict(call,tool='rs_resolve_entity')}) is None
     assert evidence_answer({'failed':dict(call,outcome='tool_error')}) is None
+    # A rejected write is a safety success, not a failed graph traversal.
+    for tool in ('rs_propose_action','rs_record_finding'):
+        calls={'real-call':call,'refused':{'tool':tool,'outcome':'tool_error','reason':'unsupported_claim'}}
+        repaired=evidence_answer(calls)
+        assert repaired.shape=='answered_with_path' and repaired.path_tool_call_ids==['real-call']
+        assert verify(repaired.text,calls,repaired.shape,repaired.path_tool_call_ids)['status']=='pass'
 
 def test_verifier_replacement_updates_citations_so_hidden_path_reaches_ui_and_judge():
     from server.agent import Answer,replace_unsupported_answer

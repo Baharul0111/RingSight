@@ -15,6 +15,7 @@ judge=env.get('JUDGE_KEY') or '<set JUDGE_KEY in .env>'
 mcp=env.get('MCP_READ_TOKEN') or '<set MCP_READ_TOKEN in .env>'
 from server.schemas import INPUT_MODELS
 from server.mcp_read import _DESCRIPTIONS
+from ops.workflow_evidence import validate_workflow_evidence
 
 def load(name,default):
  p=ROOT/'evals/results'/name
@@ -24,6 +25,15 @@ cloud=load('cloud-foundation.json',{})
 patterns=load('structural-patterns.json',{})
 local_current=load('local-foundation-v2.json',{})
 video=load('demo-video.json',{})
+operations=load('operations.json',{})
+operational_probes=load('operational-probes.json',{})
+owner_monitors=all(operations.get(name) is True for name in ('uptimerobot_monitor_enabled','cloudflare_cron_enabled','github_keepalive_workflow_present'))
+monitor_summary=('The owner confirmed UptimeRobot, Cloudflare cron and GitHub keepalive setup ([configuration evidence](evals/results/operations.json)).' if owner_monitors else 'External monitor setup has no complete owner-confirmed configuration artifact yet.')
+try:
+ validate_workflow_evidence(operational_probes,ROOT)
+ probe_summary='Current-source CI, health and daily-question jobs succeeded: '+', '.join(f"[{name}]({run['url']})" for name,run in operational_probes['workflows'].items())+'. This does not independently verify email delivery.'
+except (AssertionError,KeyError,TypeError):
+ probe_summary='Current-source successful scheduled health/daily-question execution has not been recorded. Configuration confirmation does not establish a successful job or email delivery.'
 video_ready=video.get('status')=='passed' and (ROOT/'docs/ringsight-demo.mp4').exists()
 lines=[f'Live: {url} · Judge access key: `{judge}`',
 '# RingSight',
@@ -83,7 +93,9 @@ lines += ['| `rs_record_finding` | Private, interactive session only | Record a 
 '| Artifact | Recorded status |\n|---|---|']
 for p in sorted((ROOT/'evals/results').glob('*.json')):
  d=json.loads(p.read_text())
- if 'summary' in d:status=f"{d['summary'].get('passed',0)} passed; {d['summary'].get('failed',0)} failed"
+ if 'summary' in d:
+  status='; '.join(f"{d['summary'].get(name,0)} {name}" for name in ('passed','failed','error','skipped'))
+  if 'exitcode' in d:status+=f"; exit {d['exitcode']}"
  elif 'status' in d:status=str(d['status'])
  elif 'passed' in d:status='passed' if d['passed'] else ('stopped: '+str(d['stopped_reason']) if d.get('stopped_reason') else f"in progress: {len(d.get('cases',[]))}/{d.get('planned_cases','?')}" if d.get('complete') is False else 'failed')
  elif d.get('success') is not None:status=f"{d.get('numPassedTests',0)} UI unit tests passed" if d['success'] else 'failed'
@@ -101,7 +113,8 @@ if model_paths.get('complete'):
  for d in (1,2,4):
   values=[c['elapsed_s'] for c in model_paths['cases'] if c['depth']==d]
   if values:latencies.append(('Local model protocol',d,values))
-for filename,label in [('live-acceptance.json','Live acceptance'),('live-load.json','Live concurrent load')]:
+live_load_file='live-five_concurrent.json' if (ROOT/'evals/results/live-five_concurrent.json').exists() else 'live-load.json'
+for filename,label in [('live-acceptance.json','Live acceptance'),(live_load_file,'Live concurrent load')]:
  result=load(filename,{})
  if result.get('status')=='passed':
   for name,metric in result.get('latency',{}).items():
@@ -128,7 +141,7 @@ lines += ['About 15 seconds is a demo target, not a guarantee. Local measurement
 'Render Free runs one Docker service, one worker, health path `/live`. `/health` reports population, completion, graph size, pending count, today’s spend, engine, catalogue, RSS and a cached one-token model reachability probe. It returns 503 for incomplete seeding or failed model reachability. The health body is cached 15 seconds and the model probe ten minutes. `/live` only checks process responsiveness.',
 'Auto-reseed triggers only when Account count is zero or Meta.seed_complete is missing. A background subprocess lets the UI show warming up and ETA. The deadline is max(15 minutes, 3 × previous reseed time); timeout kills the loader and requires an explicit forced retry. The final Meta write occurs only after schema, algorithms and same-tenant snapshot restoration.',
 'Planned rebuilds bridge Tenant settings and all Spend days through a private atomic checkpoint scoped to the database fingerprint and bank. Caps can only decrease and pending reservations are conservatively charged. The bridge is removed after success and is never a second runtime store. Sudden Cloud loss without a bridge still has the Console limit as the outer wall.',
-'Actions cron pings `/health` every twelve minutes with curl -f; a daily question checks the agent. Cloudflare’s independent Worker cron and UptimeRobot email monitor are configured in setup.md items 6–7. Repository workflows existing is not evidence that external monitors were enabled. Keep one Render free service to stay within the shared free-hour pool.',
+'Actions cron pings `/health` every twelve minutes with curl -f; a daily question checks the agent. Cloudflare’s independent Worker cron and UptimeRobot email monitor follow setup.md items 6–7. '+monitor_summary+' '+probe_summary+' Keep one Render free service to stay within the shared free-hour pool.',
 '**If the demo is down:** wait for cold start; inspect `/health`; use the manual tool form during a model outage/cap; check Cloud connectivity; force a demo-only reseed if failed; rotate compromised demo keys; use local Compose for judging. [Full runbook](docs/runbook.md) includes stuck reseeds, persisted ledgers, backups, and Fly.io fallback. Cloud Free has no persistence/backups/TLS; synthetic data only. Recovery point is the last checked-in findings snapshot and synthetic seed, not every judge decision.',
 '## 12. Regulatory mapping and pilot posture',
 'FinCEN-style drafts use who/what/when/where/why/how in introduction/body/conclusion, listing each transfer date and amount without narrative tables. Indian drafts include grounds-of-suspicion tags, narration under 20,000 characters and provisional rail sheet mappings. All Indian format facts are visibly **[unverified-primary]** pending verification against the official document. Neither export files any real report.',
@@ -143,8 +156,10 @@ lines += ['About 15 seconds is a demo target, not a guarantee. Local measurement
 '## 16. Limitations and completion gate',
 'Free-tier cold starts, transient database memory peaks, no Cloud Free durability/TLS, weak synthetic global hub precision, approximate algorithms, provisional Indian format mapping, static demo keys and single-process rate limits are explicit constraints. The application never certifies an account clean from an absent path. A timeout yields an honest partial/insufficient answer and escalation when supported.',
 'Completion requires passing local and live/model checks, approved human workflow, cross-session memory, exact fourteen public MCP reads, manual fallback, monitor confirmation, measured latency, snapshot, an actual three-minute video and committed results. The final hackathon submission and any spend-limit increase wait for Baharul’s explicit go-ahead.',
+'The [requirement checklist](docs/requirement-checklist.md) maps all 22 goal items and architecture sections to evidence. Run `.venv/bin/python ops/check_completion.py` for the read-only completion gate; it fails while required proof is missing, stale, failed or uncommitted.',
 '## 17. Blog',
 '[Draft: What the fines say the agent must do](docs/blog.md). The blog is a repository draft; it is not described as published externally.',
+'[Submission rules checklist](docs/submission-checklist.md) maps all 18 supplied rules to project evidence or owner-only attestations. [Explain RingSight](docs/explain-ringsight.md) is a source-linked participant review guide; neither document certifies personal understanding, eligibility, start timing or ownership agreements. The internal goal is 18 October 2026 at 23:00 IST; the supplied official closing time is 23:59 IST. Final submission still waits for explicit approval.',
 '## Inline Cypher — schema, projections and every tool']
 for p in sorted((ROOT/'server/cypher').glob('*.cypher')):
  lines += [f'### `{p.name}`','```cypher\n'+p.read_text().strip()+'\n```']

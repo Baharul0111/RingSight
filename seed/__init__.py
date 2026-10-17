@@ -66,9 +66,13 @@ def create_schema(database: GraphDB, graph: str) -> dict[str, Any]:
             if kind != "RELATIONSHIP":
                 raise
             constraints.append({"kind": kind, "label": label, "property": prop, "supported": False, "fallback": "MERGE TX.id"})
-    for query in statements("fulltext.cypher"):
+    # The Rust6 procedure accepts one map but performs no indexing. Its real
+    # full-text implementation is DDL, including the same phonetic options.
+    engine=database.sync_version()
+    fulltext_syntax='ddl' if engine.startswith('6.') else 'procedure'
+    for query in statements("fulltext_v6.cypher" if fulltext_syntax=='ddl' else "fulltext.cypher"):
         database.sync_write(graph, query, timeout=20000)
-    return {"constraints": constraints}
+    return {"constraints": constraints,"fulltext_syntax":fulltext_syntax}
 
 
 def precompute(database: GraphDB, graph: str, *, progress=None, sampling_size: int | None = None) -> list[dict[str, Any]]:
