@@ -1423,3 +1423,11 @@ resubmit that wording within its single repair attempt; the original request
 does not create a pending action. A rejected private write does not invalidate
 successful graph reads or hide their paths. Read failures still prevent a
 supported-path fallback. Both attempts remain in the graph audit trail.
+
+The6.0.2 compatibility run uses its real full-text DDL with phonetic options;
+the4.22.x procedure syntax remains unchanged. Recall uses one anchored MATCH
+for its entity/time predicates, reads a Finding property map to avoid Rust6's
+nullable-column compact-reply panic, and enriches optional supersession/action/
+decision context with separate fixed queries. Both engine suites exercise
+findings with no proposal, a pending proposal and a named decision. Ring-member
+lists are sorted before applying the result bound for deterministic evidence.

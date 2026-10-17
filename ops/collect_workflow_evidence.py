@@ -53,11 +53,11 @@ def collect(root: Path) -> dict:
                 commit = run.get("headSha")
                 if commit not in source_matches:
                     source_matches[commit] = commit_matches_sources(root, commit)
-                if source_matches[commit]:
+                if source_matches[commit] and run.get("status") == "completed":
                     selected = run
                     break
             if selected is None:
-                raise AssertionError("No recent run matches current committed runtime/tests/workflows: " + name)
+                raise AssertionError("No completed recent run matches current committed runtime/tests/workflows: " + name)
             result["workflows"][name] = {key: selected.get(key) for key in fields.split(",")}
             result["workflows"][name]["source_fingerprint"] = result["source_fingerprint"]
         result["status"] = "passed"

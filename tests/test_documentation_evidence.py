@@ -98,9 +98,10 @@ def test_collector_accepts_earlier_source_equivalent_runs_after_evidence_commit(
         if arguments == ["git", "rev-parse", "HEAD"]:
             return "b" * 40 + "\n"
         name = arguments[arguments.index("--workflow") + 1]
-        return json.dumps([run_metadata(name)])
+        pending = {**run_metadata(name, head="b" * 40), "status": "in_progress", "conclusion": None}
+        return json.dumps([pending, run_metadata(name)])
     monkeypatch.setattr(collector, "command", command)
-    monkeypatch.setattr(collector, "commit_matches_sources", lambda root, commit: commit == "a" * 40)
+    monkeypatch.setattr(collector, "commit_matches_sources", lambda root, commit: commit in {"a" * 40, "b" * 40})
     value = collector.collect(tmp_path)
     assert value["status"] == "passed" and value["head_sha"] == "b" * 40
     assert all(run["headSha"] == "a" * 40 for run in value["workflows"].values())

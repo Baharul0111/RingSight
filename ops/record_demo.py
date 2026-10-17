@@ -29,6 +29,7 @@ from playwright.sync_api import sync_playwright, expect
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from ops.live_verify import EXPECTED_SEED, FRESH, QUESTION, answer_from_response, checked_url, path_ids, redact
+from ops.browser_demo import BrowserResults, install_read_only_guard, node_labels
 import httpx
 
 OUT = ROOT / "evals/results/demo-video.json"
@@ -62,24 +63,6 @@ def caption(page, title, text):
     }""", [title, text])
 
 
-def node_labels(value):
-    """Read graph labels, never treat a submitted Cypher string as a result."""
-    found = set()
-    if isinstance(value, dict):
-        for name, item in value.items():
-            if name in {"labels", "label", "_labels"}:
-                if isinstance(item, str):
-                    found.add(item)
-                elif isinstance(item, list):
-                    found.update(x for x in item if isinstance(x, str))
-            else:
-                found.update(node_labels(item))
-    elif isinstance(value, list):
-        for item in value:
-            found.update(node_labels(item))
-    return found
-
-
 def evidence_paths(value):
     """Mirror the UI's traversal order to select an actual returned hop list."""
     result = []
@@ -96,29 +79,56 @@ def evidence_paths(value):
     return result
 
 
-def browser_graph(page, observed_labels, *, audit=True):
+def browser_graph(page, observed, *, audit=True):
     """Use Browser's own query editor; accept only an observed graph response."""
-    graph = page.get_by_text("rs_bank_a", exact=True)
-    if graph.count() and graph.first.is_visible():
-        graph.first.click()
+    skip = page.get_by_test_id("skipTutorial")
+    if skip.count() and skip.is_visible():
+        skip.click()
+    picker = page.get_by_test_id("selectGraph")
+    expect(picker).to_be_visible(timeout=30000)
+    if picker.inner_text().strip() != "rs_bank_a":
+        picker.click()
+        page.get_by_text("rs_bank_a", exact=True).last.click()
     editor = page.locator(".monaco-editor").first
     expect(editor).to_be_visible(timeout=30000)
-    query = "MATCH (f:Finding)-[:ABOUT]->(a:Account {id:'ACC-4471'}) OPTIONAL MATCH (p:PendingAction)-[:BASED_ON]->(f) OPTIONAL MATCH (d:Decision)-[:ON]->(p) RETURN f,a,p,d LIMIT 50" if audit else "MATCH (a:Account {id:'ACC-4471'}) RETURN a"
+    query = "MATCH (f:Finding)-[:ABOUT]->(a:Account {id:'ACC-4471'}) OPTIONAL MATCH (p:PendingAction)-[:BASED_ON]->(f) OPTIONAL MATCH (d:Decision)-[:ON]->(p) RETURN f,a,p,d LIMIT 50" if audit else "MATCH (a:Account {id:'ACC-4471'}) RETURN a LIMIT 1"
     required = {"Finding", "PendingAction", "Decision", "Account"} if audit else {"Account"}
-    observed_labels.clear()
+    observed.clear(query)
     editor.click()
     page.keyboard.press("ControlOrMeta+A")
     page.keyboard.insert_text(query)
-    run = page.get_by_role("button", name="Run query", exact=False)
-    if run.count() and run.first.is_visible():
-        run.first.click()
-    else:
-        page.keyboard.press("ControlOrMeta+Enter")
+    page.get_by_role("button", name="Press Enter to run the query", exact=True).click()
     deadline = time.monotonic() + 30
-    while not required.issubset(observed_labels) and time.monotonic() < deadline:
+    while not required.issubset(observed.labels) and time.monotonic() < deadline:
         page.wait_for_timeout(250)
-    require(required.issubset(observed_labels), "FalkorDB Browser did not return the required live graph labels. Verify Browser is connected to the same Cloud instance; no Browser success was fabricated.")
-    require(page.locator("canvas, svg").count() > 0, "Browser returned no graph surface.")
+    require(observed.completed > 0 and required.issubset(observed.labels), "FalkorDB Browser did not return the required live graph labels. Verify Browser is connected to the same Cloud instance; no Browser success was fabricated.")
+    surface = page.locator("canvas:visible").first
+    expect(surface).to_be_visible(timeout=10000)
+    bounds = surface.bounding_box()
+    require(bounds and bounds["width"] > 200 and bounds["height"] > 100, "Browser returned no visible graph surface.")
+
+
+def browser_preflight(args):
+    """Verify a real Browser Account result without an app or model request."""
+    load_dotenv(ROOT / ".env", override=True)
+    browser_url = checked_url(args.browser_url)
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=not args.headed)
+        context = browser.new_context(viewport=VIEWPORT)
+        blocked = install_read_only_guard(context)
+        page = context.new_page()
+        results = BrowserResults(page)
+        try:
+            page.goto(browser_url, wait_until="domcontentloaded", timeout=60000)
+            no_visible_secrets(page)
+            browser_graph(page, results, audit=False)
+            no_visible_secrets(page)
+            report = {"suite": "browser-preflight", "status": "passed", "graph": "rs_bank_a", "query": "Account ACC-4471", "labels": sorted(results.labels), "completed_results": results.completed, "blocked_mutations": blocked, "mocked_responses": False, "model_calls": 0, "checked_at": int(time.time())}
+            (ROOT / "evals/results/browser-preflight.json").write_text(json.dumps(report, indent=2) + "\n")
+            print(json.dumps(report))
+        finally:
+            context.close()
+            browser.close()
 
 
 class Recording:
@@ -228,6 +238,7 @@ def main(args):
         browser = p.chromium.launch(headless=not args.headed)
         # Readiness and Browser login checks are outside every recorded context.
         prep = browser.new_context(viewport=VIEWPORT)
+        prep_blocked = install_read_only_guard(prep)
         api = prep.request
         headers = {"Authorization": "Bearer " + os.environ["JUDGE_KEY"]}
         admin_headers = {"Authorization": "Bearer " + os.environ["ADMIN_TOKEN"]}
@@ -236,19 +247,13 @@ def main(args):
         require(health_response.ok and health.get("seed_version") == EXPECTED_SEED and health.get("llm_enabled") is True, "Deploy and seed the current graph, enable the model, then retry recording.")
         require(health.get("spend_usd", 8) + 1.75 <= health.get("daily_usd_cap", 0), "Recording does not fit today's remaining cap. Do not raise or reset the cap.")
         prepared = prep.new_page()
-        prepared_labels = set()
-        def observed_preflight(response):
-            if response.request.method == "POST":
-                try:
-                    prepared_labels.update(node_labels(response.json()))
-                except Exception:
-                    pass
-        prepared.on("response", observed_preflight)
+        prepared_results = BrowserResults(prepared)
         prepared.goto(browser_url, wait_until="domcontentloaded", timeout=60000)
         require("falkor" in prepared.locator("body").inner_text(timeout=30000).lower(), "The Browser URL did not open FalkorDB Browser.")
         no_visible_secrets(prepared)
         # Confirm a real Account result before spending on any investigation.
-        browser_graph(prepared, prepared_labels, audit=False)
+        browser_graph(prepared, prepared_results, audit=False)
+        run.report["checks"]["browser_account_preflight"] = {"status": "passed", "labels": sorted(prepared_results.labels), "completed_results": prepared_results.completed, "blocked_mutations": prep_blocked}
         # Server-configured FALKORDB_CONNECTION_URL avoids ever typing secrets
         # into a recorded connection form. Browser's storage is kept in memory.
         storage = prep.storage_state()
@@ -259,16 +264,10 @@ def main(args):
         page.goto(target, wait_until="domcontentloaded", timeout=95000)
         expect(page.locator(".identity strong")).to_have_text("judge", timeout=30000)
         remote = browser.new_context(viewport=VIEWPORT, storage_state=storage, record_video_dir=str(PRIVATE), record_video_size=VIEWPORT)
+        remote_blocked = install_read_only_guard(remote)
         falkor = remote.new_page()
         run.starts[falkor] = time.monotonic()
-        labels = set()
-        def observed(response):
-            if response.request.method == "POST":
-                try:
-                    labels.update(node_labels(response.json()))
-                except Exception:
-                    pass
-        falkor.on("response", observed)
+        results = BrowserResults(falkor)
         falkor.goto(browser_url, wait_until="domcontentloaded", timeout=60000)
         try:
             with run.chapter(page, "An alert needs reasons", "RingSight follows synthetic accounts, people, devices and transfers. A named human owns every decision.", 15):
@@ -300,8 +299,8 @@ def main(args):
                 require(bool(hold), "No hold recommendation was returned; recording stops rather than inventing a card.")
                 run.decide(page, hold, "deny", "A case is warranted; a hold recommendation needs additional human assessment.")
             with run.chapter(falkor, "The graph is the record", "FalkorDB Browser shows the live Finding, PendingAction and named Decision nodes connected to the alerted account.", 15):
-                browser_graph(falkor, labels)
-                run.report["checks"]["actual_falkordb_browser_nodes"] = {"status": "passed", "labels": sorted(labels)}
+                browser_graph(falkor, results)
+                run.report["checks"]["actual_falkordb_browser_nodes"] = {"status": "passed", "labels": sorted(results.labels), "completed_results": results.completed, "blocked_mutations": remote_blocked}
             with run.chapter(page, "Memory has a date", "A new investigation recalls earlier findings, their learned date, author and human review status.", 15):
                 memory = run.ask(page, "What did the earlier investigation learn about ACC-4471? Answer from prior findings with the date learned and reviewed status.", 4, "answered_from_memory")
                 require(any(m.get("date_learned") and m.get("reviewed") for m in memory.get("memory", [])), "Reviewed memory with a learned date was not returned.")
@@ -368,9 +367,16 @@ if __name__ == "__main__":
     parser.add_argument("--url", help="Defaults to PUBLIC_URL; no credentials in URLs.")
     parser.add_argument("--browser-url", default="http://127.0.0.1:3002")
     parser.add_argument("--headed", action="store_true")
+    parser.add_argument("--browser-preflight", action="store_true", help="Check a real Account result in Browser without calling the app or any model.")
     try:
-        main(parser.parse_args())
+        arguments = parser.parse_args()
+        if arguments.browser_preflight:
+            browser_preflight(arguments)
+        else:
+            main(arguments)
     except Exception as exc:
+        if arguments.browser_preflight:
+            raise SystemExit("Browser preflight did not complete; no app or model request was made, and no successful Browser result was claimed.") from None
         if OUT.exists():
             try:
                 failed = json.loads(OUT.read_text())

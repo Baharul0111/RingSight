@@ -37,6 +37,7 @@ def main(url=None):
         page.goto(base)
         expect(page.locator(".identity strong")).to_have_text("judge", timeout=15000)
         result["checks"]["real_server_identity"] = "passed"
+        expect(page.locator(".tool-console")).to_be_visible(timeout=15000)
         toggle = page.get_by_role("button", name="Open tools +", exact=True)
         if toggle.is_visible():
             toggle.click()

@@ -166,7 +166,13 @@ async def _recall(args: RecallInput) -> dict:
         group = [eid for eid in args.entity_ids if (_label(eid) == label)]
         if not group:
             continue
-        rows += await read(query("rs_recall_findings", label=label), {"ids": group, "as_of": args.as_of, "inc": args.include_unreviewed, "limit": 200})
+        found = await read(query("rs_recall_findings", label=label), {"ids": group, "as_of": args.as_of, "inc": args.include_unreviewed, "limit": 200})
+        # Read the property map rather than nullable scalar columns. Rust6's
+        # compact reply can panic when a missing optional field is a column.
+        for row in found:
+            finding=row.pop('finding')
+            row.update({key:finding.get(key) for key in ('id','text','typology','confidence','author','reviewed','valid_from','valid_to','evidence_tool_call_ids','evidence_tx_ids')})
+        rows += found
     merged = {}
     for row in rows:
         if row["id"] in merged:

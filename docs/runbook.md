@@ -109,6 +109,29 @@ cron `8-59/15 * * * *`. GitHub Actions uses `HEALTH_URL` and `JUDGE_KEY`
 repository secrets and fails on non-200 health responses. The daily question
 probe checks an evidenced answer rather than only container liveness.
 
+The owner has already confirmed the Render URL, GitHub secrets, UptimeRobot
+and Cloudflare setup. Preserve that confirmation; do not request it again.
+To record actual current-source execution, push the runtime and tests, let CI
+finish, and run the health/daily workflows when needed:
+
+```sh
+gh workflow run keepalive.yml --repo Baharul0111/RingSight
+gh workflow run daily-probe.yml --repo Baharul0111/RingSight
+gh run list --repo Baharul0111/RingSight --limit 10
+.venv/bin/python ops/collect_workflow_evidence.py
+```
+
+The daily job asks one ordinary capped demo question; dispatch it once, then
+inspect its result. The collector only reads public GitHub run metadata and
+local Git objects. It never dispatches a job, calls the model, changes secrets
+or mutates Git. It refuses uncommitted relevant sources and writes
+`evals/results/operational-probes.json` only with the observed status. Each
+workflow's latest completed run with identical committed runtime/tests/workflow
+content must succeed. A pending equivalent run does not invalidate an earlier
+completed proof. Later README/video/evidence-only commits do not require reruns;
+changing or deleting relevant source invalidates the proof. A successful
+health/daily job does not independently establish UptimeRobot email delivery.
+
 ## Deployment acceptance and recording
 
 `ops/live_verify.py` reads `PUBLIC_URL` and keys from `.env`. Its default mode

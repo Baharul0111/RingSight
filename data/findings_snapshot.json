@@ -1,5 +1,110 @@
 {
-  "schema": 1,
+  "findings": [
+    {
+      "entities": [
+        {
+          "id": "ACC-4471",
+          "labels": [
+            "Account"
+          ]
+        }
+      ],
+      "finding": {
+        "author": "agent",
+        "confidence": "medium",
+        "confidential": true,
+        "created_at": 1792223517,
+        "evidence_tool_call_ids": [
+          "d41a0410-d365-4f5f-a0aa-32ce8e694fcc",
+          "322de172-2c93-45f2-8fea-1cbcafce8073",
+          "374fa389-87c0-4520-b301-84ddaa088f8b"
+        ],
+        "evidence_tx_ids": [],
+        "id": "89ecf580-0770-4cf7-a477-16b7a614ff59",
+        "idem_key": "68875ad774da4c27b13b96991cae774510c871083ccf8bfecded6a0c02984f91",
+        "model": "claude-sonnet-5-5",
+        "reviewed": false,
+        "text": "The graph returned this evidence path: ACC-4471 \u2192 PER-14470 \u2192 PH-r00-0 \u2192 PER-2291 \u2192 ACC-55820. Review the transfer evidence before deciding.",
+        "typology": "shared_identifier",
+        "valid_from": 1792097999
+      },
+      "session_ids": [
+        "f0165f2b-f164-4829-a83e-d77a562c2e1b"
+      ],
+      "supersedes": []
+    }
+  ],
+  "graph": "rs_bank_a",
+  "schema": 2,
+  "sessions": [
+    {
+      "analyst": "judge",
+      "as_of": 1792223476,
+      "catalogue_hash": "ea425281c56fc79b46719dcc4e51fae3a8bd3344ae6b35ffe5579cc14d362784",
+      "cost_usd": 0.0328575,
+      "ended_at": 1792223522,
+      "id": "f0165f2b-f164-4829-a83e-d77a562c2e1b",
+      "judge": "weak",
+      "model_judge": "claude-sonnet-5-5",
+      "model_planner": "claude-sonnet-5-5",
+      "prompt_sha256": "94b761359a1ee58022bcc202e1f23a0b3bb6f89e580ce223fd999a86ed74b20a",
+      "started_at": 1792223484,
+      "tenant": "bank_a",
+      "verifier": "replaced"
+    }
+  ],
   "synthetic": true,
-  "findings": []
+  "tool_calls": [
+    {
+      "session_id": "f0165f2b-f164-4829-a83e-d77a562c2e1b",
+      "tool_call": {
+        "args_json": "{\"as_of\": 1792223476, \"limit\": 50, \"cursor\": null, \"account_id\": \"ACC-4471\", \"window_days\": 90, \"hops\": 1, \"direction\": \"both\", \"min_amount\": 0}",
+        "at": 1792223498,
+        "elapsed_ms": 2448.06,
+        "guard_hits": 0,
+        "id": "322de172-2c93-45f2-8fea-1cbcafce8073",
+        "rows_json": "[{\"neighbour\": \"ACC-1\", \"type\": \"retail\", \"pagerank\": 5.86152636969928e-05, \"hops\": 1, \"path_ids\": [\"ACC-4471\", \"ACC-1\"], \"edges\": [{\"id\": \"TX-2\", \"amount\": 11010000, \"ts\": 1792098059, \"rail\": \"UPI\", \"memo\": null, \"source\": \"ACC-1\", \"target\": \"ACC-4471\", \"type\": \"TX\"}]}, {\"neighbour\": \"ACC-10477\", \"type\": \"retail\", \"pagerank\": 0.000111811190436129, \"hops\": 1, \"path_ids\": [\"ACC-4471\", \"ACC-10477\"], \"edges\": [{\"id\": \"TX-1\", \"amount\": 11000000, \"ts\": 1792097999, \"rail\": \"UPI\", \"memo\": null, \"source\": \"ACC-10477\", \"target\": \"ACC-4471\", \"type\": \"TX\"}]}, {\"neighbour\": \"ACC-2\", \"type\": \"retail\", \"pagerank\": 3.60568992618937e-05, \"hops\": 1, \"path_ids\": [\"ACC-4471\", \"ACC-2\"], \"edges\": [{\"id\": \"TX-3\", \"amount\": 11020000, \"ts\": 1792098119, \"rail\": \"UPI\", \"memo\": null, \"source\": \"ACC-2\", \"target\": \"ACC-4471\", \"type\": \"TX\"}]}, {\"neighbour\": \"ACC-3\", \"type\": \"retail\", \"pagerank\": 0.000111811190436129, \"hops\": 1, \"path_ids\": [\"ACC-4471\", \"ACC-3\"], \"edges\": [{\"id\": \"TX-4\", \"amount\": 11030000, \"ts\": 1792098179, \"rail\": \"UPI\", \"memo\": null, \"source\": \"ACC-3\", \"target\": \"ACC-4471\", \"type\": \"TX\"}]}, {\"neighbour\": \"ACC-4\", \"type\": \"retail\", \"pagerank\": 1.1229428309889e-05, \"hops\": 1, \"path_ids\": [\"ACC-4471\", \"ACC-4\"], \"edges\": [{\"id\": \"TX-5\", \"amount\": 11040000, \"ts\": 1792098239, \"rail\": \"UPI\", \"memo\": null, \"source\": \"ACC-4\", \"target\": \"ACC-4471\", \"type\": \"TX\"}]}, {\"neighbour\": \"ACC-5\", \"type\": \"retail\", \"pagerank\": 1.1229428309889e-05, \"hops\": 1, \"path_ids\": [\"ACC-4471\", \"ACC-5\"], \"edges\": [{\"id\": \"TX-6\", \"amount\": 11050000, \"ts\": 1792098299, \"rail\": \"UPI\", \"memo\": null, \"source\": \"ACC-5\", \"target\": \"ACC-4471\", \"type\": \"TX\"}]}, {\"neighbour\": \"ACC-6\", \"type\": \"retail\", \"pagerank\": 1.1229428309889e-05, \"hops\": 1, \"path_ids\": [\"ACC-4471\", \"ACC-6\"], \"edges\": [{\"id\": \"TX-7\", \"amount\": 11060000, \"ts\": 1792098359, \"rail\": \"UPI\", \"memo\": null, \"source\": \"ACC-6\", \"target\": \"ACC-4471\", \"type\": \"TX\"}]}]",
+        "rows_returned": 7,
+        "rows_sha256": "ffc5dc778d0adb743c6abaa89d73f84c9ddf59d07c89af2b4afbe7fd76cc620a",
+        "rows_total": 7,
+        "seq": 5,
+        "tool": "rs_neighbourhood",
+        "truncated": false
+      }
+    },
+    {
+      "session_id": "f0165f2b-f164-4829-a83e-d77a562c2e1b",
+      "tool_call": {
+        "args_json": "{\"as_of\": 1792223476, \"limit\": 50, \"cursor\": null, \"account_id\": \"ACC-4471\", \"window_days\": 90}",
+        "at": 1792223499,
+        "elapsed_ms": 3449.02,
+        "guard_hits": 0,
+        "id": "374fa389-87c0-4520-b301-84ddaa088f8b",
+        "rows_json": "[{\"id\": \"ACC-4471\", \"type\": \"retail\", \"bank\": \"RSYN\", \"opened_at\": 1755820800, \"kyc_tier\": 1, \"status\": \"active\", \"in_deg\": 8, \"out_deg\": 2, \"pagerank\": 0.000237433690926991, \"betweenness\": 0.0, \"wcc_id\": 0, \"lpa_id\": 4470, \"ring_id\": 0, \"computed_at\": 1792119856, \"in_n\": 8, \"in_sum\": 86890000, \"in_cp\": 7, \"in_max\": 11060000, \"out_n\": 2, \"out_sum\": 66000000, \"out_cp\": 2, \"passthrough_ratio\": 0.759581079525837, \"owners\": [\"PER-14470\"], \"devices\": [{\"degree\": 2, \"id\": \"DEV-r00-0\"}, {\"degree\": 2, \"id\": \"DEV-f31c\"}], \"alerts\": [{\"id\": \"ALERT-1\", \"raised_at\": 1792108799, \"rule\": \"velocity\"}], \"restrictions\": [{\"id\": null, \"kind\": null}], \"prior_findings\": 0, \"peer_baseline\": {\"in_deg_p50\": 1.0, \"in_deg_p95\": 3.0, \"out_deg_p50\": 1.0, \"out_deg_p95\": 3.0, \"n\": 19915}, \"edges\": [{\"id\": \"TX-12\", \"source\": \"ACC-4471\", \"target\": \"ACC-3\", \"amount\": 55000000, \"ts\": 1792100699, \"rail\": \"UPI\", \"memo\": null, \"type\": \"TX\"}, {\"id\": \"TX-8\", \"source\": \"ACC-4471\", \"target\": \"ACC-10477\", \"amount\": 11000000, \"ts\": 1792100099, \"rail\": \"UPI\", \"memo\": null, \"type\": \"TX\"}], \"path_ids\": [\"ACC-4471\"]}]",
+        "rows_returned": 1,
+        "rows_sha256": "8497cdcbc47341a5762e3a8f2ca8fc03dbb0496d4f41100fcbee6891cbc5f49c",
+        "rows_total": 1,
+        "seq": 6,
+        "tool": "rs_account_profile",
+        "truncated": false
+      }
+    },
+    {
+      "session_id": "f0165f2b-f164-4829-a83e-d77a562c2e1b",
+      "tool_call": {
+        "args_json": "{\"as_of\": 1792223476, \"limit\": 50, \"cursor\": null, \"account_id\": \"ACC-4471\", \"hops\": 1, \"kinds\": [\"device\", \"phone\", \"address\", \"owner\"], \"max_identifier_degree\": 20}",
+        "at": 1792223497,
+        "elapsed_ms": 1378.19,
+        "guard_hits": 0,
+        "id": "d41a0410-d365-4f5f-a0aa-32ce8e694fcc",
+        "rows_json": "[{\"linked\": \"ACC-10477\", \"kind\": \"Account\", \"strength\": \"soft\", \"hops\": 1, \"path_ids\": [\"ACC-4471\", \"DEV-f31c\", \"ACC-10477\"], \"link_kinds\": [\"USES_DEVICE\", \"USES_DEVICE\"], \"identifier_degree\": 2}, {\"linked\": \"ACC-55820\", \"kind\": \"Account\", \"strength\": \"hard\", \"hops\": 1, \"path_ids\": [\"ACC-4471\", \"PER-14470\", \"PH-r00-0\", \"PER-2291\", \"ACC-55820\"], \"link_kinds\": [\"OWNS\", \"HAS_PHONE\", \"HAS_PHONE\", \"OWNS\"], \"identifier_degree\": 2}]",
+        "rows_returned": 2,
+        "rows_sha256": "95470ec23e47f9caa236770d932aca76a0a4968719b2c47adb3a942efcedc83c",
+        "rows_total": 2,
+        "seq": 4,
+        "tool": "rs_shared_identifiers",
+        "truncated": false
+      }
+    }
+  ]
 }

@@ -25,7 +25,7 @@ async def compatibility_graph():
 
 def test_seed_creates_real_phonetic_and_finding_fulltext_indexes(compatibility_graph):
     database,tenant=compatibility_graph
-    schema=create_schema(database,tenant)
+    schema=create_schema(database,'rs_'+tenant)
     database.sync_write(tenant,"CREATE (:Person {id:'PER-1',name_norm:'felix'}),(:Merchant {id:'MER-1',name:'felix'}),(:Finding {id:'finding',idem_key:'finding',text:'dated evidence connects the accounts'})")
     assert schema['fulltext_syntax']==('ddl' if database.sync_version().startswith('6.') else 'procedure')
     # Querying the index, rather than accepting successful DDL, detects the

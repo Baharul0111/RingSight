@@ -64,7 +64,7 @@ The original transfer-density estimate exceeded the memory budget. The measured 
 
 Cloud initial seed: **25,000 accounts, 39 MB, 21.169 seconds, engine 4.22.0**. Native Redis allocation and RSS can exceed the graph-size measure; [memory-ceiling evidence](evals/results/memory-ceiling.json) records the transient peaks.
 
-Current `rs-synthetic-v2` shipment remeasured locally: **25,000 accounts, 39 MB, 4.804 seconds, engine 4.22.1** ([raw evidence](evals/results/local-foundation-v2.json)).
+Current `rs-synthetic-v2` shipment remeasured locally: **25,000 accounts, 39 MB, 4.554 seconds, engine 4.22.1** ([raw evidence](evals/results/local-foundation-v2.json)).
 
 ## 4. Fixed queries and graph algorithms
 
@@ -153,51 +153,63 @@ No detection result is a claim about real banking data. Model evaluations mutate
 | Artifact | Recorded status |
 |---|---|
 
-| [actions-tests.json](evals/results/actions-tests.json) | 15 passed; 0 failed |
+| [actions-tests.json](evals/results/actions-tests.json) | 15 passed; 0 failed; 0 error; 0 skipped; exit 0 |
 
-| [audit-regressions.json](evals/results/audit-regressions.json) | 88 passed; 0 failed |
+| [audit-regressions.json](evals/results/audit-regressions.json) | 88 passed; 0 failed; 0 error; 0 skipped; exit 0 |
 
-| [audited-graph-contracts.json](evals/results/audited-graph-contracts.json) | 28 passed; 0 failed |
+| [audited-graph-contracts.json](evals/results/audited-graph-contracts.json) | 28 passed; 0 failed; 0 error; 0 skipped; exit 0 |
 
-| [catalogue-audit-tests.json](evals/results/catalogue-audit-tests.json) | 20 passed; 0 failed |
+| [browser-preflight.json](evals/results/browser-preflight.json) | passed |
 
-| [catalogue-tests.json](evals/results/catalogue-tests.json) | 10 passed; 0 failed |
+| [catalogue-audit-tests.json](evals/results/catalogue-audit-tests.json) | 20 passed; 0 failed; 0 error; 0 skipped; exit 0 |
+
+| [catalogue-tests.json](evals/results/catalogue-tests.json) | 10 passed; 0 failed; 0 error; 0 skipped; exit 0 |
 
 | [cloud-foundation.json](evals/results/cloud-foundation.json) | passed |
 
-| [completion-gate-tests.json](evals/results/completion-gate-tests.json) | 4 passed; 0 failed |
+| [cloud-reseed-preflight.json](evals/results/cloud-reseed-preflight.json) | review_ready |
+
+| [completion-gate-tests.json](evals/results/completion-gate-tests.json) | 4 passed; 0 failed; 0 error; 0 skipped; exit 0 |
 
 | [completion.json](evals/results/completion.json) | failed |
 
-| [compose-acceptance.json](evals/results/compose-acceptance.json) | passed |
+| [compose-acceptance.json](evals/results/compose-acceptance.json) | failed |
 
-| [compose-wrapper-tests.json](evals/results/compose-wrapper-tests.json) | 5 passed; 0 failed |
+| [compose-wrapper-tests.json](evals/results/compose-wrapper-tests.json) | 5 passed; 0 failed; 0 error; 0 skipped; exit 0 |
 
-| [control-checkpoint-contract.json](evals/results/control-checkpoint-contract.json) | 12 passed; 0 failed |
+| [control-checkpoint-contract.json](evals/results/control-checkpoint-contract.json) | 12 passed; 0 failed; 0 error; 0 skipped; exit 0 |
 
-| [control-checkpoint-integration.json](evals/results/control-checkpoint-integration.json) | 3 passed; 0 failed |
+| [control-checkpoint-integration.json](evals/results/control-checkpoint-integration.json) | 3 passed; 0 failed; 0 error; 0 skipped; exit 0 |
 
 | [cycle-engine-diagnostic.json](evals/results/cycle-engine-diagnostic.json) | measurement artifact |
 
-| [cycle-projection-tests.json](evals/results/cycle-projection-tests.json) | 67 passed; 0 failed |
+| [cycle-projection-tests.json](evals/results/cycle-projection-tests.json) | 67 passed; 0 failed; 0 error; 0 skipped; exit 0 |
 
-| [db-concurrency.json](evals/results/db-concurrency.json) | 2 passed; 0 failed |
+| [db-concurrency.json](evals/results/db-concurrency.json) | 2 passed; 0 failed; 0 error; 0 skipped; exit 0 |
 
 | [demo-path-generator.json](evals/results/demo-path-generator.json) | passed |
 
 | [engine-foundation.json](evals/results/engine-foundation.json) | measurement artifact |
 
-| [execution-logging-tests.json](evals/results/execution-logging-tests.json) | 13 passed; 0 failed |
+| [engine6-compatibility.json](evals/results/engine6-compatibility.json) | 22 passed; 0 failed; 0 error; 0 skipped; exit 0 |
 
-| [foundation-tests.json](evals/results/foundation-tests.json) | 15 passed; 0 failed |
+| [engine6-full-local.json](evals/results/engine6-full-local.json) | 356 passed; 0 failed; 0 error; 0 skipped; exit 0 |
 
-| [graph-action-end-state-tests.json](evals/results/graph-action-end-state-tests.json) | 7 passed; 8 failed |
+| [execution-logging-tests.json](evals/results/execution-logging-tests.json) | 13 passed; 0 failed; 0 error; 0 skipped; exit 0 |
 
-| [harness-offline.json](evals/results/harness-offline.json) | 19 passed; 0 failed |
+| [foundation-tests.json](evals/results/foundation-tests.json) | 15 passed; 0 failed; 0 error; 0 skipped; exit 0 |
 
-| [http-validation-tests.json](evals/results/http-validation-tests.json) | 21 passed; 0 failed |
+| [graph-action-end-state-tests.json](evals/results/graph-action-end-state-tests.json) | 7 passed; 8 failed; 0 error; 0 skipped; exit 1 |
 
-| [indexed-traversal-tests.json](evals/results/indexed-traversal-tests.json) | 15 passed; 0 failed |
+| [harness-offline.json](evals/results/harness-offline.json) | 19 passed; 0 failed; 0 error; 0 skipped; exit 0 |
+
+| [hold-repair-runtime.json](evals/results/hold-repair-runtime.json) | passed |
+
+| [hold-repair-tests.json](evals/results/hold-repair-tests.json) | 19 passed; 0 failed; 0 error; 0 skipped; exit 0 |
+
+| [http-validation-tests.json](evals/results/http-validation-tests.json) | 21 passed; 0 failed; 0 error; 0 skipped; exit 0 |
+
+| [indexed-traversal-tests.json](evals/results/indexed-traversal-tests.json) | 15 passed; 0 failed; 0 error; 0 skipped; exit 0 |
 
 | [local-foundation-v2.json](evals/results/local-foundation-v2.json) | passed |
 
@@ -211,63 +223,67 @@ No detection result is a claim about real banking data. Model evaluations mutate
 
 | [memory-ceiling.json](evals/results/memory-ceiling.json) | passed |
 
+| [memory-projection-tests.json](evals/results/memory-projection-tests.json) | 11 passed; 0 failed; 0 error; 0 skipped; exit 0 |
+
 | [model-evaluations.json](evals/results/model-evaluations.json) | running |
 
-| [model-paths.json](evals/results/model-paths.json) | in progress: 3/120 |
+| [model-paths.json](evals/results/model-paths.json) | in progress: 2/120 |
 
 | [model-paths.previous-1792218290789650000.json](evals/results/model-paths.previous-1792218290789650000.json) | stopped: InvalidOperation |
 
 | [model-paths.previous-1792219678485686000.json](evals/results/model-paths.previous-1792219678485686000.json) | in progress: 7/120 |
 
-| [narrative.json](evals/results/narrative.json) | 3 passed; 0 failed |
+| [model-paths.previous-1792249324173658000.json](evals/results/model-paths.previous-1792249324173658000.json) | in progress: 12/120 |
 
-| [offline-tests.json](evals/results/offline-tests.json) | 173 passed; 0 failed |
+| [narrative.json](evals/results/narrative.json) | 3 passed; 0 failed; 0 error; 0 skipped; exit 0 |
+
+| [offline-tests.json](evals/results/offline-tests.json) | 173 passed; 0 failed; 0 error; 0 skipped; exit 0 |
 
 | [operations.json](evals/results/operations.json) | measurement artifact |
 
-| [ops-control-offline.json](evals/results/ops-control-offline.json) | 23 passed; 0 failed |
+| [ops-control-offline.json](evals/results/ops-control-offline.json) | 23 passed; 0 failed; 0 error; 0 skipped; exit 0 |
 
-| [ops-tooling-tests.json](evals/results/ops-tooling-tests.json) | 11 passed; 0 failed |
+| [ops-tooling-tests.json](evals/results/ops-tooling-tests.json) | 11 passed; 0 failed; 0 error; 0 skipped; exit 0 |
 
-| [pytest.json](evals/results/pytest.json) | 312 passed; 0 failed |
+| [pytest.json](evals/results/pytest.json) | 356 passed; 0 failed; 0 error; 0 skipped; exit 0 |
 
-| [recovery-tests.json](evals/results/recovery-tests.json) | 4 passed; 0 failed |
+| [recovery-tests.json](evals/results/recovery-tests.json) | 4 passed; 0 failed; 0 error; 0 skipped; exit 0 |
 
 | [recovery.json](evals/results/recovery.json) | measurement artifact |
 
-| [report-actions.json](evals/results/report-actions.json) | 6 passed; 0 failed |
+| [report-actions.json](evals/results/report-actions.json) | 6 passed; 0 failed; 0 error; 0 skipped; exit 0 |
 
-| [report-safety-tests.json](evals/results/report-safety-tests.json) | 99 passed; 0 failed |
+| [report-safety-tests.json](evals/results/report-safety-tests.json) | 99 passed; 0 failed; 0 error; 0 skipped; exit 0 |
 
-| [resolver-tests.json](evals/results/resolver-tests.json) | 18 passed; 0 failed |
+| [resolver-tests.json](evals/results/resolver-tests.json) | 18 passed; 0 failed; 0 error; 0 skipped; exit 0 |
 
-| [resource-controls.json](evals/results/resource-controls.json) | 6 passed; 0 failed |
+| [resource-controls.json](evals/results/resource-controls.json) | 6 passed; 0 failed; 0 error; 0 skipped; exit 0 |
 
 | [runtime-diagnostic.json](evals/results/runtime-diagnostic.json) | passed |
 
-| [runtime-failure-regressions.json](evals/results/runtime-failure-regressions.json) | 76 passed; 0 failed |
+| [runtime-failure-regressions.json](evals/results/runtime-failure-regressions.json) | 76 passed; 0 failed; 0 error; 0 skipped; exit 0 |
 
-| [runtime-regression.json](evals/results/runtime-regression.json) | 11 passed; 0 failed |
+| [runtime-regression.json](evals/results/runtime-regression.json) | 11 passed; 0 failed; 0 error; 0 skipped; exit 0 |
 
 | [runtime-smoke.json](evals/results/runtime-smoke.json) | passed |
 
-| [secret-check-tests.json](evals/results/secret-check-tests.json) | 36 passed; 0 failed |
+| [secret-check-tests.json](evals/results/secret-check-tests.json) | 36 passed; 0 failed; 0 error; 0 skipped; exit 0 |
 
 | [secrets-scan.json](evals/results/secrets-scan.json) | passed |
 
 | [sizing.json](evals/results/sizing.json) | measurement artifact |
 
-| [snapshot-contract.json](evals/results/snapshot-contract.json) | 15 passed; 0 failed |
+| [snapshot-contract.json](evals/results/snapshot-contract.json) | 15 passed; 0 failed; 0 error; 0 skipped; exit 0 |
 
 | [structural-patterns.json](evals/results/structural-patterns.json) | passed |
 
-| [structural-read-contracts.json](evals/results/structural-read-contracts.json) | 16 passed; 0 failed |
+| [structural-read-contracts.json](evals/results/structural-read-contracts.json) | 16 passed; 0 failed; 0 error; 0 skipped; exit 0 |
 
-| [temporal-traversal-tests.json](evals/results/temporal-traversal-tests.json) | 20 passed; 0 failed |
+| [temporal-traversal-tests.json](evals/results/temporal-traversal-tests.json) | 20 passed; 0 failed; 0 error; 0 skipped; exit 0 |
 
 | [ui-browser.json](evals/results/ui-browser.json) | passed |
 
-| [ui-real-local.json](evals/results/ui-real-local.json) | passed |
+| [ui-real-local.json](evals/results/ui-real-local.json) | failed |
 
 | [ui-unit-tests.json](evals/results/ui-unit-tests.json) | 6 UI unit tests passed |
 
@@ -322,7 +338,7 @@ Auto-reseed triggers only when Account count is zero or Meta.seed_complete is mi
 
 Planned rebuilds bridge Tenant settings and all Spend days through a private atomic checkpoint scoped to the database fingerprint and bank. Caps can only decrease and pending reservations are conservatively charged. The bridge is removed after success and is never a second runtime store. Sudden Cloud loss without a bridge still has the Console limit as the outer wall.
 
-Actions cron pings `/health` every twelve minutes with curl -f; a daily question checks the agent. Cloudflare’s independent Worker cron and UptimeRobot email monitor are configured in setup.md items 6–7. Repository workflows existing is not evidence that external monitors were enabled. Keep one Render free service to stay within the shared free-hour pool.
+Actions cron pings `/health` every twelve minutes with curl -f; a daily question checks the agent. Cloudflare’s independent Worker cron and UptimeRobot email monitor follow setup.md items 6–7. The owner confirmed UptimeRobot, Cloudflare cron and GitHub keepalive setup ([configuration evidence](evals/results/operations.json)). Current-source successful scheduled health/daily-question execution has not been recorded. Configuration confirmation does not establish a successful job or email delivery. Keep one Render free service to stay within the shared free-hour pool.
 
 **If the demo is down:** wait for cold start; inspect `/health`; use the manual tool form during a model outage/cap; check Cloud connectivity; force a demo-only reseed if failed; rotate compromised demo keys; use local Compose for judging. [Full runbook](docs/runbook.md) includes stuck reseeds, persisted ledgers, backups, and Fly.io fallback. Cloud Free has no persistence/backups/TLS; synthetic data only. Recovery point is the last checked-in findings snapshot and synthetic seed, not every judge decision.
 
@@ -352,9 +368,13 @@ Free-tier cold starts, transient database memory peaks, no Cloud Free durability
 
 Completion requires passing local and live/model checks, approved human workflow, cross-session memory, exact fourteen public MCP reads, manual fallback, monitor confirmation, measured latency, snapshot, an actual three-minute video and committed results. The final hackathon submission and any spend-limit increase wait for Baharul’s explicit go-ahead.
 
+The [requirement checklist](docs/requirement-checklist.md) maps all 22 goal items and architecture sections to evidence. Run `.venv/bin/python ops/check_completion.py` for the read-only completion gate; it fails while required proof is missing, stale, failed or uncommitted.
+
 ## 17. Blog
 
 [Draft: What the fines say the agent must do](docs/blog.md). The blog is a repository draft; it is not described as published externally.
+
+[Submission rules checklist](docs/submission-checklist.md) maps all 18 supplied rules to project evidence or owner-only attestations. [Explain RingSight](docs/explain-ringsight.md) is a source-linked participant review guide; neither document certifies personal understanding, eligibility, start timing or ownership agreements. The internal goal is 18 October 2026 at 23:00 IST; the supplied official closing time is 23:59 IST. Final submission still waits for explicit approval.
 
 ## Inline Cypher — schema, projections and every tool
 
@@ -364,6 +384,16 @@ Completion requires passing local and live/model checks, approved human workflow
 CALL db.idx.fulltext.createNodeIndex({label:'Person', language:'English'}, {field:'name_norm', phonetic:'dm:en'});
 CALL db.idx.fulltext.createNodeIndex('Merchant', {field:'name', phonetic:'dm:en'});
 CALL db.idx.fulltext.createNodeIndex('Finding', 'text');
+```
+
+### `fulltext_v6.cypher`
+
+```cypher
+// v6.0.2's createNodeIndex(map) procedure is a no-op; DDL creates real indexes.
+// Phonetic configuration is preserved, as exercised by the upstream6 tests.
+CREATE FULLTEXT INDEX FOR (p:Person) ON (p.name_norm) OPTIONS {language:'English',phonetic:'dm:en'};
+CREATE FULLTEXT INDEX FOR (m:Merchant) ON (m.name) OPTIONS {phonetic:'dm:en'};
+CREATE FULLTEXT INDEX FOR (f:Finding) ON (f.text);
 ```
 
 ### `indexes.cypher`
@@ -562,25 +592,45 @@ RETURN [n IN ns | n.id] AS node_ids,
 ORDER BY pathWeight,hops LIMIT $limit
 ```
 
+### `rs_recall_actions.cypher`
+
+```cypher
+MATCH (pa:PendingAction)-[:BASED_ON]->(f:Finding)
+WHERE f.id IN $ids
+RETURN DISTINCT f.id AS finding_id,pa.id AS pending,pa.kind AS kind,pa.status AS status
+ORDER BY finding_id,pending
+```
+
+### `rs_recall_decisions.cypher`
+
+```cypher
+MATCH (d:Decision)-[:ON]->(pa:PendingAction)-[:BASED_ON]->(f:Finding)
+WHERE f.id IN $ids
+RETURN DISTINCT f.id AS finding_id,pa.id AS pending,d.decision AS decision
+ORDER BY finding_id,pending
+```
+
 ### `rs_recall_findings.cypher`
 
 ```cypher
-MATCH (e:{label}) WHERE e.id IN $ids
-MATCH (f:Finding)-[:ABOUT]->(e)
-WHERE f.created_at <= $as_of AND f.valid_from <= $as_of
+MATCH (f:Finding)-[:ABOUT]->(e:{label})
+WHERE e.id IN $ids AND f.created_at <= $as_of AND f.valid_from <= $as_of
   AND (f.expired_at IS NULL OR f.expired_at > $as_of)
   AND (f.valid_to IS NULL OR f.valid_to >= $as_of)
   AND ($inc OR f.reviewed)
-OPTIONAL MATCH (f)-[:SUPERSEDES]->(old:Finding)
-OPTIONAL MATCH (pa:PendingAction)-[:BASED_ON]->(f)
-OPTIONAL MATCH (d:Decision)-[:ON]->(pa)
-RETURN f.id AS id, f.text AS text, f.typology AS typology, f.confidence AS confidence,
- f.author AS author, f.reviewed AS reviewed, f.created_at AS date_learned,
- f.valid_from AS valid_from, f.valid_to AS valid_to, old.id AS supersedes,
- f.evidence_tool_call_ids AS evidence_tool_call_ids, f.evidence_tx_ids AS evidence_tx_ids,
- collect(DISTINCT {pending:pa.id,kind:pa.kind,status:pa.status,decision:d.decision}) AS actions,
+RETURN properties(f) AS finding, f.created_at AS date_learned,
  collect(DISTINCT e.id) AS about
 ORDER BY date_learned DESC LIMIT $limit
+```
+
+### `rs_recall_supersedes.cypher`
+
+```cypher
+// Optional context is read separately so absent actions cannot remove findings.
+MATCH (f:Finding)-[:SUPERSEDES]->(old:Finding)
+WHERE f.id IN $ids
+RETURN f.id AS finding_id,old.id AS supersedes
+ORDER BY finding_id,supersedes
 ```
 
 ### `rs_resolve_alert.cypher`
@@ -837,7 +887,7 @@ MATCH (s:Session {id:$sid}) MERGE (f:Finding {idem_key:$key}) ON CREATE SET f.id
 
 MERGE (pa:PendingAction {idem_key:$key}) ON CREATE SET pa.id=$pid,pa.kind=$kind,pa.status='pending',pa.rationale=$rationale,pa.proposed_by=$model,pa.created_at=$now,pa.evidence_tool_call_ids=$ev,pa.restriction_check_json=$rc,pa.draft_json=$draft,pa.case_id=$cid WITH pa MATCH (s:Session {id:$sid}) MERGE (pa)-[:IN]->(s) WITH pa UNWIND $targets AS tid MATCH (a:Account {id:tid}) MERGE (pa)-[:TARGETS]->(a) RETURN DISTINCT pa.id AS pending_id,pa.status AS status,pa.kind AS kind
 
-MATCH (s:Session {id:$sid}) CREATE (t:ToolCall {id:$tid,seq:$seq,tool:$tool,args_json:$args,rows_total:$n,rows_returned:$n,truncated:false,elapsed_ms:0,rows_sha256:$hash,guard_hits:$hits,at:$now})-[:IN]->(s) RETURN t.id AS id
+MATCH (s:Session {id:$sid}) CREATE (t:ToolCall {id:$tid,seq:$seq,tool:$tool,args_json:$args,rows_total:$n,rows_returned:$n,truncated:false,elapsed_ms:0,rows_sha256:$hash,result_json:$result,error_reason:$reason,guard_hits:$hits,at:$now})-[:IN]->(s) RETURN t.id AS id
 
 MATCH (f:Finding {id:$id}) RETURN f.id AS id
 
