@@ -15,10 +15,11 @@ def decode(value,default):
 
 async def create_session(ctx):
     from server.db import db
-    from server.catalogue import catalogue_hash
+    from server.catalogue import catalogue_metadata
     from server.config import settings
     now=int(time.time());ctx.session_id=str(uuid.uuid4())
-    await db.write(ctx.identity.tenant,'CREATE (s:Session {id:$id,tenant:$tenant,analyst:$analyst,started_at:$now,as_of:$asof,model_planner:$model,catalogue_hash:$hash}) WITH s MERGE (c:CatalogueVersion {hash:$hash}) ON CREATE SET c.since=$now,c.tools=$tools MERGE (s)-[:USED]->(c) RETURN s.id AS id',{'id':ctx.session_id,'tenant':ctx.identity.tenant,'analyst':ctx.identity.user,'now':now,'asof':ctx.as_of,'model':settings.planner,'hash':catalogue_hash(),'tools':__import__('server.catalogue',fromlist=['tool_names']).tool_names()})
+    version=catalogue_metadata()
+    await db.write(ctx.identity.tenant,'CREATE (s:Session {id:$id,tenant:$tenant,analyst:$analyst,started_at:$now,as_of:$asof,model_planner:$model,model_judge:$judge,catalogue_hash:$hash,prompt_sha256:$prompt}) WITH s MERGE (c:CatalogueVersion {hash:$hash}) ON CREATE SET c.since=$now,c.tools=$tools,c.prompt_sha256=$prompt,c.schemas_sha256=$schemas,c.cypher_sha256=$cypher,c.implementation_sha256=$implementation,c.fingerprint_format=$format MERGE (s)-[:USED]->(c) RETURN s.id AS id',{'id':ctx.session_id,'tenant':ctx.identity.tenant,'analyst':ctx.identity.user,'now':now,'asof':ctx.as_of,'model':settings.planner,'judge':settings.judge,'hash':version['hash'],'tools':version['tools'],'prompt':version['prompt_sha256'],'schemas':version['schemas_sha256'],'cypher':version['cypher_sha256'],'implementation':version['implementation_sha256'],'format':version['format']})
     return ctx.session_id
 
 async def pending_list(offset=0,limit=50):
@@ -55,11 +56,19 @@ async def approve(pending_id,decision,reason,modified_draft=None):
             if modified_draft is None:raise HTTPException(422,detail={'reason':'draft_required','error':'A modification requires the revised draft.'})
             if guard_write(json.dumps(modified_draft)):raise HTTPException(422,detail={'reason':'instruction_like_content','error':'Revised draft contains instruction-like text.'})
             draft=modified_draft
-            # A human can revise wording, but cannot invent financial evidence.
+        if decision=='modify' or (decision!='deny' and kind in {'sar_draft','str_draft'}):
+            # Validate stored drafts again at approval, including drafts made by
+            # an older deployment. Human edits cannot omit or invent facts.
             callids=await db.read(ctx.identity.tenant,'MATCH (p:PendingAction {id:$id})-[:IN]->(s:Session)<-[:IN]-(t:ToolCall) RETURN t.id AS id,t.rows_json AS rows_json,t.tool AS tool',{'id':pending_id})
             calls={c['id']:{'rows':decode(c.get('rows_json'),[])} for c in callids}
-            from server.verifier import verify
-            if verify(json.dumps(draft),calls)['status']!='pass':raise HTTPException(422,detail={'reason':'unsupported_draft','error':'Modified draft must use the case evidence.'})
+            from server.verifier import verify,validate_transactions
+            if kind in {'sar_draft','str_draft'}:
+                from server.narrative import SARDraft,STRDraft
+                try:draft=(STRDraft if kind=='str_draft' else SARDraft).model_validate(draft).model_dump()
+                except ValueError:raise HTTPException(422,detail={'reason':'invalid_draft','error':'The report must include the required sections and complete individual transfer facts.'}) from None
+                transactions=(draft.get('when') or {}).get('transactions',draft.get('transactions',[]))
+                if not transactions or validate_transactions(transactions,calls):raise HTTPException(422,detail={'reason':'unsupported_draft','error':'Every report item must match the exact cited transfer.'})
+            if verify(json.dumps(draft),calls)['status']!='pass':raise HTTPException(422,detail={'reason':'unsupported_draft','error':'The draft must use the case evidence.'})
         now=int(time.time());did=str(uuid.uuid4());cid=row.get('case_id') or str(uuid.uuid4());rid=str(uuid.uuid4())
         params={'pid':pending_id,'did':did,'tenant':ctx.identity.tenant,'decision':decision,'reason':reason.strip(),'user':ctx.identity.user,'role':ctx.identity.role,'now':now,'status':{'approve':'approved','deny':'denied','modify':'modified'}[decision],'cid':cid,'rid':rid,'draft':json.dumps(draft),'grounds':row['rationale'],'due':now+604800}
         base="MATCH (pa:PendingAction {id:$pid,status:'pending'}) CREATE (d:Decision {id:$did,tenant:$tenant,decision:$decision,reason:$reason,decided_by:$user,role:$role,at:$now,confidential:true})-[:ON]->(pa) SET pa.status=$status,pa.draft_json=$draft "

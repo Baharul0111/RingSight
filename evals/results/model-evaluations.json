@@ -1,0 +1,8 @@
+{
+  "suite": "local-evaluations",
+  "local_only": true,
+  "synthetic_demo_only": true,
+  "status": "running",
+  "started_at": 1792219671,
+  "structural_passed": true
+}

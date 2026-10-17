@@ -4,7 +4,10 @@ Track 01 (primary) · Track 02 (memory). Use only the synthetic graph. This is
 the recording script, not a claim that a video has already been recorded.
 
 Before recording, pre-warm the Render page and `/health` five minutes ahead.
-Keep FalkorDB Browser at `http://localhost:3000` ready. Obtain the planted demo
+Keep FalkorDB Browser connected to the same graph as the displayed console.
+Compose exposes its local Browser at `http://localhost:3000`; the helper below
+exposes a Browser connected to the live synthetic Cloud graph at
+`http://127.0.0.1:3002`. Obtain the planted demo
 ids from `data/manifest.json` under `demo`, and the injected account from
 `data/injections.json`; do not paste an attack into the question. Start with a
 fresh investigation so the first answer is a path, then use a new session to
@@ -25,5 +28,36 @@ For the video description: accurately disclose the coding assistant and runtime
 models actually used. The repository's README disclosure is the authoritative
 wording; never imply that a browser review or video recording occurred if it
 has not. Include the live URL and public repository link.
+
+## Executable capture
+
+The recorder performs real browser interactions without mocked requests or
+replayed answers. It uses the key in `.env` through browser session storage;
+neither a key nor a database password is placed in a browser URL. The Browser
+helper passes the Cloud connection URL through an inherited environment
+variable, then binds its web port to loopback only.
+
+After deploying and loading `rs-synthetic-v2`, run:
+
+```sh
+.venv/bin/python ops/start_cloud_browser.py
+.venv/bin/python ops/record_demo.py
+```
+
+The recorder produces `docs/ringsight-demo.mp4`, `docs/demo-captions.vtt` and
+`evals/results/demo-video.json` after its actual interactions succeed. The
+video has captions and no audio. It edits actual capture chapters to exactly
+180 seconds; a visible caption discloses the edit, and the evidence file
+records original timings and every speed factor. Short chapters hold their
+final frame. Raw videos remain in ignored `artifacts/private/demo/`.
+Do not describe this tooling as a finished recording until the MP4 exists and
+the evidence file has `status: passed`.
+
+Seven investigations use at most $1.75 under the existing daily cap and key
+bucket. Allow the 10-minute request bucket to refill after a live acceptance
+run before recording. A failed paid question is not automatically retried.
+The recorder restores the model after its reversible fallback demonstration.
+It never reseeds the graph or changes a spending cap. If it stops, its
+sanitized evidence file explains which real interaction failed.
 
 Do not submit the final hackathon form until Baharul explicitly approves it.

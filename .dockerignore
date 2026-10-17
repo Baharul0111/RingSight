@@ -11,3 +11,5 @@ evals/results
 research
 *.log
 .DS_Store
+artifacts/private
+.playwright

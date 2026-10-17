@@ -1,12 +1,18 @@
 {
   "suite": "ui-real-local",
   "status": "passed",
-  "target": "actual local FastAPI and FalkorDB graph, no API mocks or model calls",
+  "target": "http://127.0.0.1:18000",
+  "provenance": "actual local FastAPI and FalkorDB graph; no API mocks or investigation model calls",
+  "health_probe_note": "The actual UI polls /health, whose tiny cached model-readiness probe remains subject to the application's spend gates.",
+  "started_at": 1792219718,
   "checks": {
     "real_server_identity": "passed",
     "actual_typed_neighbourhood_rows_and_canvas": "passed",
     "actual_money_and_ist_rendering": "passed",
     "actual_cash_abstention": "passed",
-    "zero_browser_runtime_errors": "passed"
-  }
+    "zero_browser_runtime_errors": "passed",
+    "zero_investigation_requests": "passed"
+  },
+  "finished_at": 1792219721,
+  "investigation_requests": 0
 }

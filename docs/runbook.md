@@ -33,18 +33,61 @@ uv run python ops/admin.py resume
 uv run python ops/admin.py reseed-force
 ```
 
-`make smoke` starts the local Compose stack, waits for a populated graph,
-restarts FalkorDB and confirms that the account count survives. It does not
-require a successful model response. Database ports bind to loopback only.
+`make smoke` starts the local Compose stack, checks the compiled page and
+server-assigned identity, creates a random `PersistenceProbe` node, restarts
+FalkorDB and checks that the exact original nonce and seed timestamp survive.
+It verifies AOF is enabled with `appendfsync everysec`. Readiness and recovery
+are read directly from the local graph, bypassing `/health` and its cache.
+An automatic reseed cannot reproduce the random nonce. No model call is made.
+Evidence is written to `evals/results/local-smoke.json`; this tests a clean
+container restart, not machine or power loss. Database ports bind to loopback.
+
+For a single command that builds an isolated project, proves actual AOF
+persistence and runs actual plus mocked headless UI checks against the built
+assets, use:
+
+```sh
+.venv/bin/python ops/verify_compose.py
+```
+
+The wrapper passes project `rs_acceptance` and app/Redis/Browser ports
+`18000`/`16379`/`13000` explicitly into every child command. No shell exports
+are required. It records the actual app image id and architecture, whether the
+volume existed, and hashes of freshly written child result files in
+`evals/results/compose-acceptance.json`. It retains existing volumes. To test
+an empty volume, choose a new name with `--project rs_acceptance_fresh`.
+No investigation is submitted; the real UI's cached health probe may run.
+
+For the lower-level smoke alone, the equivalent command is:
+
+```sh
+COMPOSE_PROJECT_NAME=rs_acceptance RS_APP_PORT=18000 RS_REDIS_PORT=16379 RS_BROWSER_PORT=13000 make smoke
+```
+
+The default ports remain app `8000`, Redis `6379`, Browser `3000`.
 
 ## Recovery and data-loss statement
 
 FalkorDB Cloud Free has no persistence, backups or TLS. All data is synthetic.
 An empty graph or missing `Meta.seed_complete` triggers background regeneration
 and restoration of the committed findings snapshot. Newer findings, decisions
-and the daily spend ledger can be lost in a Cloud restart; the Console limit
-still bounds spend. Hackathon RPO is the deterministic graph plus the latest
-snapshot; RTO is the measured reseed duration plus free-host wake-up time.
+and the daily spend ledger can be lost in a spontaneous Cloud restart; the
+Console limit still bounds spend. Hackathon RPO is the deterministic graph
+plus the latest snapshot; RTO is the measured reseed duration plus free-host
+wake-up time.
+
+A planned rebuild first saves Tenant controls and all Spend rows to a temporary
+private recovery checkpoint under ignored `artifacts/private/reseed-control/`.
+Its directory uses the database URL's hash and its file is scoped to the graph;
+no connection URL or credential is written. The file is mode `0600`, atomically
+replaced and fsynced before any graph deletion. A failed capture aborts deletion.
+Outstanding reservations are conservatively charged as spent; the largest
+known liability is restored, caps can only stay equal or decrease, and halt or
+model-off settings survive. The checkpoint is restored after bulk load and
+after failure, remains available to the next loader process if the graph is
+missing, and is removed only when the rebuild completes. It is never a runtime
+store or part of the public findings snapshot. A container loss can also lose
+this temporary file; the Console spending limit remains the outer wall.
 
 Capture demo findings with `make snapshot`, review that the file contains only
 synthetic records, then commit `data/findings_snapshot.json`. A seed restore
@@ -64,7 +107,52 @@ interval, your e-mail alert contact. Cloudflare: deploy
 `ops/cloudflare-worker.js`, set `HEALTH_URL` to `PUBLIC_URL/health`, and add
 cron `8-59/15 * * * *`. GitHub Actions uses `HEALTH_URL` and `JUDGE_KEY`
 repository secrets and fails on non-200 health responses. The daily question
-probe checks `answered_with_path` rather than only container liveness.
+probe checks an evidenced answer rather than only container liveness.
+
+## Deployment acceptance and recording
+
+`ops/live_verify.py` reads `PUBLIC_URL` and keys from `.env`. Its default mode
+checks the actual deployment, server-assigned judge identity, exact fourteen
+read-only MCP tools, a standard MCP call, and manual depth-1/depth-4 paths.
+It requires `Meta.seed_version=rs-synthetic-v2` before any costly questions.
+
+```sh
+.venv/bin/python ops/live_verify.py
+.venv/bin/python ops/live_verify.py --acceptance --fallback
+```
+
+The acceptance mode performs seven live operational questions, approves only
+its own synthetic case proposal, denies its own hold recommendation, recalls
+reviewed dated memory, checks unknown/CASH outcomes and the planted memo, and
+records actual timing and costs. `--fallback` temporarily disables the model,
+proves a manual path still works, and restores the previous enabled setting.
+It neither deletes ring edges nor runs structural/model fixtures on Cloud.
+Those evaluations use disposable local copies.
+
+If the current deployment still holds the old synthetic version, deploy the
+new code and follow the separate operator rebuild procedure, preserving the
+saved findings and today's spend ledger. Connection failures alone are not a
+reason to reseed. Verification itself never reseeds, raises or resets a cap,
+clears the spend ledger, or retries a paid question after failure.
+
+Run the concurrency probe separately after the key's 10-minute bucket has
+refilled:
+
+```sh
+.venv/bin/python ops/live_verify.py --load
+```
+
+It submits five simultaneous investigations, checks that excess requests get
+the busy response, samples `/health` RSS and reports depth-4 p50/p95 with the
+sample count. Health is cached for 15 seconds; sampled RSS is not a process
+high-water mark. Five requests fit at most $1.25 under the existing cap.
+All modes write incremental sanitized artifacts under `evals/results/` and
+mark failures explicitly. A result file's existence alone is not a pass.
+
+For the real three-minute browser recording, follow the commands and disclosure
+in [demo-script.md](demo-script.md#executable-capture). Let the request bucket
+refill between acceptance, load and recording runs. Stop the local Browser
+helper when finished with `docker stop ringsight-browser`.
 
 ## Before a real pilot
 

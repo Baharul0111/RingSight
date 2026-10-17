@@ -1,0 +1,13 @@
+{
+  "status": "passed",
+  "shape": "answered_with_path",
+  "reason": null,
+  "cost_usd": 0.047062,
+  "elapsed_s": 17.654,
+  "tool_calls": 8,
+  "model_requests": 4,
+  "session_id": "77d4f9fd-f8db-4a7b-bcf6-6fc4ec76ba5a",
+  "suite": "built-runtime-diagnostic",
+  "project": "rs_acceptance",
+  "at": 1792216405
+}

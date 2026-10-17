@@ -1,0 +1,214 @@
+{
+  "suite": "runtime-smoke",
+  "local_only": true,
+  "synthetic_demo_only": true,
+  "cases": [
+    {
+      "depth": 1,
+      "reason": null,
+      "stop_detail": null,
+      "tokens": {
+        "input": 14863,
+        "output": 1170,
+        "cache_read": 5795
+      },
+      "model_requests": 4,
+      "model_trace": [
+        {
+          "model": "claude-sonnet-5-5",
+          "input_tokens": 3351,
+          "output_tokens": 456,
+          "cache_read_tokens": 2595,
+          "finish_reason": "tool_call",
+          "tool_names": [
+            "rs_account_profile",
+            "rs_neighbourhood",
+            "rs_shared_identifiers"
+          ]
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "input_tokens": 4823,
+          "output_tokens": 50,
+          "cache_read_tokens": 1600,
+          "finish_reason": "stop",
+          "tool_names": []
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "input_tokens": 4956,
+          "output_tokens": 389,
+          "cache_read_tokens": 1600,
+          "finish_reason": "stop",
+          "tool_names": []
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "input_tokens": 1733,
+          "output_tokens": 275,
+          "cache_read_tokens": 0,
+          "finish_reason": "stop",
+          "tool_names": []
+        }
+      ],
+      "shape": "answered_with_path",
+      "text": "The graph returned this evidence path: ACC-4471 \u2192 DEV-f31c \u2192 ACC-10477. Review the transfer evidence before deciding. These connections do not establish laundering; a named analyst must assess them.",
+      "tool_names": [
+        "rs_resolve_entity",
+        "rs_recall_findings",
+        "rs_coverage_status",
+        "rs_neighbourhood",
+        "rs_account_profile",
+        "rs_shared_identifiers",
+        "rs_record_finding",
+        "rs_check_restrictions",
+        "rs_propose_action"
+      ],
+      "path_ids": [
+        "ACC-4471",
+        "ACC-1",
+        "ACC-10477",
+        "ACC-2",
+        "ACC-3",
+        "ACC-4",
+        "ACC-5",
+        "ACC-6",
+        "DEV-r00-0",
+        "DEV-f31c",
+        "ALERT-1"
+      ],
+      "pending": 1,
+      "judge": {
+        "verdict": "weak",
+        "unsupported_claims": [
+          "Thesis path ACC-4471 \u2192 DEV-f31c \u2192 ACC-10477 shows only a shared device; it does not by itself indicate fund movement or illicit intent",
+          "No evidence ties the 55,000,000 outflow to ACC-3 to the inbound funds, since ACC-3 is itself one of the inbound senders"
+        ],
+        "missing_queries": [
+          "Device history for DEV-f31c: how many accounts share it, over what period, and whether it is a known shared or public device",
+          "Full transfer history between ACC-4471 and ACC-10477 beyond TX-1 and TX-8, including timing and net flow",
+          "Account profiles and onward flows for ACC-3 and ACC-10477 to test whether funds cycle back or exit the network"
+        ]
+      },
+      "verifier": {
+        "status": "replaced",
+        "unsupported": [
+          "11",
+          "55",
+          "11"
+        ],
+        "normalizations": [],
+        "replacement_verified": "pass"
+      },
+      "cost_usd": 0.030416,
+      "elapsed_s": 18.207
+    },
+    {
+      "depth": 4,
+      "reason": null,
+      "stop_detail": null,
+      "tokens": {
+        "input": 15610,
+        "output": 1412,
+        "cache_read": 5795
+      },
+      "model_requests": 4,
+      "model_trace": [
+        {
+          "model": "claude-sonnet-5-5",
+          "input_tokens": 3350,
+          "output_tokens": 493,
+          "cache_read_tokens": 2595,
+          "finish_reason": "tool_call",
+          "tool_names": [
+            "rs_account_profile",
+            "rs_neighbourhood",
+            "rs_shared_identifiers"
+          ]
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "input_tokens": 5110,
+          "output_tokens": 38,
+          "cache_read_tokens": 1600,
+          "finish_reason": "stop",
+          "tool_names": []
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "input_tokens": 5231,
+          "output_tokens": 502,
+          "cache_read_tokens": 1600,
+          "finish_reason": "stop",
+          "tool_names": []
+        },
+        {
+          "model": "claude-sonnet-5-5",
+          "input_tokens": 1919,
+          "output_tokens": 379,
+          "cache_read_tokens": 0,
+          "finish_reason": "stop",
+          "tool_names": []
+        }
+      ],
+      "shape": "answered_with_path",
+      "text": "The graph returned this evidence path: ACC-4471 \u2192 DEV-f31c \u2192 ACC-10477 \u2192 DEV-r00-1 \u2192 ACC-1. Review the transfer evidence before deciding. These connections do not establish laundering; a named analyst must assess them.",
+      "tool_names": [
+        "rs_resolve_entity",
+        "rs_recall_findings",
+        "rs_coverage_status",
+        "rs_neighbourhood",
+        "rs_account_profile",
+        "rs_shared_identifiers",
+        "rs_record_finding",
+        "rs_check_restrictions",
+        "rs_propose_action"
+      ],
+      "path_ids": [
+        "ACC-4471",
+        "ACC-1",
+        "ACC-10477",
+        "ACC-2",
+        "ACC-3",
+        "ACC-4",
+        "ACC-5",
+        "ACC-6",
+        "DEV-r00-0",
+        "DEV-f31c",
+        "ALERT-1",
+        "DEV-r00-1",
+        "ACC-55820",
+        "PER-2291"
+      ],
+      "pending": 1,
+      "judge": {
+        "verdict": "weak",
+        "unsupported_claims": [
+          "The thesis only restates a shared-device path (ACC-4471 \u2192 DEV-f31c \u2192 ACC-10477 \u2192 DEV-r00-1 \u2192 ACC-1) and does not claim laundering, which is consistent with the evidence, but shared identifiers alone are not evidence of illicit flow.",
+          "Amounts are not reconciled: inflows of 86.89M against outflows of 66M leave about 20.9M unaccounted for, so only 66M of outflow is visible."
+        ],
+        "missing_queries": [
+          "Full transfer history and timing between ACC-4471, ACC-10477 and ACC-1, including the recipients of the 55M transfer to ACC-3 and the 11M return to ACC-10477",
+          "Device history for DEV-f31c and DEV-r00-1 (how many accounts share them, and when each was first and last seen) to rule out benign sharing",
+          "Neighbourhood and profile checks on ACC-55820 and the person node PER-2291, plus ACC-3's onward flows, to see whether funds are layered or cycled back"
+        ]
+      },
+      "verifier": {
+        "status": "replaced",
+        "unsupported": [
+          "11",
+          "55",
+          "11",
+          "20261011",
+          "20261013"
+        ],
+        "normalizations": [],
+        "replacement_verified": "pass"
+      },
+      "cost_usd": 0.034329,
+      "elapsed_s": 41.872
+    }
+  ],
+  "passed": true,
+  "phase": "depth_4"
+}

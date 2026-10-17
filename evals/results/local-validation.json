@@ -1,0 +1,19 @@
+{
+  "suite": "local-validation",
+  "local_only": true,
+  "status": "passed",
+  "started_at": 1792169909,
+  "steps": [
+    {
+      "name": "graph_and_safety_contracts",
+      "exit_code": 0,
+      "elapsed_s": 32.75
+    },
+    {
+      "name": "capped_depth_one_and_four",
+      "exit_code": 0,
+      "elapsed_s": 64.279
+    }
+  ],
+  "finished_at": 1792170006
+}

@@ -3,14 +3,17 @@ import asyncio
 import contextlib
 import hashlib
 import json
+import logging
 import os
 import time
+import traceback
+import uuid
 from contextlib import asynccontextmanager
 from pathlib import Path
 from urllib.parse import urlsplit
 from typing import Literal
 from anthropic import AsyncAnthropic
-from fastapi import FastAPI,HTTPException,Request,Query
+from fastapi import FastAPI,HTTPException,Request,Query,BackgroundTasks
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse,StreamingResponse,FileResponse,PlainTextResponse
 from fastapi.staticfiles import StaticFiles
@@ -30,6 +33,35 @@ ROOT=Path(__file__).resolve().parents[1]
 health_cache={'at':0,'body':{},'code':503}
 probe_cache={'at':0,'state':'unreachable'}
 HEALTH_LOCK=asyncio.Lock()
+log=logging.getLogger(__name__)
+
+def investigation_error(exc,ctx):
+    """Report safe failure metadata without logging provider bodies or inputs."""
+    from anthropic import APIError
+    from pydantic_ai.exceptions import ModelHTTPError
+    from redis.exceptions import RedisError
+    incident_id=str(uuid.uuid4())
+    status=getattr(exc,'status_code',None)
+    if isinstance(exc,(APIError,ModelHTTPError)):
+        detail=str(getattr(exc,'body','')).lower()
+        reason='budget_exhausted' if 'credit balance' in detail or 'spend_limit' in detail else 'rate_limit' if status==429 else 'model_unavailable'
+    elif isinstance(exc,RedisError):reason='db_unavailable'
+    else:reason='internal_error'
+    frames=[{'file':Path(frame.filename).name,'line':frame.lineno,'function':frame.name}
+            for frame in traceback.extract_tb(exc.__traceback__)[-8:]]
+    log.error(json.dumps({'event':'investigation_failed','incident_id':incident_id,
+                         'session_id':ctx.session_id,'exception_type':type(exc).__name__,
+                         'provider_status':status,'reason':reason,
+                         'model_requests':ctx.model_requests,'tool_calls':ctx.tool_count,
+                         'frames':frames}))
+    message={'budget_exhausted':'Demo budget exhausted',
+             'rate_limit':'Model service is busy — retry in 30 seconds',
+             'model_unavailable':'Model unavailable',
+             'db_unavailable':'Database unavailable — retry in 30 seconds',
+             'internal_error':'The investigation could not finish'}[reason]
+    suffix='.' if reason=='db_unavailable' else ' — the tool console still works.'
+    return {'error':message+suffix,'reason':reason,
+            'retry_after':30,'incident_id':incident_id}
 
 mcp_http=read_srv.http_app(path='/mcp',stateless_http=True,json_response=True,allowed_hosts=['localhost','127.0.0.1','testserver','*.onrender.com']+([urlsplit(settings.public_url).hostname] if settings.public_url else []))
 
@@ -80,7 +112,10 @@ app.add_middleware(IdentityMiddleware)
 @app.exception_handler(HTTPException)
 async def http_error(request,exc):return JSONResponse(exc.detail if isinstance(exc.detail,dict) else {'error':str(exc.detail)},status_code=exc.status_code)
 @app.exception_handler(RequestValidationError)
-async def validation_error(request,exc):return JSONResponse({'error':'Request fields failed validation.','reason':'validation','fields':['.'.join(map(str,e['loc'])) for e in exc.errors()]},status_code=422)
+async def validation_error(request,exc):
+    errors=exc.errors()
+    identity_override=any(e['type']=='extra_forbidden' and e['loc'][-1] in {'tenant','role','user','graph','session_id'} for e in errors)
+    return JSONResponse({'error':'Request fields failed validation.','reason':'validation','fields':['.'.join(map(str,e['loc'])) for e in errors]},status_code=400 if identity_override else 422)
 @app.exception_handler(Exception)
 async def unexpected(request,exc):return JSONResponse({'error':'The service could not complete this request. The read-only tool console may still work.','reason':'db_unavailable','retry_after':30},status_code=503)
 
@@ -93,6 +128,13 @@ def admin():
     ctx=get_context()
     if ctx.identity.kind!='admin':raise HTTPException(403,detail={'error':'Administrator key required.','reason':'admin_required'})
     return ctx
+
+def visitor_ip(request):
+    if os.getenv('RENDER','').lower()=='true':
+        forwarded=request.headers.get('x-forwarded-for','').split(',')[0].strip()
+        try:return str(__import__('ipaddress').ip_address(forwarded))
+        except ValueError:pass
+    return request.client.host if request.client else 'unknown'
 
 async def ready(tenant):
     try:
@@ -135,7 +177,7 @@ class Feedback(StrictBody):
 
 @app.post('/tool')
 async def tool(body:Tool,request:Request):
-    ctx=human();rate(('tool-key',ctx.identity.user,ctx.identity.tenant),60,600);rate(('tool-ip',request.client.host if request.client else 'unknown'),120,600)
+    ctx=human();rate(('tool-key',ctx.identity.user,ctx.identity.tenant),60,600);rate(('tool-ip',visitor_ip(request)),120,600)
     await ready(ctx.identity.tenant)
     return await call_tool(body.tool,body.args)
 
@@ -146,23 +188,22 @@ async def ask(body:Ask,request:Request):
     except TimeoutError:raise HTTPException(429,detail={'error':'Three investigations are already running; retry shortly.','reason':'busy','retry_after':15})
     try:
         rate(('ask-key',ctx.identity.user,ctx.identity.tenant),10,600)
-        rate(('ask-ip',request.client.host if request.client else 'unknown'),20,600)
+        rate(('ask-ip',visitor_ip(request)),20,600)
+        if body.as_of is not None:ctx.as_of=body.as_of
+        else:
+            alert=__import__('re').search(r'\b(?:ALERT|AL)-[A-Za-z0-9]+\b',body.question)
+            if alert:
+                rows=await db.read(ctx.identity.tenant,'MATCH (a:Alert {id:$id}) RETURN a.raised_at AS at',{'id':alert.group()})
+                if rows:ctx.as_of=rows[0]['at']
+        ctx.queue=asyncio.Queue()
     except BaseException:INVESTIGATIONS.release();raise
-    if body.as_of is not None:ctx.as_of=body.as_of
-    else:
-        alert=__import__('re').search(r'\bAL-[A-Za-z0-9]+\b',body.question)
-        if alert:
-            rows=await db.read(ctx.identity.tenant,'MATCH (a:Alert {id:$id}) RETURN a.raised_at AS at',{'id':alert.group()})
-            if rows:ctx.as_of=rows[0]['at']
-    ctx.queue=asyncio.Queue()
     async def run():
-        from server.agent import investigate
-        try:await ctx.emit('answer',await investigate(body.question,body.depth))
+        try:
+            from server.agent import investigate
+            await ctx.emit('answer',await investigate(body.question,body.depth))
         except HTTPException as exc:await ctx.emit('error',exc.detail)
         except Exception as exc:
-            body=getattr(exc,'body',{}) or {};detail=str(body).lower()
-            reason='budget_exhausted' if 'credit balance' in detail or 'spend_limit' in detail else 'model_unavailable'
-            await ctx.emit('error',{'error':'Demo budget exhausted — the tool console still works.' if reason=='budget_exhausted' else 'Model unavailable — the tool console still works.','reason':reason,'retry_after':30})
+            await ctx.emit('error',investigation_error(exc,ctx))
         finally:
             INVESTIGATIONS.release();await ctx.queue.put(None)
     async def stream():
@@ -234,8 +275,14 @@ async def health():
         if now-health_cache['at']<15:return JSONResponse(health_cache['body'],status_code=health_cache['code'])
         body={'status':'unavailable','catalogue_hash':catalogue_hash(),**manager.status};code=503
         try:
-            counts,meta,pending,spend,version,memory=await asyncio.gather(db.read('bank_a','MATCH (a:Account) RETURN count(a) AS n',timeout=2000),db.read('bank_a','MATCH (m:Meta) RETURN m.seed_complete AS complete,m.reseed_s AS reseed_s LIMIT 1',timeout=2000),db.read('bank_a',"MATCH (p:PendingAction {status:'pending'}) RETURN count(p) AS n",timeout=2000),spend_state('bank_a'),db.version(),db.memory_mb('bank_a'))
-            body.update(accounts=counts[0]['n'] if counts else 0,seed_complete=bool(meta and meta[0]['complete']),reseed_s=meta[0]['reseed_s'] if meta else None,pending=pending[0]['n'] if pending else 0,spend_usd=spend.get('usd') or 0,daily_usd_cap=settings.daily_cap,engine_version=version,graph_mb=round(memory,3),graph_mb_warning=memory>=80,db='ok',rss_mb=round(__import__('psutil').Process().memory_info().rss/1048576,2))
+            graphs=await asyncio.to_thread(db.redis.execute_command,'GRAPH.LIST')
+            if 'rs_bank_a' not in [g.decode() if isinstance(g,bytes) else str(g) for g in graphs]:
+                await manager.start('bank_a')
+                body.update(reason='reseeding',db='ok',accounts=0,seed_complete=False,**manager.status)
+                health_cache.update(at=now,body=body,code=503)
+                return JSONResponse(body,status_code=503)
+            counts,meta,pending,spend,version,memory=await asyncio.gather(db.read('bank_a','MATCH (a:Account) RETURN count(a) AS n',timeout=2000),db.read('bank_a','MATCH (m:Meta) RETURN m.seed_complete AS complete,m.seed_version AS seed_version,m.reseed_s AS reseed_s LIMIT 1',timeout=2000),db.read('bank_a',"MATCH (p:PendingAction {status:'pending'}) RETURN count(p) AS n",timeout=2000),spend_state('bank_a'),db.version(),db.memory_mb('bank_a'))
+            body.update(accounts=counts[0]['n'] if counts else 0,seed_complete=bool(meta and meta[0]['complete']),seed_version=meta[0].get('seed_version') if meta else None,reseed_s=meta[0]['reseed_s'] if meta else None,pending=pending[0]['n'] if pending else 0,spend_usd=spend.get('usd') or 0,daily_usd_cap=settings.daily_cap,engine_version=version,graph_mb=round(memory,3),graph_mb_warning=memory>=80,db='ok',rss_mb=round(__import__('psutil').Process().memory_info().rss/1048576,2))
             if not body['accounts'] or not body['seed_complete']:
                 await manager.start('bank_a');body.update(manager.status)
             else:
@@ -255,7 +302,7 @@ class Enabled(StrictBody):enabled:bool
 class Halt(StrictBody):halted:bool=True
 async def admin_audit(action,args):
     ctx=get_context();await actions.create_session(ctx)
-    tid=__import__('uuid').uuid4().hex
+    tid=str(__import__('uuid').uuid4())
     await db.write(ctx.identity.tenant,'MATCH (s:Session {id:$sid}) CREATE (t:ToolCall {id:$id,tool:$tool,args_json:$args,at:$now})-[:IN]->(s) RETURN t.id AS id',{'sid':ctx.session_id,'id':tid,'tool':'admin_'+action,'args':json.dumps(args),'now':int(time.time())})
     health_cache['at']=0
 @app.post('/admin/halt')
@@ -265,10 +312,25 @@ async def halt(body:Halt):
 async def llm(body:Enabled):
     ctx=admin();await db.write(ctx.identity.tenant,'MATCH (t:Tenant {name:$name}) SET t.llm_enabled=$enabled RETURN t.llm_enabled AS enabled',{'name':ctx.identity.tenant,'enabled':body.enabled});probe_cache['at']=0;await admin_audit('llm',body.model_dump());return {'llm_enabled':body.enabled}
 @app.post('/admin/reseed')
-async def reseed(force:bool=False):
+async def reseed(background_tasks:BackgroundTasks,force:bool=False):
     ctx=admin()
     if settings.env!='demo':raise HTTPException(404,detail={'reason':'not_found'})
-    status=await manager.start(ctx.identity.tenant,force);health_cache['at']=0;return status
+    if force and INVESTIGATIONS._value<3:raise HTTPException(409,detail={'reason':'busy','error':'Wait for active investigations to finish before rebuilding the demo graph.'})
+    status=await manager.start(ctx.identity.tenant,force);health_cache['at']=0
+    if status.get('reseeding') and manager.task:
+        # Writing before GRAPH.BULK would recreate the graph key and make the
+        # loader fail. Record the operator action in the rebuilt graph instead.
+        background_tasks.add_task(audit_reseed,manager.task,ctx.identity,force,int(time.time()))
+    elif not status.get('reseed_failed'):
+        await admin_audit('reseed',{'force':force,'result':'already_loaded'})
+    return status
+
+async def audit_reseed(task,identity,force,requested_at):
+    await asyncio.shield(task)
+    if manager.failed:return
+    token=current_context.set(Investigation(identity))
+    try:await admin_audit('reseed',{'force':force,'requested_at':requested_at,'result':'completed'})
+    finally:current_context.reset(token)
 @app.post('/admin/algo_refresh')
 async def algo_refresh():
     ctx=admin()

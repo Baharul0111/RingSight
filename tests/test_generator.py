@@ -79,3 +79,13 @@ def test_deterministic_csvs_and_answer_keys(tmp_path, dataset):
 def test_invalid_tiny_graph_refused():
     with pytest.raises(ValueError):
         generate(100)
+
+
+def test_demo_seed_has_no_shared_phone_shortcut_to_exit():
+    from synth.generate import generate
+    data=generate(accounts=1000)
+    owners={e['_to']:e['_from'] for e in data.edges['OWNS']}
+    assert owners['ACC-10477']==owners['ACC-55820']
+    seed_phones={e['_to'] for e in data.edges['HAS_PHONE'] if e['_from']==owners['ACC-4471']}
+    exit_phones={e['_to'] for e in data.edges['HAS_PHONE'] if e['_from']==owners['ACC-55820']}
+    assert not seed_phones&exit_phones

@@ -1,0 +1,443 @@
+{
+  "tenant": "structural_eval",
+  "model_calls": 0,
+  "rows": [
+    {
+      "len": 4,
+      "accounts": [
+        "ACC-82",
+        "ACC-83",
+        "ACC-84",
+        "ACC-85",
+        "ACC-82"
+      ],
+      "edges": [
+        {
+          "id": "TX-79",
+          "amount": 11100000,
+          "ts": 1792094399,
+          "rail": "NEFT",
+          "memo": null,
+          "source": "ACC-82",
+          "target": "ACC-83",
+          "type": "TX"
+        },
+        {
+          "id": "TX-80",
+          "amount": 10767000,
+          "ts": 1792094579,
+          "rail": "NEFT",
+          "memo": null,
+          "source": "ACC-83",
+          "target": "ACC-84",
+          "type": "TX"
+        },
+        {
+          "id": "TX-81",
+          "amount": 10434000,
+          "ts": 1792094759,
+          "rail": "NEFT",
+          "memo": null,
+          "source": "ACC-84",
+          "target": "ACC-85",
+          "type": "TX"
+        },
+        {
+          "id": "TX-82",
+          "amount": 10101000,
+          "ts": 1792094939,
+          "rail": "NEFT",
+          "memo": null,
+          "source": "ACC-85",
+          "target": "ACC-82",
+          "type": "TX"
+        }
+      ],
+      "span_s": 540
+    },
+    {
+      "len": 5,
+      "accounts": [
+        "ACC-82",
+        "ACC-47",
+        "ACC-83",
+        "ACC-84",
+        "ACC-85",
+        "ACC-82"
+      ],
+      "edges": [
+        {
+          "id": "TX-79",
+          "amount": 11100000,
+          "ts": 1792094399,
+          "rail": "NEFT",
+          "memo": null,
+          "source": "ACC-82",
+          "target": "ACC-83",
+          "type": "TX"
+        },
+        {
+          "id": "TX-49",
+          "amount": 11100000,
+          "ts": 1792094459,
+          "rail": "NEFT",
+          "memo": null,
+          "source": "ACC-47",
+          "target": "ACC-48",
+          "type": "TX"
+        },
+        {
+          "id": "TX-80",
+          "amount": 10767000,
+          "ts": 1792094579,
+          "rail": "NEFT",
+          "memo": null,
+          "source": "ACC-83",
+          "target": "ACC-84",
+          "type": "TX"
+        },
+        {
+          "id": "TX-81",
+          "amount": 10434000,
+          "ts": 1792094759,
+          "rail": "NEFT",
+          "memo": null,
+          "source": "ACC-84",
+          "target": "ACC-85",
+          "type": "TX"
+        },
+        {
+          "id": "TX-82",
+          "amount": 10101000,
+          "ts": 1792094939,
+          "rail": "NEFT",
+          "memo": null,
+          "source": "ACC-85",
+          "target": "ACC-82",
+          "type": "TX"
+        }
+      ],
+      "span_s": 540
+    },
+    {
+      "len": 5,
+      "accounts": [
+        "ACC-82",
+        "ACC-47",
+        "ACC-83",
+        "ACC-84",
+        "ACC-85",
+        "ACC-82"
+      ],
+      "edges": [
+        {
+          "id": "TX-79",
+          "amount": 11100000,
+          "ts": 1792094399,
+          "rail": "NEFT",
+          "memo": null,
+          "source": "ACC-82",
+          "target": "ACC-83",
+          "type": "TX"
+        },
+        {
+          "id": "TX-50",
+          "amount": 11100000,
+          "ts": 1792094519,
+          "rail": "NEFT",
+          "memo": null,
+          "source": "ACC-47",
+          "target": "ACC-49",
+          "type": "TX"
+        },
+        {
+          "id": "TX-80",
+          "amount": 10767000,
+          "ts": 1792094579,
+          "rail": "NEFT",
+          "memo": null,
+          "source": "ACC-83",
+          "target": "ACC-84",
+          "type": "TX"
+        },
+        {
+          "id": "TX-81",
+          "amount": 10434000,
+          "ts": 1792094759,
+          "rail": "NEFT",
+          "memo": null,
+          "source": "ACC-84",
+          "target": "ACC-85",
+          "type": "TX"
+        },
+        {
+          "id": "TX-82",
+          "amount": 10101000,
+          "ts": 1792094939,
+          "rail": "NEFT",
+          "memo": null,
+          "source": "ACC-85",
+          "target": "ACC-82",
+          "type": "TX"
+        }
+      ],
+      "span_s": 540
+    },
+    {
+      "len": 5,
+      "accounts": [
+        "ACC-82",
+        "ACC-191",
+        "ACC-83",
+        "ACC-84",
+        "ACC-85",
+        "ACC-82"
+      ],
+      "edges": [
+        {
+          "id": "TX-79",
+          "amount": 11100000,
+          "ts": 1792094399,
+          "rail": "NEFT",
+          "memo": null,
+          "source": "ACC-82",
+          "target": "ACC-83",
+          "type": "TX"
+        },
+        {
+          "id": "TX-279",
+          "amount": 11100000,
+          "ts": 1792094459,
+          "rail": "NEFT",
+          "memo": null,
+          "source": "ACC-191",
+          "target": "ACC-193",
+          "type": "TX"
+        },
+        {
+          "id": "TX-80",
+          "amount": 10767000,
+          "ts": 1792094579,
+          "rail": "NEFT",
+          "memo": null,
+          "source": "ACC-83",
+          "target": "ACC-84",
+          "type": "TX"
+        },
+        {
+          "id": "TX-81",
+          "amount": 10434000,
+          "ts": 1792094759,
+          "rail": "NEFT",
+          "memo": null,
+          "source": "ACC-84",
+          "target": "ACC-85",
+          "type": "TX"
+        },
+        {
+          "id": "TX-82",
+          "amount": 10101000,
+          "ts": 1792094939,
+          "rail": "NEFT",
+          "memo": null,
+          "source": "ACC-85",
+          "target": "ACC-82",
+          "type": "TX"
+        }
+      ],
+      "span_s": 540
+    },
+    {
+      "len": 5,
+      "accounts": [
+        "ACC-82",
+        "ACC-191",
+        "ACC-83",
+        "ACC-84",
+        "ACC-85",
+        "ACC-82"
+      ],
+      "edges": [
+        {
+          "id": "TX-79",
+          "amount": 11100000,
+          "ts": 1792094399,
+          "rail": "NEFT",
+          "memo": null,
+          "source": "ACC-82",
+          "target": "ACC-83",
+          "type": "TX"
+        },
+        {
+          "id": "TX-281",
+          "amount": 11100000,
+          "ts": 1792094519,
+          "rail": "NEFT",
+          "memo": null,
+          "source": "ACC-191",
+          "target": "ACC-194",
+          "type": "TX"
+        },
+        {
+          "id": "TX-80",
+          "amount": 10767000,
+          "ts": 1792094579,
+          "rail": "NEFT",
+          "memo": null,
+          "source": "ACC-83",
+          "target": "ACC-84",
+          "type": "TX"
+        },
+        {
+          "id": "TX-81",
+          "amount": 10434000,
+          "ts": 1792094759,
+          "rail": "NEFT",
+          "memo": null,
+          "source": "ACC-84",
+          "target": "ACC-85",
+          "type": "TX"
+        },
+        {
+          "id": "TX-82",
+          "amount": 10101000,
+          "ts": 1792094939,
+          "rail": "NEFT",
+          "memo": null,
+          "source": "ACC-85",
+          "target": "ACC-82",
+          "type": "TX"
+        }
+      ],
+      "span_s": 540
+    },
+    {
+      "len": 5,
+      "accounts": [
+        "ACC-82",
+        "ACC-234",
+        "ACC-83",
+        "ACC-84",
+        "ACC-85",
+        "ACC-82"
+      ],
+      "edges": [
+        {
+          "id": "TX-79",
+          "amount": 11100000,
+          "ts": 1792094399,
+          "rail": "NEFT",
+          "memo": null,
+          "source": "ACC-82",
+          "target": "ACC-83",
+          "type": "TX"
+        },
+        {
+          "id": "TX-334",
+          "amount": 11100000,
+          "ts": 1792094459,
+          "rail": "NEFT",
+          "memo": null,
+          "source": "ACC-234",
+          "target": "ACC-232",
+          "type": "TX"
+        },
+        {
+          "id": "TX-80",
+          "amount": 10767000,
+          "ts": 1792094579,
+          "rail": "NEFT",
+          "memo": null,
+          "source": "ACC-83",
+          "target": "ACC-84",
+          "type": "TX"
+        },
+        {
+          "id": "TX-81",
+          "amount": 10434000,
+          "ts": 1792094759,
+          "rail": "NEFT",
+          "memo": null,
+          "source": "ACC-84",
+          "target": "ACC-85",
+          "type": "TX"
+        },
+        {
+          "id": "TX-82",
+          "amount": 10101000,
+          "ts": 1792094939,
+          "rail": "NEFT",
+          "memo": null,
+          "source": "ACC-85",
+          "target": "ACC-82",
+          "type": "TX"
+        }
+      ],
+      "span_s": 540
+    },
+    {
+      "len": 5,
+      "accounts": [
+        "ACC-82",
+        "ACC-235",
+        "ACC-83",
+        "ACC-84",
+        "ACC-85",
+        "ACC-82"
+      ],
+      "edges": [
+        {
+          "id": "TX-79",
+          "amount": 11100000,
+          "ts": 1792094399,
+          "rail": "NEFT",
+          "memo": null,
+          "source": "ACC-82",
+          "target": "ACC-83",
+          "type": "TX"
+        },
+        {
+          "id": "TX-335",
+          "amount": 11100000,
+          "ts": 1792094519,
+          "rail": "NEFT",
+          "memo": null,
+          "source": "ACC-235",
+          "target": "ACC-232",
+          "type": "TX"
+        },
+        {
+          "id": "TX-80",
+          "amount": 10767000,
+          "ts": 1792094579,
+          "rail": "NEFT",
+          "memo": null,
+          "source": "ACC-83",
+          "target": "ACC-84",
+          "type": "TX"
+        },
+        {
+          "id": "TX-81",
+          "amount": 10434000,
+          "ts": 1792094759,
+          "rail": "NEFT",
+          "memo": null,
+          "source": "ACC-84",
+          "target": "ACC-85",
+          "type": "TX"
+        },
+        {
+          "id": "TX-82",
+          "amount": 10101000,
+          "ts": 1792094939,
+          "rail": "NEFT",
+          "memo": null,
+          "source": "ACC-85",
+          "target": "ACC-82",
+          "type": "TX"
+        }
+      ],
+      "span_s": 540
+    }
+  ]
+}

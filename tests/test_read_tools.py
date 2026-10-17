@@ -43,6 +43,10 @@ def local_graph():
     db.sync_write(TENANT, "MATCH (a:Account)-[t:TX]->(b:Account) WITH a,b,sum(t.amount) AS amount,count(t) AS n,min(t.ts) AS first_ts,max(t.ts) AS ts CREATE (a)-[:FLOW {id:'FLOW-'+a.id+'-'+b.id,amount:amount,w:n,first_ts:first_ts,ts:ts,computed_at:$at}]->(b)", {"at":AS_OF-100})
     db.sync_write(TENANT, "CREATE (:Person {id:'PER-1',name:'Laxmi Rao',name_norm:'laxmi rao'}),(:Person {id:'PER-2',name:'Lakshmi Rao',name_norm:'lakshmi rao'}),(:Device {id:'DEV-1',degree:2}),(:Restriction {id:'RES-1',kind:'VREQ',in_force_from:$start}),(:Tenant {name:$tenant,halted:false,llm_enabled:true}),(:Rail {name:'UPI',first_loaded:$first,last_loaded:$last}),(:IngestionDay {rail:'UPI',date:20261016,source_count:14,graph_count:14})", {"tenant": TENANT,"start":AS_OF-100000,"first":AS_OF-180*86400,"last":AS_OF})
     db.sync_write(TENANT, "MATCH (a:Account {id:'ACC-1'}),(b:Account {id:'ACC-2'}),(c:Account {id:'ACC-9'}),(d:Device {id:'DEV-1'}),(p:Person {id:'PER-1'}),(r:Restriction {id:'RES-1'}) CREATE (a)-[:USES_DEVICE {first_seen:$ts}]->(d),(b)-[:USES_DEVICE {first_seen:$ts}]->(d),(p)-[:OWNS {since:$ts}]->(b),(p)-[:OWNS {since:$ts}]->(c),(r)-[:ON]->(a),(a)-[:SHARES {weight:0.8,kinds:['device'],computed_at:$ts}]->(b),(b)-[:SHARES {weight:0.8,kinds:['owner'],computed_at:$ts}]->(c),(a)-[:SHARES_STRONG {weight:0.8,kinds:['device'],computed_at:$ts}]->(b),(b)-[:SHARES_STRONG {weight:0.8,kinds:['owner'],computed_at:$ts}]->(c)", {"ts": AS_OF-100000})
+    db.sync_write(TENANT, "MATCH (a:Account {id:'ACC-1'}) CREATE (:Phone {id:'PH-r00-0',degree:2}),(:Address {id:'ADR-1',degree:2}),(:Alert {id:'ALERT-1',raised_at:$at})-[:ON]->(a),(:Alert {id:'ALERT-FUTURE-1',raised_at:$future})-[:ON]->(a)", {'at':AS_OF-100,'future':AS_OF+100000})
+    # Exercise the same relationship-index planner as the shipped graph.
+    db.sync_write(TENANT,'CREATE INDEX FOR ()-[t:TX]-() ON (t.ts)')
+    db.sync_write(TENANT,'CREATE INDEX FOR ()-[t:TX]-() ON (t.id)')
     yield
     db.redis.execute_command("GRAPH.DELETE", "rs_" + TENANT)
 
@@ -104,6 +108,23 @@ async def test_resolver_uses_server_side_names_only(context):
     assert any(row["id"] == "PER-2" for row in result["rows"])
     assert "Lakshmi" not in json.dumps(result)
     assert "laxmi" not in json.dumps(result).lower()
+
+
+@pytest.mark.asyncio
+async def test_resolver_finds_structural_ids_and_exact_dated_transfer(context):
+    for entity_id,label in [('PH-r00-0','Phone'),('ADR-1','Address'),('RES-1','Restriction'),('ALERT-1','Alert')]:
+        result=await invoke('rs_resolve_entity',{'query':entity_id})
+        assert result['outcome']=='resolved' and result['rows'][0]['label']==label
+        if label=='Alert':assert result['rows'][0]['account_id']=='ACC-1'
+    transfer=await invoke('rs_resolve_entity',{'query':'TX-1'})
+    assert transfer['outcome']=='resolved'
+    assert transfer['rows'][0]['label']=='Transfer'
+    assert transfer['rows'][0]['source']=='ACC-1' and transfer['rows'][0]['target']=='ACC-2'
+    assert transfer['rows'][0]['amount']==100000 and transfer['rows'][0]['ts']==AS_OF-10000
+    assert transfer['path_edges'][0]['source']=='ACC-1' and transfer['path_edges'][0]['target']=='ACC-2'
+    future=await invoke('rs_resolve_entity',{'query':'ALERT-FUTURE-1'})
+    assert future['outcome']=='unknown_entity' and not future['rows']
+    assert 'ALERT-FUTURE-1' not in json.dumps(future.get('suggestions',[]))
 
 
 @pytest.mark.asyncio
@@ -172,6 +193,9 @@ async def test_future_edges_cannot_leak_into_any_read(context):
         for (name,_), a,b in zip(calls,before,after):
             assert a["rows"] == b["rows"], name
             assert "TX-FUTURE" not in json.dumps(b), name
+        future_transfer=await invoke('rs_resolve_entity',{'query':'TX-FUTURE-1'})
+        assert future_transfer['outcome']=='unknown_entity' and not future_transfer['rows']
+        assert not future_transfer.get('suggestions')
         flow = await run_tool("rs_money_flow", {"source_ids":["ACC-1"],"sink_ids":["ACC-9"],"as_of":AS_OF-20000})
         assert flow["reason"] == "historical_projection_unavailable"
         assert flow["rows"] == []
@@ -196,3 +220,90 @@ async def test_historical_answers_do_not_reuse_later_global_snapshots(context):
     profile=await invoke("rs_account_profile",{"account_id":"ACC-1","as_of":AS_OF-1})
     assert not {"pagerank","ring_id","wcc_id","lpa_id","peer_baseline","in_deg","out_deg"} & set(profile["rows"][0])
     assert profile["rows"][0]["in_n"]>0
+
+
+@pytest.mark.asyncio
+async def test_overlapping_cycles_of_all_lengths_preserve_exact_tx_endpoints(context):
+    # Multiple 3/4/5-hop cycles share TX-1, reproducing the query shape that
+    # previously paired one TX id with several different targets in model evals.
+    additions=[('ACC-2','ACC-4',95000,9000),('ACC-4','ACC-5',90000,8000),('ACC-5','ACC-1',85000,7000),
+               ('ACC-2','ACC-6',95000,9000),('ACC-6','ACC-7',90000,8000),('ACC-7','ACC-8',85000,7000),('ACC-8','ACC-1',80000,6000)]
+    values=[{'id':f'TX-CYCLE-PROJECTION-{i}','source':source,'target':target,'amount':amount,'ts':AS_OF-offset,'rail':'UPI'}
+            for i,(source,target,amount,offset) in enumerate(additions)]
+    await db.write(TENANT,'UNWIND $items AS item MATCH (a:Account {id:item.source}),(b:Account {id:item.target}) CREATE (a)-[t:TX]->(b) SET t=item,t.w=1',{'items':values})
+    try:
+        result=await invoke('rs_cycles',{'account_id':'ACC-1','min_len':3,'max_len':5,'limit':200})
+        assert {row['len'] for row in result['rows']}>={3,4,5}
+        truth={row['id']:row for row in await db.read(TENANT,'MATCH (a:Account)-[t:TX]->(b:Account) RETURN t.id AS id,a.id AS source,b.id AS target,t.amount AS amount,t.ts AS ts,t.rail AS rail')}
+        seen={}
+        for row in result['rows']:
+            assert len(row['edges'])==row['len'] and len(row['accounts'])==row['len']+1
+            for source,target,edge in zip(row['accounts'],row['accounts'][1:],row['edges']):
+                assert edge['source']==source and edge['target']==target
+                assert {key:edge[key] for key in ('id','source','target','amount','ts','rail')}==truth[edge['id']]
+                facts=tuple(edge[key] for key in ('source','target','amount','ts','rail'))
+                assert edge['id'] not in seen or seen[edge['id']]==facts
+                seen[edge['id']]=facts
+        for edge in result['path_edges']:
+            assert edge['source']==truth[edge['id']]['source'] and edge['target']==truth[edge['id']]['target']
+        paths=await invoke('rs_path_between',{'src_id':'ACC-1','dst_id':'ACC-8','max_hops':4,'k':5})
+        assert paths['rows']
+        for row in paths['rows']:
+            for source,target,edge in zip(row['node_ids'],row['node_ids'][1:],row['edges']):
+                assert edge['source']==source and edge['target']==target
+                assert edge['source']==truth[edge['id']]['source'] and edge['target']==truth[edge['id']]['target']
+    finally:
+        await db.write(TENANT,"MATCH ()-[t:TX]->() WHERE t.id STARTS WITH 'TX-CYCLE-PROJECTION-' DELETE t")
+
+
+@pytest.mark.asyncio
+async def test_shared_relationship_path_preserves_all_null_id_legs(context):
+    result=await invoke('rs_path_between',{'src_id':'ACC-1','dst_id':'ACC-9','rel_types':['SHARES_STRONG'],'k':5})
+    assert any(row['node_ids']==['ACC-1','ACC-2','ACC-9'] for row in result['rows'])
+    edges=[edge for edge in result['path_edges'] if edge['type']=='SHARES_STRONG']
+    assert {(edge['source'],edge['target']) for edge in edges}>={('ACC-1','ACC-2'),('ACC-2','ACC-9')}
+    assert len({edge['id'] for edge in edges})==len(edges) and all(edge['id'] for edge in edges)
+
+
+@pytest.mark.asyncio
+async def test_mule_pattern_totals_count_distinct_transfers_not_join_combinations(context):
+    scatter=await invoke('rs_scatter_gather',{'account_id':'ACC-1','mode':'scatter_gather','min_mules':3,'limit':200})
+    row=next(row for row in scatter['rows'] if row['gatherer']=='ACC-9')
+    outgoing={leg['out_tx']:leg['out_amt'] for leg in row['legs']}
+    incoming={leg['in_tx']:leg['in_amt'] for leg in row['legs']}
+    assert len(row['legs'])>len(incoming), 'Fixture must repeat one gather transfer across eligible incoming legs.'
+    assert row['scattered']==sum(outgoing.values())==190000
+    assert row['gathered']==sum(incoming.values())==84000
+    # Equal-value transfers remain distinct by id; SUM(DISTINCT amount) would
+    # incorrectly reduce three different 28,000-paise gather legs to one.
+    assert len(incoming)==3 and len(set(incoming.values()))==1
+    gather=await invoke('rs_scatter_gather',{'account_id':'ACC-1','mode':'gather_scatter','min_mules':3,'limit':200})
+    row=gather['rows'][0]
+    assert row['n_src']>=3 and row['n_dst']>=3
+    assert row['gathered']==sum({leg['id']:leg['amount'] for leg in row['in_legs']}.values())
+    assert row['scattered']==sum({leg['id']:leg['amount'] for leg in row['out_legs']}.values())==90000
+
+
+@pytest.mark.asyncio
+async def test_neighbourhood_preserves_three_step_routes_across_distinct_layers(context):
+    await db.write(TENANT,"MATCH (a:Account {id:'ACC-1'}) CREATE (b:Account {id:'ACC-CHAIN-1',type:'retail'}),(c:Account {id:'ACC-CHAIN-2',type:'retail'}),(d:Account {id:'ACC-CHAIN-3',type:'retail'}),(a)-[:TX {id:'TX-CHAIN-1',amount:10000,ts:$ts,rail:'UPI'}]->(b),(b)-[:TX {id:'TX-CHAIN-2',amount:10000,ts:$ts,rail:'UPI'}]->(c),(c)-[:TX {id:'TX-CHAIN-3',amount:10000,ts:$ts,rail:'UPI'}]->(d)",{'ts':AS_OF-100})
+    try:
+        shallow=await invoke('rs_neighbourhood',{'account_id':'ACC-1','hops':1,'direction':'out','limit':200})
+        deep=await invoke('rs_neighbourhood',{'account_id':'ACC-1','hops':3,'direction':'out','limit':200})
+        assert not any(row['neighbour']=='ACC-CHAIN-3' for row in shallow['rows'])
+        row=next(row for row in deep['rows'] if row['neighbour']=='ACC-CHAIN-3')
+        assert row['path_ids']==['ACC-1','ACC-CHAIN-1','ACC-CHAIN-2','ACC-CHAIN-3'] and row['hops']==3
+        assert [edge['id'] for edge in row['edges']]==['TX-CHAIN-1','TX-CHAIN-2','TX-CHAIN-3']
+    finally:await db.write(TENANT,"MATCH (a:Account) WHERE a.id STARTS WITH 'ACC-CHAIN-' DETACH DELETE a")
+
+
+@pytest.mark.asyncio
+async def test_neighbourhood_incoming_and_both_retain_reverse_traversal_money_direction(context):
+    for direction in ('in','both'):
+        result=await invoke('rs_neighbourhood',{'account_id':'ACC-9','hops':1,'direction':direction})
+        assert {row['neighbour'] for row in result['rows']}=={'ACC-2','ACC-3','ACC-4'}
+        for row in result['rows']:
+            assert row['path_ids']==['ACC-9',row['neighbour']]
+            assert row['edges'][0]['source']==row['neighbour'] and row['edges'][0]['target']=='ACC-9'
+    outgoing=await invoke('rs_neighbourhood',{'account_id':'ACC-9','hops':1,'direction':'out'})
+    assert outgoing['outcome']=='not_in_graph' and not outgoing['rows']

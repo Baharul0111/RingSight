@@ -5,7 +5,7 @@
     "passed": 5
   },
   "errors": [],
-  "executed_at": 1792119641,
+  "executed_at": 1792219677,
   "hub_ids": [
     "ACC-3997",
     "ACC-10784",
@@ -22,16 +22,16 @@
   "hub_metrics": {
     "betweenness": {
       "ids": [
-        "ACC-7138",
-        "ACC-15675",
-        "ACC-18100",
-        "ACC-21760",
-        "ACC-3425",
-        "ACC-21051",
-        "ACC-12419",
+        "ACC-17542",
+        "ACC-13853",
+        "ACC-20285",
+        "ACC-10040",
         "ACC-22165",
         "ACC-24726",
-        "ACC-7259"
+        "ACC-21051",
+        "ACC-11140",
+        "ACC-17215",
+        "ACC-11074"
       ],
       "legitimate_hubs_returned": 0,
       "precision_at_10": 0.0
@@ -88,7 +88,7 @@
   "hub_precision_at_10": 0.0,
   "legitimate_hubs_present": 105,
   "legitimate_hubs_returned": 0,
-  "local_graph": "rs_bank_a",
+  "local_graph": "rs_structural_eval",
   "method": "Exact frozen matching-pattern tool on every planted seed; account ids extracted only from returned evidence rows, including the anchor when rows exist. Report measured recall, not a real-world detection claim. Hub precision compares global top-10 PageRank retail/business accounts with planted hub_account ground truth; legitimate types are excluded by the tool.",
   "model_calls": 0,
   "passed": true,
@@ -138,7 +138,7 @@
   },
   "rings": [
     {
-      "elapsed_ms": 69.3,
+      "elapsed_ms": 48.06,
       "expected_members": 9,
       "member_precision": 1.0,
       "member_recall": 0.8888888888888888,
@@ -153,7 +153,7 @@
       "typology": "fan_in"
     },
     {
-      "elapsed_ms": 4.03,
+      "elapsed_ms": 3.18,
       "expected_members": 8,
       "member_precision": 1.0,
       "member_recall": 1.0,
@@ -168,7 +168,7 @@
       "typology": "fan_in"
     },
     {
-      "elapsed_ms": 4.13,
+      "elapsed_ms": 2.83,
       "expected_members": 8,
       "member_precision": 1.0,
       "member_recall": 1.0,
@@ -183,7 +183,7 @@
       "typology": "fan_in"
     },
     {
-      "elapsed_ms": 2.27,
+      "elapsed_ms": 2.61,
       "expected_members": 8,
       "member_precision": 1.0,
       "member_recall": 1.0,
@@ -198,7 +198,7 @@
       "typology": "fan_in"
     },
     {
-      "elapsed_ms": 2.2,
+      "elapsed_ms": 2.54,
       "expected_members": 8,
       "member_precision": 1.0,
       "member_recall": 1.0,
@@ -213,7 +213,7 @@
       "typology": "fan_in"
     },
     {
-      "elapsed_ms": 4.79,
+      "elapsed_ms": 3.82,
       "expected_members": 8,
       "member_precision": 1.0,
       "member_recall": 0.875,
@@ -228,7 +228,7 @@
       "typology": "fan_out"
     },
     {
-      "elapsed_ms": 2.11,
+      "elapsed_ms": 2.42,
       "expected_members": 8,
       "member_precision": 1.0,
       "member_recall": 0.875,
@@ -243,7 +243,7 @@
       "typology": "fan_out"
     },
     {
-      "elapsed_ms": 2.45,
+      "elapsed_ms": 2.42,
       "expected_members": 8,
       "member_precision": 1.0,
       "member_recall": 0.875,
@@ -258,7 +258,7 @@
       "typology": "fan_out"
     },
     {
-      "elapsed_ms": 2.66,
+      "elapsed_ms": 2.31,
       "expected_members": 8,
       "member_precision": 1.0,
       "member_recall": 0.875,
@@ -273,7 +273,7 @@
       "typology": "fan_out"
     },
     {
-      "elapsed_ms": 2.55,
+      "elapsed_ms": 2.44,
       "expected_members": 8,
       "member_precision": 1.0,
       "member_recall": 0.875,
@@ -288,7 +288,7 @@
       "typology": "fan_out"
     },
     {
-      "elapsed_ms": 11.15,
+      "elapsed_ms": 7.87,
       "expected_members": 3,
       "member_precision": 1.0,
       "member_recall": 1.0,
@@ -303,37 +303,37 @@
       "typology": "cycle"
     },
     {
-      "elapsed_ms": 10.25,
+      "elapsed_ms": 3.85,
       "expected_members": 4,
-      "member_precision": 0.5,
+      "member_precision": 1.0,
       "member_recall": 1.0,
       "outcome": "answered_with_path",
       "recalled_members": 4,
       "recipient_in_degree": 1,
       "recipient_in_degree_tercile": "middle",
-      "returned_accounts": 8,
+      "returned_accounts": 4,
       "ring_id": "RING-12",
       "seed": "ACC-82",
       "tool": "rs_cycles",
       "typology": "cycle"
     },
     {
-      "elapsed_ms": 17.89,
+      "elapsed_ms": 4.08,
       "expected_members": 5,
-      "member_precision": 0.5,
+      "member_precision": 1.0,
       "member_recall": 1.0,
       "outcome": "answered_with_path",
       "recalled_members": 5,
       "recipient_in_degree": 1,
       "recipient_in_degree_tercile": "middle",
-      "returned_accounts": 10,
+      "returned_accounts": 5,
       "ring_id": "RING-13",
       "seed": "ACC-86",
       "tool": "rs_cycles",
       "typology": "cycle"
     },
     {
-      "elapsed_ms": 23.02,
+      "elapsed_ms": 3.98,
       "expected_members": 3,
       "member_precision": 1.0,
       "member_recall": 1.0,
@@ -348,22 +348,22 @@
       "typology": "cycle"
     },
     {
-      "elapsed_ms": 34.59,
+      "elapsed_ms": 4.16,
       "expected_members": 4,
-      "member_precision": 0.5,
+      "member_precision": 1.0,
       "member_recall": 1.0,
       "outcome": "answered_with_path",
       "recalled_members": 4,
       "recipient_in_degree": 1,
       "recipient_in_degree_tercile": "middle",
-      "returned_accounts": 8,
+      "returned_accounts": 4,
       "ring_id": "RING-15",
       "seed": "ACC-94",
       "tool": "rs_cycles",
       "typology": "cycle"
     },
     {
-      "elapsed_ms": 8.51,
+      "elapsed_ms": 8.14,
       "expected_members": 8,
       "member_precision": 1.0,
       "member_recall": 1.0,
@@ -378,7 +378,7 @@
       "typology": "bipartite"
     },
     {
-      "elapsed_ms": 5.19,
+      "elapsed_ms": 6.18,
       "expected_members": 8,
       "member_precision": 1.0,
       "member_recall": 1.0,
@@ -393,7 +393,7 @@
       "typology": "bipartite"
     },
     {
-      "elapsed_ms": 5.25,
+      "elapsed_ms": 6.25,
       "expected_members": 8,
       "member_precision": 1.0,
       "member_recall": 1.0,
@@ -408,7 +408,7 @@
       "typology": "bipartite"
     },
     {
-      "elapsed_ms": 5.25,
+      "elapsed_ms": 8.0,
       "expected_members": 8,
       "member_precision": 1.0,
       "member_recall": 1.0,
@@ -423,7 +423,7 @@
       "typology": "bipartite"
     },
     {
-      "elapsed_ms": 4.93,
+      "elapsed_ms": 7.48,
       "expected_members": 8,
       "member_precision": 1.0,
       "member_recall": 1.0,
@@ -438,7 +438,7 @@
       "typology": "bipartite"
     },
     {
-      "elapsed_ms": 6.91,
+      "elapsed_ms": 38.31,
       "expected_members": 9,
       "member_precision": 1.0,
       "member_recall": 1.0,
@@ -453,7 +453,7 @@
       "typology": "stack"
     },
     {
-      "elapsed_ms": 4.91,
+      "elapsed_ms": 14.86,
       "expected_members": 9,
       "member_precision": 1.0,
       "member_recall": 1.0,
@@ -468,7 +468,7 @@
       "typology": "stack"
     },
     {
-      "elapsed_ms": 4.81,
+      "elapsed_ms": 13.02,
       "expected_members": 9,
       "member_precision": 1.0,
       "member_recall": 1.0,
@@ -483,7 +483,7 @@
       "typology": "stack"
     },
     {
-      "elapsed_ms": 4.39,
+      "elapsed_ms": 12.42,
       "expected_members": 9,
       "member_precision": 1.0,
       "member_recall": 1.0,
@@ -498,7 +498,7 @@
       "typology": "stack"
     },
     {
-      "elapsed_ms": 4.38,
+      "elapsed_ms": 12.82,
       "expected_members": 9,
       "member_precision": 1.0,
       "member_recall": 1.0,
@@ -513,7 +513,7 @@
       "typology": "stack"
     },
     {
-      "elapsed_ms": 16.62,
+      "elapsed_ms": 35.48,
       "expected_members": 8,
       "member_precision": 0.13114754098360656,
       "member_recall": 1.0,
@@ -528,7 +528,7 @@
       "typology": "scatter_gather"
     },
     {
-      "elapsed_ms": 26.23,
+      "elapsed_ms": 53.96,
       "expected_members": 8,
       "member_precision": 0.08247422680412371,
       "member_recall": 1.0,
@@ -543,7 +543,7 @@
       "typology": "scatter_gather"
     },
     {
-      "elapsed_ms": 36.43,
+      "elapsed_ms": 78.91,
       "expected_members": 8,
       "member_precision": 0.06015037593984962,
       "member_recall": 1.0,
@@ -558,7 +558,7 @@
       "typology": "scatter_gather"
     },
     {
-      "elapsed_ms": 50.48,
+      "elapsed_ms": 101.84,
       "expected_members": 8,
       "member_precision": 0.047337278106508875,
       "member_recall": 1.0,
@@ -573,7 +573,7 @@
       "typology": "scatter_gather"
     },
     {
-      "elapsed_ms": 58.33,
+      "elapsed_ms": 192.78,
       "expected_members": 8,
       "member_precision": 0.03902439024390244,
       "member_recall": 1.0,
@@ -588,7 +588,7 @@
       "typology": "scatter_gather"
     },
     {
-      "elapsed_ms": 4.58,
+      "elapsed_ms": 4.72,
       "expected_members": 9,
       "member_precision": 1.0,
       "member_recall": 1.0,
@@ -603,7 +603,7 @@
       "typology": "gather_scatter"
     },
     {
-      "elapsed_ms": 3.33,
+      "elapsed_ms": 3.64,
       "expected_members": 9,
       "member_precision": 1.0,
       "member_recall": 1.0,
@@ -618,7 +618,7 @@
       "typology": "gather_scatter"
     },
     {
-      "elapsed_ms": 3.43,
+      "elapsed_ms": 3.41,
       "expected_members": 9,
       "member_precision": 1.0,
       "member_recall": 1.0,
@@ -633,7 +633,7 @@
       "typology": "gather_scatter"
     },
     {
-      "elapsed_ms": 3.07,
+      "elapsed_ms": 4.32,
       "expected_members": 9,
       "member_precision": 1.0,
       "member_recall": 1.0,
@@ -648,7 +648,7 @@
       "typology": "gather_scatter"
     },
     {
-      "elapsed_ms": 3.03,
+      "elapsed_ms": 3.93,
       "expected_members": 9,
       "member_precision": 1.0,
       "member_recall": 1.0,

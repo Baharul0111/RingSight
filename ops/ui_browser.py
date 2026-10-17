@@ -7,13 +7,16 @@ from __future__ import annotations
 
 import json
 import os
+import sys
 import time
 from pathlib import Path
 
 from playwright.sync_api import sync_playwright, expect
-from server.schemas import INPUT_MODELS
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+from server.schemas import INPUT_MODELS
+
 OUT = ROOT / "evals" / "results"
 BASE = os.getenv("RS_UI_BASE", "http://127.0.0.1:5173")
 KEY = "browser-contract-fixture-key"

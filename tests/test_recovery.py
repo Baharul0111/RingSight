@@ -1,5 +1,6 @@
 """Isolated local recovery, snapshot tenancy and hard-deadline checks."""
 import asyncio
+import hashlib
 import json
 import os
 import time
@@ -72,6 +73,71 @@ def test_snapshot_restore_preserves_bitemporal_finding_and_tenant(local_graph, t
     records = database.sync_read(graph, "MATCH (f:Finding)-[:ABOUT]->(a:Account) RETURN f.id AS id,f.created_at AS learned,f.reviewed AS reviewed,f.author AS author,a.id AS account")
     assert records == [{"id": fid, "learned": learned, "reviewed": False, "author": "agent", "account": "ACC-4471"}]
     assert restore_snapshot(database, "rs_other_tenant", path) == 0
+
+
+@pytest.mark.asyncio
+async def test_snapshot_restores_original_path_sessions_and_supersession(local_graph, tmp_path, monkeypatch):
+    """A graph wipe must not turn memory into prose with dangling evidence ids."""
+    from server import mcp_read
+    from server.context import Identity, Investigation, current_context
+
+    database, graph = local_graph
+    monkeypatch.setattr(mcp_read, "db", database)
+    tenant = graph.removeprefix("rs_")
+    sid, cid, old, new = (str(uuid.uuid4()) for _ in range(4))
+    now = int(time.time())
+    learned, corrected = now - 100, now - 50
+    ids = ["ACC-4471", "DEV-f31c", "ACC-10477", "PER-2291", "ACC-55820"]
+    evidence = [{"path_ids": ids, "link_kinds": ["USES_DEVICE", "USES_DEVICE", "OWNS", "OWNS"]}]
+    rows_json = json.dumps(evidence)
+    digest = hashlib.sha256(json.dumps(evidence, sort_keys=True).encode()).hexdigest()
+    entities = (
+        "CREATE (a:Account {id:'ACC-4471'}), (b:Account {id:'ACC-10477'}), "
+        "(c:Account {id:'ACC-55820'}), (d:Device {id:'DEV-f31c'}), (p:Person {id:'PER-2291'}), "
+        "(a)-[:USES_DEVICE]->(d), (b)-[:USES_DEVICE]->(d), (p)-[:OWNS]->(b), (p)-[:OWNS]->(c)"
+    )
+    database.sync_write(graph, entities)
+    database.sync_write(graph,
+        "MATCH (a:Account {id:'ACC-4471'}) "
+        "CREATE (s:Session {id:$sid,tenant:$tenant,analyst:'judge',as_of:$now,started_at:$learned,ended_at:$corrected}), "
+        "(t:ToolCall {id:$cid,tool:'rs_shared_identifiers',seq:1,rows_json:$rows,rows_sha256:$hash,rows_total:1,rows_returned:1,at:$learned})-[:IN]->(s), "
+        "(old:Finding {id:$old,idem_key:$old,text:'ACC-4471 connects through DEV-f31c for analyst review.',author:'agent',reviewed:false,created_at:$learned,valid_from:$valid,valid_to:$corrected,expired_at:$corrected,confidence:'medium',typology:'shared_identifier',evidence_tool_call_ids:[$cid]})-[:ABOUT]->(a), "
+        "(f:Finding {id:$new,idem_key:$new,text:'ACC-4471 connects through DEV-f31c and PER-2291 to ACC-55820.',author:'analyst',reviewed:true,created_at:$corrected,valid_from:$corrected,confidence:'high',typology:'shared_identifier',evidence_tool_call_ids:[$cid]})-[:ABOUT]->(a), "
+        "(f)-[:SUPERSEDES]->(old), (old)-[:MADE_IN]->(s), (f)-[:MADE_IN]->(s)",
+        {"sid": sid, "cid": cid, "old": old, "new": new, "tenant": tenant,
+         "now": now, "learned": learned, "corrected": corrected, "valid": learned - 86400,
+         "rows": rows_json, "hash": digest})
+    path = tmp_path / "snapshot.json"
+    assert export_snapshot(database, graph, path) == 2
+    snapshot = json.loads(path.read_text())
+    assert snapshot["schema"] == 2
+    assert snapshot["sessions"][0]["started_at"] == learned
+    assert snapshot["tool_calls"][0]["tool_call"]["rows_sha256"] == digest
+    database.redis.execute_command("GRAPH.DELETE", graph)
+    database.sync_write(graph, entities)
+    assert restore_snapshot(database, graph, path) == 2
+    assert restore_snapshot(database, graph, path) == 2
+    assert database.sync_read(graph, "MATCH (t:ToolCall)-[:IN]->(s:Session) RETURN t.rows_json AS rows,s.id AS sid,s.tenant AS tenant") == [
+        {"rows": rows_json, "sid": sid, "tenant": tenant}]
+    assert database.sync_read(graph, "MATCH (f:Finding)-[:SUPERSEDES]->(old:Finding) RETURN f.id AS id,old.id AS old,old.expired_at AS expired,old.valid_to AS valid_to") == [
+        {"id": new, "old": old, "expired": corrected, "valid_to": corrected}]
+    token = current_context.set(Investigation(Identity("judge", "analyst", tenant), as_of=now))
+    try:
+        result = await mcp_read.run_tool("rs_recall_findings", {"entity_ids": ["ACC-4471"]})
+        assert result["outcome"] == "answered_from_memory"
+        assert len(result["rows"]) == 1 and result["rows"][0]["id"] == new
+        assert result["rows"][0]["date_learned"] == corrected
+        assert result["rows"][0]["reviewed"] is True
+        assert result["rows"][0]["evidence"][0]["rows"] == evidence
+        assert set(ids) <= {node["id"] for node in result["path_nodes"]}
+        assert len(result["path_edges"]) == 4
+        # Historical recall still returns the previous finding with its original
+        # learned date, rather than the later correction.
+        historical = await mcp_read.run_tool("rs_recall_findings", {"entity_ids": ["ACC-4471"], "as_of": learned + 1})
+        assert historical["rows"][0]["id"] == old
+        assert historical["rows"][0]["date_learned"] == learned
+    finally:
+        current_context.reset(token)
 
 
 class _DatabaseStub:

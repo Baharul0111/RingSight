@@ -1282,3 +1282,123 @@ timings and stages are recorded separately in `cloud-foundation.json`.
 The numbered frozen catalogue has fourteen reads only when item 11 (`rs_money_flow`) is included; the prose deferral leaves thirteen. To meet the explicit requirement for fourteen MCP reads and sixteen total tools, the numbered catalogue governs: max-flow is promoted into the shipped implementation. FalkorDB 4.22.1 rejects parallel TX tensors for max-flow, so a seed-time `FLOW` projection aggregates each ordered account pair, with amount capacity, transfer-count capacity, first/last timestamps and computed-at metadata. It is a timeless precomputed projection: historical requests before its last transfer are refused, never answered with later transactions. Returned flow legs are accompanied by authoritative TX evidence. Source truth remains the original TX edges; no model writes queries or changes the projection. Backlog and queue tools remain documented only.
 
 The implementation is built with OpenAI Codex as the coding assistant. The running model configuration comes from the supplied environment. The final disclosure describes actual assistance rather than repeating the original proposed Claude Code authorship statement.
+
+### Runtime compatibility and cap amendment — observed during implementation
+
+The configured Anthropic strict compiler rejected the full catalogue with
+89 optional parameters (limit 24), then 39 nullable unions (limit 16), then
+a grammar-size error even after removing those combinations. Public MCP
+schemas remain the full typed, bounded schemas. The internal Pydantic-AI
+`MCPToolset.prepared` stage exposes a small subset of the same frozen tools
+per turn; no new tool or query language is introduced. The first stage is
+selected from the question's investigation category. Uncalled reads remain
+available across sequential turns; offering a profile must not remove the
+shared-identifier query the model planned next. Each of the at most three
+category reads is offered once. After that evidence round, an explicit action
+request permits the two private writes once; ordinary questions finish their
+structured Answer and the server records a guarded finding and pending case
+or escalation proposal after judging. A directed transfer-path question
+offers only the path tool, so an unrelated neighbourhood cannot substitute
+for the requested source-to-target chain. Server-side schemas enforce all
+original bounds. The model
+cannot override the session's as-of time or requested depth. Nullable
+advanced fields use trusted server defaults; report templates are filled
+server-side from exact transaction evidence. Full tool rows remain in graph
+ToolCall audit records and the UI, while a bounded projection enters model
+context. This avoids repeatedly sending all 1,080 coverage days.
+
+Provider retry control moves into the budget wrapper: the underlying SDK has
+`max_retries=0`, and up to two retries are individually gated, reserved,
+counted and conservatively charged. Opaque SDK retries could otherwise
+multiply an investigation's provider requests and unknown completion costs
+past the stated caps. The 60-second wall clock still encloses the run.
+Required server-side restriction checks and policy escalations are control
+operations rather than additional model-selected tool calls; they remain
+visible in the trace. Weak-closure withdrawal and timeout/budget escalation
+can therefore finish safely even after the model's call allowance is used.
+
+A recalled finding now rehydrates the original ToolCall rows inside the same
+tenant graph, so an answer from memory retains its path rather than only its
+prose. Omitted finding_ids on an internal proposal are populated only from
+matching targets' findings in the current session; human approval can then
+record that those findings were reviewed. Report validation matches every
+individual transaction id to its actual amount, date, direction and rail,
+including human modifications. Independent membership in an evidence value
+set is insufficient to exchange two transfers' facts.
+
+These compatibility changes require the model and local integration reruns;
+no missing or failed result artifact is described as passing.
+
+**Recovery and demo-path correction:** seed `rs-synthetic-v2` removes the
+first ring pair's shared phone, which otherwise accidentally linked the demo
+entry to its exit at depth one. The depth-four path still expands through
+DEV-f31c and PER-2291 to ACC-55820. Snapshot schema 2 retains the original
+same-bank ToolCall rows, their canonical hashes, Session metadata and
+supersession edges alongside Findings, preserving verifiable dated paths
+after a wipe. Catalogue fingerprints cover all sixteen validation schemas,
+actual planner prompt, named Cypher and runtime source; Session and
+CatalogueVersion retain the component hashes. Exact transfer and alert ids
+are resolved through fixed time-filtered statements before model execution.
+
+Verifier replacement updates the evidence-reference set together with its
+templated prose. The graph view retains every bounded path actually observed
+by the investigation, so a narrator's incomplete citation list cannot hide a
+deeper returned connection. The judge digest retains both source and target
+for every directed transfer. Planner replies allow 2,048 tokens at low effort;
+the cumulative 6,000-token, $0.25 and 60-second investigation limits remain.
+Malformed narration can use a verified row template and still receives an
+independent judge pass; empty evidence or tool failures cannot use that path.
+
+Planned graph rebuilds preserve Tenant controls and Spend with a private,
+atomic checkpoint scoped to the database fingerprint and graph. This is a
+temporary bridge through GRAPH.DELETE, never an alternate runtime data store
+or a public findings snapshot. Pending reservations become charged liability
+conservatively; restored caps can only decrease. A successful final Meta
+write removes the bridge. An interrupted rebuild retains it for the next
+process. Spontaneous Cloud data loss without a retained bridge still has the
+disclosed Console spending limit as the outer wall.
+
+**Traversal correctness correction (17 October):** the 25k graph exposed a
+C-engine cyclic-match result containing disconnected relationship legs even
+with bound node aliases. Cycle templates now check each actual relationship's
+end node against the next relationship's start node, and both endpoints of
+the closed chain against the requested account. A final consistency check
+refuses contradictory rows. A small overlapping-cycle fixture alone was not
+sufficient to catch this; all 35 planted rings are remeasured before paid
+evaluations. Neighbourhood queries use fixed lengths 1 through the validated
+depth, with per-transfer time/amount predicates and actual endpoint checks.
+This filters future parallel transfers before expansion rather than
+enumerating their paths and discarding them afterwards. The graph still
+computes every adjacency; Python only merges the bounded per-length results
+and their distinct-neighbour counts. These changes retain all typed inputs,
+directions, depth bounds, exact transfer evidence and as-of semantics.
+The read-tool fixture also creates the shipped TX timestamp/id indexes.
+With those indexes present, the C range-index plan dropped inbound edges
+from an undirected temporal match. An anchored CASE predicate retains the
+same time/amount condition as a filter over each adjacency instead. Tests
+reproduce the missing-inbound failure with the index and verify the fix,
+including true transfer direction, three-hop routes and future-edge pruning.
+
+**Cycle endpoint projection correction:** the first full model evaluation
+stopped after 45 path cases and exposed nine cases whose cycle rows assigned
+different targets to the same transfer id. The former projection paired
+`relationships(p)[i]` with `nodes(p)[i+1]`; those emitted endpoint combinations
+disagreed with the authoritative TX relationships. Unrolled cycle queries now
+return explicit bound node aliases (`a`, `b`, …, `a`) and explicit relationship
+aliases (`r1` … `r5`), reading each transfer's actual `startNode` and `endNode`.
+The point-in-time path query also reads relationship endpoints directly.
+Before a cycle can enter an evidence envelope, its closed hop list must match
+every edge and a repeated TX id must retain the same endpoints, amount, date
+and rail across all rows. Inconsistent results return a tool error rather
+than a path or an absence conclusion. This is a catalogue change requiring
+fresh local structural and model results; the interrupted model artifacts
+are diagnostic evidence, not passing completion evidence.
+Relationships without a stored id (such as SHARES_STRONG) use a renderer id
+derived from their actual source, target and type. Null ids must not collapse
+several distinct legs into one edge when the returned path is assembled.
+
+Scatter/gather totals count distinct TX ids before summing amounts. A joined
+incoming/outgoing pair is a valid pattern witness, but several witnesses can
+contain the same transfer; summing the joined rows inflated reported movement.
+The queries retain all pattern legs and derive totals from distinct transfer
+maps, preserving equal-value transfers that have different ids.

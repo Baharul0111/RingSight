@@ -1,1 +1,117 @@
-{"created": 1792119695.6310651, "duration": 2.530863046646118, "exitcode": 0, "root": "/Users/baharulislam/Desktop/RingSight", "environment": {}, "summary": {"passed": 3, "total": 3, "collected": 3}, "collectors": [{"nodeid": "", "outcome": "passed", "result": [{"nodeid": "tests/test_recovery.py", "type": "Module"}]}, {"nodeid": "tests/test_recovery.py", "outcome": "passed", "result": [{"nodeid": "tests/test_recovery.py::test_empty_and_half_loaded_graph_rebuild_in_background", "type": "Coroutine", "lineno": 27}, {"nodeid": "tests/test_recovery.py::test_snapshot_restore_preserves_bitemporal_finding_and_tenant", "type": "Function", "lineno": 58}, {"nodeid": "tests/test_recovery.py::test_deadline_kills_loader_releases_lock_and_force_retries", "type": "Coroutine", "lineno": 106}]}], "tests": [{"nodeid": "tests/test_recovery.py::test_empty_and_half_loaded_graph_rebuild_in_background", "lineno": 27, "outcome": "passed", "keywords": ["test_empty_and_half_loaded_graph_rebuild_in_background", "asyncio", "pytestmark", "test_recovery.py", "tests", "RingSight", ""], "setup": {"duration": 0.0007435000006807968, "outcome": "passed"}, "call": {"duration": 2.1095217910042265, "outcome": "passed"}, "teardown": {"duration": 0.0018954159968416207, "outcome": "passed"}}, {"nodeid": "tests/test_recovery.py::test_snapshot_restore_preserves_bitemporal_finding_and_tenant", "lineno": 58, "outcome": "passed", "keywords": ["test_snapshot_restore_preserves_bitemporal_finding_and_tenant", "test_recovery.py", "tests", "RingSight", ""], "setup": {"duration": 0.004926374997012317, "outcome": "passed"}, "call": {"duration": 0.014507375002722256, "outcome": "passed"}, "teardown": {"duration": 0.0009010419962578453, "outcome": "passed"}}, {"nodeid": "tests/test_recovery.py::test_deadline_kills_loader_releases_lock_and_force_retries", "lineno": 106, "outcome": "passed", "keywords": ["test_deadline_kills_loader_releases_lock_and_force_retries", "asyncio", "pytestmark", "test_recovery.py", "tests", "RingSight", ""], "setup": {"duration": 0.0004902919972664677, "outcome": "passed"}, "call": {"duration": 0.031761042002472095, "outcome": "passed"}, "teardown": {"duration": 0.000352625000232365, "outcome": "passed"}}]}
+{
+  "created": 1792219719.8107898,
+  "source": "evals/results/pytest.json",
+  "source_sha256": "24c75222fd9012f2470e55e0874182ce22d001362f11e7da719b2d53200fde32",
+  "derived_without_rerun": true,
+  "exitcode": 0,
+  "summary": {
+    "passed": 4,
+    "failed": 0,
+    "total": 4
+  },
+  "tests": [
+    {
+      "nodeid": "tests/test_recovery.py::test_empty_and_half_loaded_graph_rebuild_in_background",
+      "lineno": 28,
+      "outcome": "passed",
+      "keywords": [
+        "test_empty_and_half_loaded_graph_rebuild_in_background",
+        "asyncio",
+        "pytestmark",
+        "test_recovery.py",
+        "tests",
+        "RingSight",
+        ""
+      ],
+      "setup": {
+        "duration": 0.0006698330107610673,
+        "outcome": "passed"
+      },
+      "call": {
+        "duration": 2.163163250006619,
+        "outcome": "passed"
+      },
+      "teardown": {
+        "duration": 0.00274695799453184,
+        "outcome": "passed"
+      }
+    },
+    {
+      "nodeid": "tests/test_recovery.py::test_snapshot_restore_preserves_bitemporal_finding_and_tenant",
+      "lineno": 59,
+      "outcome": "passed",
+      "keywords": [
+        "test_snapshot_restore_preserves_bitemporal_finding_and_tenant",
+        "test_recovery.py",
+        "tests",
+        "RingSight",
+        ""
+      ],
+      "setup": {
+        "duration": 0.0018499580037314445,
+        "outcome": "passed"
+      },
+      "call": {
+        "duration": 0.0301949999993667,
+        "outcome": "passed"
+      },
+      "teardown": {
+        "duration": 0.0011342079960741103,
+        "outcome": "passed"
+      }
+    },
+    {
+      "nodeid": "tests/test_recovery.py::test_snapshot_restores_original_path_sessions_and_supersession",
+      "lineno": 77,
+      "outcome": "passed",
+      "keywords": [
+        "test_snapshot_restores_original_path_sessions_and_supersession",
+        "asyncio",
+        "pytestmark",
+        "test_recovery.py",
+        "tests",
+        "RingSight",
+        ""
+      ],
+      "setup": {
+        "duration": 0.0013709160120924935,
+        "outcome": "passed"
+      },
+      "call": {
+        "duration": 0.04953741699864622,
+        "outcome": "passed",
+        "stdout": "{\"event\": \"tool\", \"session_id\": null, \"tool\": \"rs_recall_findings\", \"tool_call_id\": \"825ca2a7-6493-4aaf-a0f8-21411c26f5f6\", \"elapsed_ms\": 5.64, \"rows_total\": 1, \"rows_returned\": 1, \"truncated\": false, \"outcome\": \"answered_from_memory\", \"guard_hits\": 0, \"args\": {\"entity_ids\": [\"ACC-4471\"]}}\n{\"event\": \"tool\", \"session_id\": null, \"tool\": \"rs_recall_findings\", \"tool_call_id\": \"fdca5521-dc9f-4f40-ac9f-9c477b6cb5c4\", \"elapsed_ms\": 3.8, \"rows_total\": 1, \"rows_returned\": 1, \"truncated\": false, \"outcome\": \"answered_from_memory\", \"guard_hits\": 0, \"args\": {\"entity_ids\": [\"ACC-4471\"], \"as_of\": 1792219620}}\n"
+      },
+      "teardown": {
+        "duration": 0.0020430840086191893,
+        "outcome": "passed"
+      }
+    },
+    {
+      "nodeid": "tests/test_recovery.py::test_deadline_kills_loader_releases_lock_and_force_retries",
+      "lineno": 172,
+      "outcome": "passed",
+      "keywords": [
+        "test_deadline_kills_loader_releases_lock_and_force_retries",
+        "asyncio",
+        "pytestmark",
+        "test_recovery.py",
+        "tests",
+        "RingSight",
+        ""
+      ],
+      "setup": {
+        "duration": 0.0005403750110417604,
+        "outcome": "passed"
+      },
+      "call": {
+        "duration": 0.032422958000097424,
+        "outcome": "passed"
+      },
+      "teardown": {
+        "duration": 0.0007516659970860928,
+        "outcome": "passed"
+      }
+    }
+  ]
+}

@@ -1,7 +1,7 @@
 {
   "accounts": 25000,
   "as_of": 1792108799,
-  "csv_sha256": "5dd231fcd84544dd526fddd8e54347adf71e4ae7c91856b8d18d5f756f61ad36",
+  "csv_sha256": "29efd3e0694cbd503473b725767882a3a9a5140c5958eb716b3431528fb67f42",
   "days": 180,
   "demo": {
     "account": "ACC-4471",
@@ -18,7 +18,7 @@
   "edges": {
     "AT_BANK": 25000,
     "HAS_ADDRESS": 2473,
-    "HAS_PHONE": 3189,
+    "HAS_PHONE": 3187,
     "ON": 63,
     "OWNS": 25000,
     "PAID": 30000,
@@ -149,7 +149,7 @@
     "IngestionDay": 1080,
     "Merchant": 100,
     "Person": 12636,
-    "Phone": 2831,
+    "Phone": 2830,
     "Rail": 6,
     "Restriction": 3
   },
@@ -164,7 +164,7 @@
   "restrictions": 3,
   "rings": 35,
   "seed": 42,
-  "seed_version": "rs-synthetic-v1",
+  "seed_version": "rs-synthetic-v2",
   "start": 1776556800,
   "synthetic": true
 }

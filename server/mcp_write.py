@@ -6,7 +6,7 @@ import uuid
 from typing import Annotated,Literal
 from fastmcp import FastMCP
 from pydantic import BaseModel,ConfigDict,Field,ValidationError
-from server.context import get_context
+from server.context import get_context,internal_control
 from server.guard import guard_write
 from server.verifier import verify,evidence_sets
 from server.safety import tenant_state
@@ -58,7 +58,7 @@ async def write_trace(name,args,result,hits=0):
         await db.write(ctx.identity.tenant,'MATCH (s:Session {id:$sid}) CREATE (t:ToolCall {id:$tid,seq:$seq,tool:$tool,args_json:$args,rows_total:$n,rows_returned:$n,truncated:false,elapsed_ms:0,rows_sha256:$hash,guard_hits:$hits,at:$now})-[:IN]->(s) RETURN t.id AS id',{'sid':ctx.session_id,'tid':tid,'seq':len(ctx.calls)+1,'tool':name,'args':json.dumps(args,sort_keys=True),'n':trace['rows_total'],'hash':hashlib.sha256(json.dumps(result,sort_keys=True).encode()).hexdigest(),'hits':hits,'now':now})
         ctx.calls[tid]=trace
         await ctx.emit('tool',trace)
-    return result
+    return dict(result,tool_call_id=tid)
 
 async def check_targets(ids):
     from server.db import db
@@ -72,8 +72,9 @@ async def record_finding(payload):
     except ValidationError as ex:return error('validation','Finding input failed validation.',fields=[e['loc'] for e in ex.errors()])
     ctx=get_context();selected,err=validate_evidence(p.evidence_tool_call_ids)
     if err:return err
-    if ctx.tool_count>=10:return error('budget_exhausted','The investigation reached its ten-tool-call limit.')
-    ctx.tool_count+=1
+    if not ctx.internal_write:
+        if ctx.tool_count>=10:return error('budget_exhausted','The investigation reached its ten-tool-call limit.')
+        ctx.tool_count+=1
     hits=guard_write(p.text)
     if hits:return await write_trace('rs_record_finding',p.model_dump(),error('instruction_like_content',f'Text contains instruction-like content: pattern {hits[0]["name"]} matched {hits[0]["span"]!r} — rephrase without it.',matches=hits),len(hits))
     state=await tenant_state(ctx.identity.tenant)
@@ -105,8 +106,9 @@ async def propose_action(payload):
     except ValidationError as ex:return error('validation','Action input failed validation.',fields=[e['loc'] for e in ex.errors()])
     ctx=get_context();selected,err=validate_evidence(p.evidence_tool_call_ids)
     if err:return err
-    if ctx.tool_count>=10:return error('budget_exhausted','The investigation reached its ten-tool-call limit.')
-    ctx.tool_count+=1
+    if not ctx.internal_write:
+        if ctx.tool_count>=10:return error('budget_exhausted','The investigation reached its ten-tool-call limit.')
+        ctx.tool_count+=1
     hits=guard_write(p.rationale)+guard_write(json.dumps(p.draft or {}))
     if hits:return await write_trace('rs_propose_action',{'kind':p.kind},error('instruction_like_content',f'Text contains instruction-like content: pattern {hits[0]["name"]} matched {hits[0]["span"]!r} — rephrase without it.',matches=hits),len(hits))
     state=await tenant_state(ctx.identity.tenant)
@@ -120,6 +122,9 @@ async def propose_action(payload):
     all_reads=[c for c in ctx.calls.values() if c.get('tool') not in {'rs_record_finding','rs_propose_action'}]
     if p.kind=='close_proposal' and (len({c.get('tool') for c in selected.values() if c.get('rows_total',0)>0})<2 or any(multi_pattern(c) for c in all_reads)):return error('affirmative_evidence_required','Closing requires at least two distinct non-empty checks and no suspicious pattern in this session.')
     if p.case_id and not await db.read(ctx.identity.tenant,'MATCH (c:Case {id:$id}) RETURN c.id AS id',{'id':p.case_id}):return error('case_not_found','Case is absent from this tenant.')
+    if not p.finding_ids:
+        prior=await db.read(ctx.identity.tenant,'MATCH (f:Finding)-[:MADE_IN]->(s:Session {id:$sid}) MATCH (f)-[:ABOUT]->(a:Account) WHERE a.id IN $targets AND f.expired_at IS NULL RETURN DISTINCT f.id AS id LIMIT 10',{'sid':ctx.session_id,'targets':p.target_ids})
+        p.finding_ids=[f['id'] for f in prior]
     for fid in p.finding_ids:
         if not await db.read(ctx.identity.tenant,'MATCH (f:Finding {id:$id})-[:MADE_IN]->(s:Session {id:$sid}) RETURN f.id AS id',{'id':fid,'sid':ctx.session_id}):return error('invalid_finding','Finding must be from this session.')
     if p.kind in {'sar_draft','str_draft'}:
@@ -128,19 +133,31 @@ async def propose_action(payload):
             cov=next((c.get('rows',[{}])[0] for c in ctx.calls.values() if c.get('tool')=='rs_coverage_status' and c.get('rows')), {})
             try:p.draft=build_draft(p.kind,p.target_ids,list(selected.values()),cov)
             except ValueError:return error('transactions_required','A report needs at least one complete itemised transaction.')
+        from server.narrative import SARDraft,STRDraft
+        try:p.draft=(STRDraft if p.kind=='str_draft' else SARDraft).model_validate(p.draft).model_dump()
+        except ValidationError as ex:return error('invalid_report','The report must include every required report section and complete individual transfer facts.',fields=[e['loc'] for e in ex.errors(include_input=False)])
         txs=(p.draft.get('when') or {}).get('transactions',p.draft.get('transactions',[]))
         if not txs:return error('transactions_required','A report needs at least one itemised transaction.')
         if any((t.get('tx_id') or t.get('id')) not in ids for t in txs):return error('unsupported_transaction','Every report transaction must appear in this session evidence.')
         if p.kind=='str_draft' and (not p.draft.get('gos_tags') or len(p.draft.get('narration',''))>20000):return error('invalid_str','STR requires grounds-of-suspicion tags and narration under 20,000 characters.')
-        check=verify(json.dumps(p.draft),selected)
+        coverage_calls={k:c for k,c in ctx.calls.items() if c.get('tool')=='rs_coverage_status' and c.get('rows')}
+        if coverage_calls:p.draft['coverage']=next(iter(coverage_calls.values()))['rows'][0]
+        from server.verifier import validate_transactions
+        mismatches=validate_transactions(txs,selected)
+        if mismatches:return error('unsupported_transaction','Report transaction facts must match the cited transfer.',unsupported=mismatches)
+        check=verify(json.dumps(p.draft),selected|coverage_calls)
         if check['status']!='pass':return error('unsupported_draft','Draft contains unsupported claims.',unsupported=check['unsupported'])
     restrictions=[]
     # These control reads always run server-side; they never trust a model-supplied restriction.
-    ctx.internal_read=True
+    control_token=internal_control.set(True)
     try:
         for target in p.target_ids:
-            restrictions.append(await call_tool('rs_check_restrictions',{'entity_id':target,'as_of':ctx.as_of}))
-    finally:ctx.internal_read=False
+            checked=await call_tool('rs_check_restrictions',{'entity_id':target,'as_of':ctx.as_of})
+            checked_rows=checked.get('rows') or []
+            if checked.get('is_error') or checked.get('outcome') not in {'answered_with_path','not_in_graph'} or not any(row.get('id')==target and isinstance(row.get('restrictions'),list) for row in checked_rows):
+                return error('restriction_check_failed','The mandatory restriction check did not complete. Retry the read before proposing any action.',target=target,check_reason=checked.get('reason','incomplete_check'))
+            restrictions.append(checked)
+    finally:internal_control.reset(control_token)
     now=int(time.time());pid=str(uuid.uuid4());key=hashlib.sha256(json.dumps([ctx.identity.tenant,p.kind,sorted(p.target_ids),sorted(p.evidence_tool_call_ids)],sort_keys=True).encode()).hexdigest()
     draft=p.draft or {}
     rows=await db.write(ctx.identity.tenant,"MERGE (pa:PendingAction {idem_key:$key}) ON CREATE SET pa.id=$pid,pa.kind=$kind,pa.status='pending',pa.rationale=$rationale,pa.proposed_by=$model,pa.created_at=$now,pa.evidence_tool_call_ids=$ev,pa.restriction_check_json=$rc,pa.draft_json=$draft,pa.case_id=$cid WITH pa MATCH (s:Session {id:$sid}) MERGE (pa)-[:IN]->(s) WITH pa UNWIND $targets AS tid MATCH (a:Account {id:tid}) MERGE (pa)-[:TARGETS]->(a) RETURN DISTINCT pa.id AS pending_id,pa.status AS status,pa.kind AS kind",{'key':key,'pid':pid,'kind':p.kind,'rationale':p.rationale,'model':__import__('server.config',fromlist=['settings']).settings.planner,'now':now,'ev':p.evidence_tool_call_ids,'rc':json.dumps(restrictions),'draft':json.dumps(draft),'cid':p.case_id,'sid':ctx.session_id,'targets':p.target_ids})
@@ -157,3 +174,17 @@ async def rs_record_finding(entity_ids:Annotated[list[str],Field(min_length=1,ma
 async def rs_propose_action(kind:KINDS,target_ids:Annotated[list[str],Field(min_length=1,max_length=20)],evidence_tool_call_ids:Annotated[list[str],Field(min_length=1,max_length=20)],rationale:Annotated[str,Field(min_length=80,max_length=4000)],finding_ids:list[str]|None=None,case_id:str|None=None,draft:dict|None=None)->dict:
     """Create a pending action that only a named human can approve. Holds need multi-edge patterns and closures need two non-empty nonsuspicious checks. input_example: {kind:\"escalate\",target_ids:[\"ACC-4471\"],evidence_tool_call_ids:[\"uuid\"],rationale:\"The returned evidence path warrants a named analyst review before any further action is taken.\"}."""
     return await propose_action(dict(kind=kind,target_ids=target_ids,evidence_tool_call_ids=evidence_tool_call_ids,rationale=rationale,finding_ids=finding_ids or [],case_id=case_id,draft=draft))
+
+
+def _trace_refusals(function,name):
+    async def traced(payload):
+        result=await function(payload)
+        if result.get('tool_call_id'):return result
+        safe={k:('<redacted>' if k in {'text','rationale','draft','query','reason'} else v) for k,v in payload.items()}
+        return await write_trace(name,safe,result,len(result.get('matches',[])))
+    return traced
+
+# Successful writes and guard refusals already carry trace ids. Other
+# validation/evidence refusals must be equally visible and auditable.
+record_finding=_trace_refusals(record_finding,'rs_record_finding')
+propose_action=_trace_refusals(propose_action,'rs_propose_action')

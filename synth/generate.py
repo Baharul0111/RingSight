@@ -22,7 +22,7 @@ from typing import Any
 import networkx as nx
 import numpy as np
 
-SEED_VERSION = "rs-synthetic-v1"
+SEED_VERSION = "rs-synthetic-v2"
 END = int(datetime(2026, 10, 15, 23, 59, 59, tzinfo=timezone.utc).timestamp())
 START = END - 180 * 86400 + 1
 RAILS = ("UPI", "NEFT", "RTGS", "IMPS", "CARD", "WALLET")
@@ -217,7 +217,9 @@ def generate(accounts: int = 25000, tx: int | None = None, seed: int = 42) -> Da
             dev = f"DEV-r{ring_idx:02d}-{pos}"
             phone = f"PH-r{ring_idx:02d}-{pos}"
             dev_accounts[dev].update(pair)
-            phone_accounts[phone].update(pair)
+            # The demo seed must have no phone shortcut to the owner who
+            # also owns the hidden exit. Its connection is device -> owner.
+            if not (ring_idx==0 and pos==0):phone_accounts[phone].update(pair)
     # The four-hop hidden link has stable public demo ids.
     dev_accounts["DEV-f31c"].update(["ACC-4471", "ACC-10477"])
     for i, aid in enumerate(ids):

@@ -28,7 +28,11 @@ async def tenant_state(tenant):
 
 async def spend_state(tenant):
     from server.db import db
-    rows=await db.read(tenant,'MATCH (s:Spend {day:$day}) RETURN s.usd AS usd,s.reserved AS reserved,s.calls AS calls',{'day':day_utc()})
+    from redis.exceptions import ResponseError
+    try:rows=await db.read(tenant,'MATCH (s:Spend {day:$day}) RETURN s.usd AS usd,s.reserved AS reserved,s.calls AS calls',{'day':day_utc()})
+    except ResponseError as error:
+        if 'empty key' not in str(error).lower():raise
+        return {'usd':0,'reserved':0,'calls':0}
     return rows[0] if rows else {'usd':0,'reserved':0,'calls':0}
 
 async def model_gate(tenant):
@@ -52,7 +56,7 @@ async def settle(tenant,upper,cost,usage=None):
     from server.db import db
     ctx=get_context()
     async with SPEND_LOCK:
-        await db.write(tenant,'MATCH (s:Spend {day:$day}) SET s.reserved=coalesce(s.reserved,0)-$upper,s.usd=coalesce(s.usd,0)+$cost,s.calls=coalesce(s.calls,0)+1,s.updated_at=$now RETURN s.usd AS usd',{'day':day_utc(),'upper':upper,'cost':cost,'now':int(time.time())})
+        await db.write(tenant,'MATCH (s:Spend {day:$day}) SET s.reserved=CASE WHEN coalesce(s.reserved,0)>=$upper THEN coalesce(s.reserved,0)-$upper ELSE 0.0 END,s.usd=coalesce(s.usd,0)+$cost,s.calls=coalesce(s.calls,0)+1,s.updated_at=$now RETURN s.usd AS usd',{'day':day_utc(),'upper':upper,'cost':cost,'now':int(time.time())})
     ctx.usd+=cost
     if usage:
         ctx.input_tokens+=usage.input_tokens;ctx.output_tokens+=usage.output_tokens

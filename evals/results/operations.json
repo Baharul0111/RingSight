@@ -1,0 +1,17 @@
+{
+  "suite": "operations-configuration",
+  "live_url": "https://ringsight.onrender.com",
+  "configuration_confirmed_by": "Baharul Islam",
+  "confirmed_date": "2026-10-16",
+  "render_service_created": true,
+  "render_health_path": "/live",
+  "github_secrets_set_by_owner": [
+    "HEALTH_URL",
+    "JUDGE_KEY"
+  ],
+  "uptimerobot_monitor_enabled": true,
+  "cloudflare_cron_enabled": true,
+  "github_keepalive_workflow_present": true,
+  "independent_live_response_verified": false,
+  "note": "Owner confirmed account-side configuration. Actual health/model/latency checks are recorded separately; this is not an automated pass claim."
+}

@@ -1,1 +1,446 @@
-{"created": 1792119888.229803, "duration": 20.52523112297058, "exitcode": 0, "root": "/Users/baharulislam/Desktop/RingSight", "environment": {}, "summary": {"passed": 9, "total": 9, "collected": 9}, "collectors": [{"nodeid": "", "outcome": "passed", "result": [{"nodeid": "tests/test_read_tools.py", "type": "Module"}]}, {"nodeid": "tests/test_read_tools.py", "outcome": "passed", "result": [{"nodeid": "tests/test_read_tools.py::test_exact_public_read_catalogue", "type": "Coroutine", "lineno": 63}, {"nodeid": "tests/test_read_tools.py::test_every_read_tool_has_bounded_typed_inputs", "type": "Coroutine", "lineno": 78}, {"nodeid": "tests/test_read_tools.py::test_structural_abstention_unknowns_and_cash", "type": "Coroutine", "lineno": 88}, {"nodeid": "tests/test_read_tools.py::test_resolver_uses_server_side_names_only", "type": "Coroutine", "lineno": 100}, {"nodeid": "tests/test_read_tools.py::test_depth_and_exact_identifier_hops", "type": "Coroutine", "lineno": 108}, {"nodeid": "tests/test_read_tools.py::test_patterns_hubs_restrictions_and_injection", "type": "Coroutine", "lineno": 124}, {"nodeid": "tests/test_read_tools.py::test_future_edges_cannot_leak_into_any_read", "type": "Coroutine", "lineno": 149}, {"nodeid": "tests/test_read_tools.py::test_dense_guard_prevents_explosive_traversal", "type": "Coroutine", "lineno": 181}, {"nodeid": "tests/test_read_tools.py::test_historical_answers_do_not_reuse_later_global_snapshots", "type": "Coroutine", "lineno": 189}]}], "tests": [{"nodeid": "tests/test_read_tools.py::test_exact_public_read_catalogue", "lineno": 63, "outcome": "passed", "keywords": ["test_exact_public_read_catalogue", "asyncio", "pytestmark", "test_read_tools.py", "tests", "RingSight", ""], "setup": {"duration": 0.04360641600214876, "outcome": "passed"}, "call": {"duration": 0.08896829200239154, "outcome": "passed"}, "teardown": {"duration": 0.0016042909992393106, "outcome": "passed"}}, {"nodeid": "tests/test_read_tools.py::test_every_read_tool_has_bounded_typed_inputs", "lineno": 78, "outcome": "passed", "keywords": ["test_every_read_tool_has_bounded_typed_inputs", "asyncio", "pytestmark", "test_read_tools.py", "tests", "RingSight", ""], "setup": {"duration": 0.0010607500007608905, "outcome": "passed"}, "call": {"duration": 0.007188416006101761, "outcome": "passed"}, "teardown": {"duration": 0.00038841600326122716, "outcome": "passed"}}, {"nodeid": "tests/test_read_tools.py::test_structural_abstention_unknowns_and_cash", "lineno": 88, "outcome": "passed", "keywords": ["test_structural_abstention_unknowns_and_cash", "asyncio", "pytestmark", "test_read_tools.py", "tests", "RingSight", ""], "setup": {"duration": 0.0004294160025892779, "outcome": "passed"}, "call": {"duration": 0.13126004199875752, "outcome": "passed"}, "teardown": {"duration": 0.0022979159984970465, "outcome": "passed"}}, {"nodeid": "tests/test_read_tools.py::test_resolver_uses_server_side_names_only", "lineno": 100, "outcome": "passed", "keywords": ["test_resolver_uses_server_side_names_only", "asyncio", "pytestmark", "test_read_tools.py", "tests", "RingSight", ""], "setup": {"duration": 0.0007140410016290843, "outcome": "passed"}, "call": {"duration": 0.007837709003069904, "outcome": "passed"}, "teardown": {"duration": 0.0007217919992399402, "outcome": "passed"}}, {"nodeid": "tests/test_read_tools.py::test_depth_and_exact_identifier_hops", "lineno": 108, "outcome": "passed", "keywords": ["test_depth_and_exact_identifier_hops", "asyncio", "pytestmark", "test_read_tools.py", "tests", "RingSight", ""], "setup": {"duration": 0.0004045829991810024, "outcome": "passed"}, "call": {"duration": 0.023723124999378342, "outcome": "passed"}, "teardown": {"duration": 0.0005716669984394684, "outcome": "passed"}}, {"nodeid": "tests/test_read_tools.py::test_patterns_hubs_restrictions_and_injection", "lineno": 124, "outcome": "passed", "keywords": ["test_patterns_hubs_restrictions_and_injection", "asyncio", "pytestmark", "test_read_tools.py", "tests", "RingSight", ""], "setup": {"duration": 0.00040766600432107225, "outcome": "passed"}, "call": {"duration": 0.06293620799988275, "outcome": "passed"}, "teardown": {"duration": 0.0006300420063780621, "outcome": "passed"}}, {"nodeid": "tests/test_read_tools.py::test_future_edges_cannot_leak_into_any_read", "lineno": 149, "outcome": "passed", "keywords": ["test_future_edges_cannot_leak_into_any_read", "asyncio", "pytestmark", "test_read_tools.py", "tests", "RingSight", ""], "setup": {"duration": 0.0004114170005777851, "outcome": "passed"}, "call": {"duration": 18.809235958993668, "outcome": "passed"}, "teardown": {"duration": 0.0006054170007701032, "outcome": "passed"}}, {"nodeid": "tests/test_read_tools.py::test_dense_guard_prevents_explosive_traversal", "lineno": 181, "outcome": "passed", "keywords": ["test_dense_guard_prevents_explosive_traversal", "asyncio", "pytestmark", "test_read_tools.py", "tests", "RingSight", ""], "setup": {"duration": 0.00045420799870043993, "outcome": "passed"}, "call": {"duration": 0.007720792003965471, "outcome": "passed"}, "teardown": {"duration": 0.0006793330030632205, "outcome": "passed"}}, {"nodeid": "tests/test_read_tools.py::test_historical_answers_do_not_reuse_later_global_snapshots", "lineno": 189, "outcome": "passed", "keywords": ["test_historical_answers_do_not_reuse_later_global_snapshots", "asyncio", "pytestmark", "test_read_tools.py", "tests", "RingSight", ""], "setup": {"duration": 0.0005003339974791743, "outcome": "passed"}, "call": {"duration": 0.03108937499928288, "outcome": "passed"}, "teardown": {"duration": 0.0016645409996272065, "outcome": "passed"}}]}
+{
+  "created": 1792219719.8107898,
+  "source": "evals/results/pytest.json",
+  "source_sha256": "24c75222fd9012f2470e55e0874182ce22d001362f11e7da719b2d53200fde32",
+  "derived_without_rerun": true,
+  "exitcode": 0,
+  "summary": {
+    "passed": 16,
+    "failed": 0,
+    "total": 16
+  },
+  "tests": [
+    {
+      "nodeid": "tests/test_demo_path.py::test_real_depth_comparison_and_replacement_preserve_hidden_exit",
+      "lineno": 26,
+      "outcome": "passed",
+      "keywords": [
+        "test_real_depth_comparison_and_replacement_preserve_hidden_exit",
+        "asyncio",
+        "test_demo_path.py",
+        "tests",
+        "RingSight",
+        ""
+      ],
+      "setup": {
+        "duration": 0.53995424999448,
+        "outcome": "passed",
+        "stdout": "Account\nPerson\nBank\nMerchant\nDevice\nPhone\nAddress\nRail\nIngestionDay\nRestriction\nAlert\nTX\nOWNS\nAT_BANK\nUSES_DEVICE\nHAS_PHONE\nHAS_ADDRESS\nSHARES\nSHARES_STRONG\nPAID\nON\n"
+      },
+      "call": {
+        "duration": 0.01895866700215265,
+        "outcome": "passed",
+        "stdout": "{\"event\": \"tool\", \"session_id\": null, \"tool\": \"rs_shared_identifiers\", \"tool_call_id\": \"e43ef3ce-c50b-4c54-a627-11f1a4d2f6a4\", \"elapsed_ms\": 7.46, \"rows_total\": 1, \"rows_returned\": 1, \"truncated\": false, \"outcome\": \"answered_with_path\", \"guard_hits\": 0, \"algorithm\": \"weighted identifier projection\", \"args\": {\"account_id\": \"ACC-4471\", \"hops\": 1}}\n{\"event\": \"tool\", \"session_id\": null, \"tool\": \"rs_shared_identifiers\", \"tool_call_id\": \"c1fa8115-f32b-4261-b594-d6ab6ceca20a\", \"elapsed_ms\": 9.27, \"rows_total\": 3, \"rows_returned\": 3, \"truncated\": false, \"outcome\": \"answered_with_path\", \"guard_hits\": 0, \"algorithm\": \"weighted identifier projection\", \"args\": {\"account_id\": \"ACC-4471\", \"hops\": 2}}\n"
+      },
+      "teardown": {
+        "duration": 0.0015858749975450337,
+        "outcome": "passed"
+      }
+    },
+    {
+      "nodeid": "tests/test_read_tools.py::test_exact_public_read_catalogue",
+      "lineno": 67,
+      "outcome": "passed",
+      "keywords": [
+        "test_exact_public_read_catalogue",
+        "asyncio",
+        "pytestmark",
+        "test_read_tools.py",
+        "tests",
+        "RingSight",
+        ""
+      ],
+      "setup": {
+        "duration": 0.008168125001247972,
+        "outcome": "passed"
+      },
+      "call": {
+        "duration": 0.010015917010605335,
+        "outcome": "passed",
+        "stdout": "{\"event\": \"tool\", \"session_id\": null, \"tool\": \"rs_resolve_entity\", \"tool_call_id\": \"40ea04b4-6de1-4ba6-bcb1-e8ac5ff65fe8\", \"elapsed_ms\": 1.97, \"rows_total\": 1, \"rows_returned\": 1, \"truncated\": false, \"outcome\": \"resolved\", \"guard_hits\": 0, \"args\": {\"as_of\": null, \"limit\": 50, \"cursor\": null, \"query\": \"[redacted]\", \"kind\": \"[redacted]\", \"k\": 5}}\n"
+      },
+      "teardown": {
+        "duration": 0.0004922499938402325,
+        "outcome": "passed"
+      }
+    },
+    {
+      "nodeid": "tests/test_read_tools.py::test_every_read_tool_has_bounded_typed_inputs",
+      "lineno": 82,
+      "outcome": "passed",
+      "keywords": [
+        "test_every_read_tool_has_bounded_typed_inputs",
+        "asyncio",
+        "pytestmark",
+        "test_read_tools.py",
+        "tests",
+        "RingSight",
+        ""
+      ],
+      "setup": {
+        "duration": 0.00033733301097527146,
+        "outcome": "passed"
+      },
+      "call": {
+        "duration": 0.0070540419983444735,
+        "outcome": "passed",
+        "stdout": "{\"event\": \"tool\", \"session_id\": null, \"tool\": \"rs_neighbourhood\", \"tool_call_id\": \"9b0cc337-6f98-4be9-afb3-34901ddef250\", \"elapsed_ms\": 0.05, \"rows_total\": 0, \"rows_returned\": 0, \"truncated\": false, \"outcome\": \"tool_error\", \"reason\": \"validation\", \"guard_hits\": 0, \"args\": {\"account_id\": \"ACC-1\", \"hops\": 5}}\n{\"event\": \"tool\", \"session_id\": null, \"tool\": \"rs_neighbourhood\", \"tool_call_id\": \"9f451897-e3b4-4109-aebf-5f7bbae29bdf\", \"elapsed_ms\": 0.02, \"rows_total\": 0, \"rows_returned\": 0, \"truncated\": false, \"outcome\": \"tool_error\", \"reason\": \"validation\", \"guard_hits\": 0, \"args\": {\"account_id\": \"ACC-1\", \"tenant\": \"[redacted]\"}}\n"
+      },
+      "teardown": {
+        "duration": 0.0002901250118156895,
+        "outcome": "passed"
+      }
+    },
+    {
+      "nodeid": "tests/test_read_tools.py::test_structural_abstention_unknowns_and_cash",
+      "lineno": 92,
+      "outcome": "passed",
+      "keywords": [
+        "test_structural_abstention_unknowns_and_cash",
+        "asyncio",
+        "pytestmark",
+        "test_read_tools.py",
+        "tests",
+        "RingSight",
+        ""
+      ],
+      "setup": {
+        "duration": 0.0003231250011594966,
+        "outcome": "passed"
+      },
+      "call": {
+        "duration": 0.07205762500234414,
+        "outcome": "passed",
+        "stdout": "{\"event\": \"tool\", \"session_id\": null, \"tool\": \"rs_account_profile\", \"tool_call_id\": \"f75bc7c7-6f9e-4ad7-b2ce-a2b4c6e14812\", \"elapsed_ms\": 4.84, \"rows_total\": 0, \"rows_returned\": 0, \"truncated\": false, \"outcome\": \"unknown_entity\", \"reason\": \"unknown_entity\", \"guard_hits\": 0, \"args\": {\"account_id\": \"ACC-999990\"}}\n{\"event\": \"tool\", \"session_id\": null, \"tool\": \"rs_account_profile\", \"tool_call_id\": \"728e5b06-941e-442c-a2b9-d4242d2a9c5b\", \"elapsed_ms\": 3.54, \"rows_total\": 0, \"rows_returned\": 0, \"truncated\": false, \"outcome\": \"unknown_entity\", \"reason\": \"unknown_entity\", \"guard_hits\": 0, \"args\": {\"account_id\": \"ACC-999991\"}}\n{\"event\": \"tool\", \"session_id\": null, \"tool\": \"rs_account_profile\", \"tool_call_id\": \"4dc1bae1-2e9c-40e7-bd30-82fa859212e9\", \"elapsed_ms\": 3.31, \"rows_total\": 0, \"rows_returned\": 0, \"truncated\": false, \"outcome\": \"unknown_entity\", \"reason\": \"unknown_entity\", \"guard_hits\": 0, \"args\": {\"account_id\": \"ACC-999992\"}}\n{\"event\": \"tool\", \"session_id\": null, \"tool\": \"rs_account_profile\", \"tool_call_id\": \"64941e5e-c79d-4611-a497-b50fe878305c\", \"elapsed_ms\": 3.3, \"rows_total\": 0, \"rows_returned\": 0, \"truncated\": false, \"outcome\": \"unknown_entity\", \"reason\": \"unknown_entity\", \"guard_hits\": 0, \"args\": {\"account_id\": \"ACC-999993\"}}\n{\"event\": \"tool\", \"session_id\": null, \"tool\": \"rs_account_profile\", \"tool_call_id\": \"b2f1a4b5-6788-403e-9e4b-36368353134b\", \"elapsed_ms\": 3.12, \"rows_total\": 0, \"rows_returned\": 0, \"truncated\": false, \"outcome\": \"unknown_entity\", \"reason\": \"unknown_entity\", \"guard_hits\": 0, \"args\": {\"account_id\": \"ACC-999994\"}}\n{\"event\": \"tool\", \"session_id\": null, \"tool\": \"rs_account_profile\", \"tool_call_id\": \"6509dabb-c8f4-4390-b0ae-89fdd5cd93ca\", \"elapsed_ms\": 3.46, \"rows_total\": 0, \"rows_returned\": 0, \"truncated\": false, \"outcome\": \"unknown_entity\", \"reason\": \"unknown_entity\", \"guard_hits\": 0, \"args\": {\"account_id\": \"ACC-999995\"}}\n{\"event\": \"tool\", \"session_id\": null, \"tool\": \"rs_account_profile\", \"tool_call_id\": \"e6962c2c-5dd8-4321-806f-0d91febeee12\", \"elapsed_ms\": 2.82, \"rows_total\": 0, \"rows_returned\": 0, \"truncated\": false, \"outcome\": \"unknown_entity\", \"reason\": \"unknown_entity\", \"guard_hits\": 0, \"args\": {\"account_id\": \"ACC-999996\"}}\n{\"event\": \"tool\", \"session_id\": null, \"tool\": \"rs_account_profile\", \"tool_call_id\": \"88f7cb72-cc65-4d08-8291-76faa8d8958f\", \"elapsed_ms\": 2.97, \"rows_total\": 0, \"rows_returned\": 0, \"truncated\": false, \"outcome\": \"unknown_entity\", \"reason\": \"unknown_entity\", \"guard_hits\": 0, \"args\": {\"account_id\": \"ACC-999997\"}}\n{\"event\": \"tool\", \"session_id\": null, \"tool\": \"rs_account_profile\", \"tool_call_id\": \"3af38043-c6c6-4afa-8c1f-c2e4435c90e8\", \"elapsed_ms\": 3.19, \"rows_total\": 0, \"rows_returned\": 0, \"truncated\": false, \"outcome\": \"unknown_entity\", \"reason\": \"unknown_entity\", \"guard_hits\": 0, \"args\": {\"account_id\": \"ACC-999998\"}}\n{\"event\": \"tool\", \"session_id\": null, \"tool\": \"rs_account_profile\", \"tool_call_id\": \"288ff806-9f52-416c-8639-0de287c0a73f\", \"elapsed_ms\": 2.91, \"rows_total\": 0, \"rows_returned\": 0, \"truncated\": false, \"outcome\": \"unknown_entity\", \"reason\": \"unknown_entity\", \"guard_hits\": 0, \"args\": {\"account_id\": \"ACC-999999\"}}\n{\"event\": \"tool\", \"session_id\": null, \"tool\": \"rs_account_profile\", \"tool_call_id\": \"7fbbd582-ca75-4ef2-84c1-fa7466fd8b08\", \"elapsed_ms\": 2.91, \"rows_total\": 0, \"rows_returned\": 0, \"truncated\": false, \"outcome\": \"unknown_entity\", \"reason\": \"unknown_entity\", \"guard_hits\": 0, \"args\": {\"account_id\": \"ACC-9999910\"}}\n{\"event\": \"tool\", \"session_id\": null, \"tool\": \"rs_account_profile\", \"tool_call_id\": \"b0aa93b8-1c90-45a4-a8a7-293b1ca85e26\", \"elapsed_ms\": 3.03, \"rows_total\": 0, \"rows_returned\": 0, \"truncated\": false, \"outcome\": \"unknown_entity\", \"reason\": \"unknown_entity\", \"guard_hits\": 0, \"args\": {\"account_id\": \"ACC-9999911\"}}\n{\"event\": \"tool\", \"session_id\": null, \"tool\": \"rs_account_profile\", \"tool_call_id\": \"6d8dd9fc-7187-4313-b8da-9ff7ec049238\", \"elapsed_ms\": 2.76, \"rows_total\": 0, \"rows_returned\": 0, \"truncated\": false, \"outcome\": \"unknown_entity\", \"reason\": \"unknown_entity\", \"guard_hits\": 0, \"args\": {\"account_id\": \"ACC-9999912\"}}\n{\"event\": \"tool\", \"session_id\": null, \"tool\": \"rs_account_profile\", \"tool_call_id\": \"96f5683e-c099-45ed-be2d-bdb416c92b46\", \"elapsed_ms\": 2.92, \"rows_total\": 0, \"rows_returned\": 0, \"truncated\": false, \"outcome\": \"unknown_entity\", \"reason\": \"unknown_entity\", \"guard_hits\": 0, \"args\": {\"account_id\": \"ACC-9999913\"}}\n{\"event\": \"tool\", \"session_id\": null, \"tool\": \"rs_account_profile\", \"tool_call_id\": \"a0fcda35-3073-4258-b693-79c622fe245a\", \"elapsed_ms\": 2.88, \"rows_total\": 0, \"rows_returned\": 0, \"truncated\": false, \"outcome\": \"unknown_entity\", \"reason\": \"unknown_entity\", \"guard_hits\": 0, \"args\": {\"account_id\": \"ACC-9999914\"}}\n{\"event\": \"tool\", \"session_id\": null, \"tool\": \"rs_account_profile\", \"tool_call_id\": \"d3aae7c7-05e1-43e7-a05b-ac5d62911590\", \"elapsed_ms\": 2.78, \"rows_total\": 0, \"rows_returned\": 0, \"truncated\": false, \"outcome\": \"unknown_entity\", \"reason\": \"unknown_entity\", \"guard_hits\": 0, \"args\": {\"account_id\": \"ACC-9999915\"}}\n{\"event\": \"tool\", \"session_id\": null, \"tool\": \"rs_account_profile\", \"tool_call_id\": \"707175e6-d464-411b-b1b7-9b8dfc7530ee\", \"elapsed_ms\": 2.98, \"rows_total\": 0, \"rows_returned\": 0, \"truncated\": false, \"outcome\": \"unknown_entity\", \"reason\": \"unknown_entity\", \"guard_hits\": 0, \"args\": {\"account_id\": \"ACC-9999916\"}}\n{\"event\": \"tool\", \"session_id\": null, \"tool\": \"rs_account_profile\", \"tool_call_id\": \"aeabca4e-2e8c-4688-bd30-b4c0a6b50107\", \"elapsed_ms\": 3.39, \"rows_total\": 0, \"rows_returned\": 0, \"truncated\": false, \"outcome\": \"unknown_entity\", \"reason\": \"unknown_entity\", \"guard_hits\": 0, \"args\": {\"account_id\": \"ACC-9999917\"}}\n{\"event\": \"tool\", \"session_id\": null, \"tool\": \"rs_account_profile\", \"tool_call_id\": \"fbeb85e6-5799-4c87-8f5d-a96cb718a2c1\", \"elapsed_ms\": 3.84, \"rows_total\": 0, \"rows_returned\": 0, \"truncated\": false, \"outcome\": \"unknown_entity\", \"reason\": \"unknown_entity\", \"guard_hits\": 0, \"args\": {\"account_id\": \"ACC-9999918\"}}\n{\"event\": \"tool\", \"session_id\": null, \"tool\": \"rs_account_profile\", \"tool_call_id\": \"748da86e-5d49-4c09-9b00-4b20b3482989\", \"elapsed_ms\": 3.32, \"rows_total\": 0, \"rows_returned\": 0, \"truncated\": false, \"outcome\": \"unknown_entity\", \"reason\": \"unknown_entity\", \"guard_hits\": 0, \"args\": {\"account_id\": \"ACC-9999919\"}}\n{\"event\": \"tool\", \"session_id\": null, \"tool\": \"rs_coverage_status\", \"tool_call_id\": \"94c3d3c3-8307-46d0-8e22-afa2ac219b35\", \"elapsed_ms\": 1.43, \"rows_total\": 1, \"rows_returned\": 1, \"truncated\": false, \"outcome\": \"not_in_graph\", \"reason\": \"rail_not_ingested\", \"guard_hits\": 0, \"args\": {\"rail\": \"CASH\"}}\n{\"event\": \"tool\", \"session_id\": null, \"tool\": \"rs_coverage_status\", \"tool_call_id\": \"b4a92c73-7deb-48d6-9b0f-77878a97a765\", \"elapsed_ms\": 0.87, \"rows_total\": 1, \"rows_returned\": 1, \"truncated\": false, \"outcome\": \"not_in_graph\", \"reason\": \"rail_not_ingested\", \"guard_hits\": 0, \"args\": {\"rail\": \"CASH\"}}\n{\"event\": \"tool\", \"session_id\": null, \"tool\": \"rs_coverage_status\", \"tool_call_id\": \"cb3fbcb1-073a-4f64-857c-46fa32846496\", \"elapsed_ms\": 0.88, \"rows_total\": 1, \"rows_returned\": 1, \"truncated\": false, \"outcome\": \"not_in_graph\", \"reason\": \"rail_not_ingested\", \"guard_hits\": 0, \"args\": {\"rail\": \"CASH\"}}\n{\"event\": \"tool\", \"session_id\": null, \"tool\": \"rs_coverage_status\", \"tool_call_id\": \"89199271-a240-464b-84df-3f6b142dfa13\", \"elapsed_ms\": 0.97, \"rows_total\": 1, \"rows_returned\": 1, \"truncated\": false, \"outcome\": \"not_in_graph\", \"reason\": \"rail_not_ingested\", \"guard_hits\": 0, \"args\": {\"rail\": \"CASH\"}}\n{\"event\": \"tool\", \"session_id\": null, \"tool\": \"rs_coverage_status\", \"tool_call_id\": \"7df913d1-a81b-4012-a013-579bd9854ce6\", \"elapsed_ms\": 0.9, \"rows_total\": 1, \"rows_returned\": 1, \"truncated\": false, \"outcome\": \"not_in_graph\", \"reason\": \"rail_not_ingested\", \"guard_hits\": 0, \"args\": {\"rail\": \"CASH\"}}\n"
+      },
+      "teardown": {
+        "duration": 0.00054187499335967,
+        "outcome": "passed"
+      }
+    },
+    {
+      "nodeid": "tests/test_read_tools.py::test_resolver_uses_server_side_names_only",
+      "lineno": 104,
+      "outcome": "passed",
+      "keywords": [
+        "test_resolver_uses_server_side_names_only",
+        "asyncio",
+        "pytestmark",
+        "test_read_tools.py",
+        "tests",
+        "RingSight",
+        ""
+      ],
+      "setup": {
+        "duration": 0.0003669170109787956,
+        "outcome": "passed"
+      },
+      "call": {
+        "duration": 0.004176042013568804,
+        "outcome": "passed",
+        "stdout": "{\"event\": \"tool\", \"session_id\": null, \"tool\": \"rs_resolve_entity\", \"tool_call_id\": \"9116a772-371e-4b0e-b982-34d5ddce53e1\", \"elapsed_ms\": 3.79, \"rows_total\": 2, \"rows_returned\": 2, \"truncated\": false, \"outcome\": \"ambiguous\", \"guard_hits\": 0, \"args\": {\"query\": \"[redacted]\", \"kind\": \"[redacted]\"}}\n"
+      },
+      "teardown": {
+        "duration": 0.0005140419962117448,
+        "outcome": "passed"
+      }
+    },
+    {
+      "nodeid": "tests/test_read_tools.py::test_resolver_finds_structural_ids_and_exact_dated_transfer",
+      "lineno": 112,
+      "outcome": "passed",
+      "keywords": [
+        "test_resolver_finds_structural_ids_and_exact_dated_transfer",
+        "asyncio",
+        "pytestmark",
+        "test_read_tools.py",
+        "tests",
+        "RingSight",
+        ""
+      ],
+      "setup": {
+        "duration": 0.0003528749948600307,
+        "outcome": "passed"
+      },
+      "call": {
+        "duration": 0.014003417003550567,
+        "outcome": "passed",
+        "stdout": "{\"event\": \"tool\", \"session_id\": null, \"tool\": \"rs_resolve_entity\", \"tool_call_id\": \"6a7fe2a5-3665-444a-90a7-75c3f4621550\", \"elapsed_ms\": 1.95, \"rows_total\": 1, \"rows_returned\": 1, \"truncated\": false, \"outcome\": \"resolved\", \"guard_hits\": 0, \"args\": {\"query\": \"[redacted]\"}}\n{\"event\": \"tool\", \"session_id\": null, \"tool\": \"rs_resolve_entity\", \"tool_call_id\": \"959e3ce5-0b80-4cf4-8098-b395b2ea464d\", \"elapsed_ms\": 1.83, \"rows_total\": 1, \"rows_returned\": 1, \"truncated\": false, \"outcome\": \"resolved\", \"guard_hits\": 0, \"args\": {\"query\": \"[redacted]\"}}\n{\"event\": \"tool\", \"session_id\": null, \"tool\": \"rs_resolve_entity\", \"tool_call_id\": \"f3232def-0452-45ed-af4b-0ec4c7cdc988\", \"elapsed_ms\": 1.87, \"rows_total\": 1, \"rows_returned\": 1, \"truncated\": false, \"outcome\": \"resolved\", \"guard_hits\": 0, \"args\": {\"query\": \"[redacted]\"}}\n{\"event\": \"tool\", \"session_id\": null, \"tool\": \"rs_resolve_entity\", \"tool_call_id\": \"ee0a6a03-3088-4d27-b739-ff8bf7780e77\", \"elapsed_ms\": 2.25, \"rows_total\": 1, \"rows_returned\": 1, \"truncated\": false, \"outcome\": \"resolved\", \"guard_hits\": 0, \"args\": {\"query\": \"[redacted]\"}}\n{\"event\": \"tool\", \"session_id\": null, \"tool\": \"rs_resolve_entity\", \"tool_call_id\": \"580ee016-7282-40a3-b011-ed6ed3290cff\", \"elapsed_ms\": 2.57, \"rows_total\": 1, \"rows_returned\": 1, \"truncated\": false, \"outcome\": \"resolved\", \"guard_hits\": 4, \"args\": {\"query\": \"[redacted]\"}}\n{\"event\": \"tool\", \"session_id\": null, \"tool\": \"rs_resolve_entity\", \"tool_call_id\": \"0a37280f-00b9-4bad-a163-5a0895b14aff\", \"elapsed_ms\": 2.84, \"rows_total\": 0, \"rows_returned\": 0, \"truncated\": false, \"outcome\": \"unknown_entity\", \"reason\": \"unknown_entity\", \"guard_hits\": 0, \"args\": {\"query\": \"[redacted]\"}}\n"
+      },
+      "teardown": {
+        "duration": 0.0004601660039043054,
+        "outcome": "passed"
+      }
+    },
+    {
+      "nodeid": "tests/test_read_tools.py::test_depth_and_exact_identifier_hops",
+      "lineno": 129,
+      "outcome": "passed",
+      "keywords": [
+        "test_depth_and_exact_identifier_hops",
+        "asyncio",
+        "pytestmark",
+        "test_read_tools.py",
+        "tests",
+        "RingSight",
+        ""
+      ],
+      "setup": {
+        "duration": 0.00034174999746028334,
+        "outcome": "passed"
+      },
+      "call": {
+        "duration": 0.02219987500575371,
+        "outcome": "passed",
+        "stdout": "{\"event\": \"tool\", \"session_id\": null, \"tool\": \"rs_shared_identifiers\", \"tool_call_id\": \"ecb625b5-8842-4887-965c-a0ec2aca5d94\", \"elapsed_ms\": 5.44, \"rows_total\": 1, \"rows_returned\": 1, \"truncated\": false, \"outcome\": \"answered_with_path\", \"guard_hits\": 0, \"algorithm\": \"weighted identifier projection\", \"args\": {\"account_id\": \"ACC-1\", \"hops\": 1}}\n{\"event\": \"tool\", \"session_id\": null, \"tool\": \"rs_shared_identifiers\", \"tool_call_id\": \"cd1ff308-f7d8-4e55-9704-f8fa32eb9320\", \"elapsed_ms\": 8.57, \"rows_total\": 2, \"rows_returned\": 2, \"truncated\": false, \"outcome\": \"answered_with_path\", \"guard_hits\": 0, \"algorithm\": \"weighted identifier projection\", \"args\": {\"account_id\": \"ACC-1\", \"hops\": 2}}\n{\"event\": \"tool\", \"session_id\": null, \"tool\": \"rs_neighbourhood\", \"tool_call_id\": \"dbbec3ed-cb59-4ab6-93c4-73955f827b3e\", \"elapsed_ms\": 7.47, \"rows_total\": 6, \"rows_returned\": 6, \"truncated\": false, \"outcome\": \"answered_with_path\", \"guard_hits\": 0, \"args\": {\"account_id\": \"ACC-1\", \"direction\": \"in\", \"hops\": 1}}\n"
+      },
+      "teardown": {
+        "duration": 0.0005675829888787121,
+        "outcome": "passed"
+      }
+    },
+    {
+      "nodeid": "tests/test_read_tools.py::test_patterns_hubs_restrictions_and_injection",
+      "lineno": 145,
+      "outcome": "passed",
+      "keywords": [
+        "test_patterns_hubs_restrictions_and_injection",
+        "asyncio",
+        "pytestmark",
+        "test_read_tools.py",
+        "tests",
+        "RingSight",
+        ""
+      ],
+      "setup": {
+        "duration": 0.00037841699668206275,
+        "outcome": "passed"
+      },
+      "call": {
+        "duration": 0.07089854100195225,
+        "outcome": "passed",
+        "stdout": "{\"event\": \"tool\", \"session_id\": null, \"tool\": \"rs_cycles\", \"tool_call_id\": \"0c417b0f-c589-4943-b927-3365d03468e5\", \"elapsed_ms\": 9.97, \"rows_total\": 1, \"rows_returned\": 1, \"truncated\": false, \"outcome\": \"answered_with_path\", \"guard_hits\": 4, \"args\": {\"account_id\": \"ACC-1\"}}\n{\"event\": \"tool\", \"session_id\": null, \"tool\": \"rs_fan_pattern\", \"tool_call_id\": \"6ace0763-f204-4abe-a314-b71bdedf6bcd\", \"elapsed_ms\": 4.64, \"rows_total\": 1, \"rows_returned\": 1, \"truncated\": false, \"outcome\": \"answered_with_path\", \"guard_hits\": 0, \"args\": {\"account_id\": \"ACC-1\", \"direction\": \"in\"}}\n{\"event\": \"tool\", \"session_id\": null, \"tool\": \"rs_scatter_gather\", \"tool_call_id\": \"ac57f331-39eb-4c2f-be57-bd47839fb1c7\", \"elapsed_ms\": 5.19, \"rows_total\": 1, \"rows_returned\": 1, \"truncated\": false, \"outcome\": \"answered_with_path\", \"guard_hits\": 0, \"args\": {\"account_id\": \"ACC-1\"}}\n{\"event\": \"tool\", \"session_id\": null, \"tool\": \"rs_ring_members\", \"tool_call_id\": \"e4a0d7ce-58c7-4d66-99a8-b07310bb253b\", \"elapsed_ms\": 9.12, \"rows_total\": 1, \"rows_returned\": 1, \"truncated\": false, \"outcome\": \"answered_with_path\", \"guard_hits\": 4, \"algorithm\": \"algo.WCC\", \"computed_at\": 1792151000, \"args\": {\"account_id\": \"ACC-1\"}}\n{\"event\": \"tool\", \"session_id\": null, \"tool\": \"rs_hub_rank\", \"tool_call_id\": \"2f94a7f2-2e72-4ebb-8ef8-4cd058cbe6eb\", \"elapsed_ms\": 3.8, \"rows_total\": 9, \"rows_returned\": 9, \"truncated\": false, \"outcome\": \"answered_with_path\", \"guard_hits\": 0, \"algorithm\": \"algo.pageRank\", \"computed_at\": 1792151000, \"args\": {\"scope\": \"global\"}}\n{\"event\": \"tool\", \"session_id\": null, \"tool\": \"rs_hub_rank\", \"tool_call_id\": \"d9868b49-0ee5-4df4-9501-e6dbe53b3fe0\", \"elapsed_ms\": 2.86, \"rows_total\": 10, \"rows_returned\": 10, \"truncated\": false, \"outcome\": \"answered_with_path\", \"guard_hits\": 0, \"algorithm\": \"algo.pageRank\", \"computed_at\": 1792151000, \"args\": {\"scope\": \"global\", \"include_legit_hubs\": true}}\n{\"event\": \"tool\", \"session_id\": null, \"tool\": \"rs_check_restrictions\", \"tool_call_id\": \"c73e7992-8144-47fa-93d0-ae8d0c1f1aad\", \"elapsed_ms\": 3.1, \"rows_total\": 1, \"rows_returned\": 1, \"truncated\": false, \"outcome\": \"answered_with_path\", \"reason\": null, \"guard_hits\": 0, \"args\": {\"entity_id\": \"ACC-1\"}}\n{\"event\": \"tool\", \"session_id\": null, \"tool\": \"rs_account_profile\", \"tool_call_id\": \"174ce832-d971-4cd5-8b04-9a248ef41bff\", \"elapsed_ms\": 9.41, \"rows_total\": 1, \"rows_returned\": 1, \"truncated\": false, \"outcome\": \"answered_with_path\", \"guard_hits\": 4, \"args\": {\"account_id\": \"ACC-1\"}}\n{\"event\": \"tool\", \"session_id\": null, \"tool\": \"rs_path_between\", \"tool_call_id\": \"2fa62200-3659-486d-8aeb-84ef08336e2b\", \"elapsed_ms\": 6.27, \"rows_total\": 3, \"rows_returned\": 3, \"truncated\": false, \"outcome\": \"answered_with_path\", \"guard_hits\": 0, \"algorithm\": \"algo.SPpaths + bounded point-in-time Cypher\", \"args\": {\"src_id\": \"ACC-1\", \"dst_id\": \"ACC-9\"}}\n{\"event\": \"tool\", \"session_id\": null, \"tool\": \"rs_money_flow\", \"tool_call_id\": \"cad74ada-f1ce-41c0-9b0e-a35e8327b006\", \"elapsed_ms\": 15.23, \"rows_total\": 1, \"rows_returned\": 1, \"truncated\": false, \"outcome\": \"answered_with_path\", \"guard_hits\": 0, \"algorithm\": \"algo.maxFlow (aggregated FLOW projection)\", \"computed_at\": 1792151900, \"args\": {\"source_ids\": [\"ACC-1\"], \"sink_ids\": [\"ACC-9\"]}}\n"
+      },
+      "teardown": {
+        "duration": 0.0005610830121440813,
+        "outcome": "passed"
+      }
+    },
+    {
+      "nodeid": "tests/test_read_tools.py::test_future_edges_cannot_leak_into_any_read",
+      "lineno": 170,
+      "outcome": "passed",
+      "keywords": [
+        "test_future_edges_cannot_leak_into_any_read",
+        "asyncio",
+        "pytestmark",
+        "test_read_tools.py",
+        "tests",
+        "RingSight",
+        ""
+      ],
+      "setup": {
+        "duration": 0.0003987499949289486,
+        "outcome": "passed"
+      },
+      "call": {
+        "duration": 0.3458721670031082,
+        "outcome": "passed",
+        "stdout": "{\"event\": \"tool\", \"session_id\": null, \"tool\": \"rs_account_profile\", \"tool_call_id\": \"c067b72c-e20c-4e9d-8adc-c74a9837ed9d\", \"elapsed_ms\": 8.96, \"rows_total\": 1, \"rows_returned\": 1, \"truncated\": false, \"outcome\": \"answered_with_path\", \"guard_hits\": 4, \"args\": {\"account_id\": \"ACC-1\"}}\n{\"event\": \"tool\", \"session_id\": null, \"tool\": \"rs_neighbourhood\", \"tool_call_id\": \"2f72be3a-4646-47d8-9869-6fb4d399bb71\", \"elapsed_ms\": 51.88, \"rows_total\": 8, \"rows_returned\": 8, \"truncated\": false, \"outcome\": \"answered_with_path\", \"guard_hits\": 8, \"args\": {\"account_id\": \"ACC-1\", \"hops\": 4}}\n{\"event\": \"tool\", \"session_id\": null, \"tool\": \"rs_fan_pattern\", \"tool_call_id\": \"24bc40ee-99a9-43e4-a33c-ed47c0bba494\", \"elapsed_ms\": 4.59, \"rows_total\": 1, \"rows_returned\": 1, \"truncated\": false, \"outcome\": \"answered_with_path\", \"guard_hits\": 0, \"args\": {\"account_id\": \"ACC-1\", \"direction\": \"in\"}}\n{\"event\": \"tool\", \"session_id\": null, \"tool\": \"rs_cycles\", \"tool_call_id\": \"73da1b05-2c1d-4937-a797-d406625fa38b\", \"elapsed_ms\": 10.89, \"rows_total\": 1, \"rows_returned\": 1, \"truncated\": false, \"outcome\": \"answered_with_path\", \"guard_hits\": 4, \"args\": {\"account_id\": \"ACC-1\"}}\n{\"event\": \"tool\", \"session_id\": null, \"tool\": \"rs_scatter_gather\", \"tool_call_id\": \"fddb5220-9e6b-42ba-bd92-785538f5977f\", \"elapsed_ms\": 4.83, \"rows_total\": 1, \"rows_returned\": 1, \"truncated\": false, \"outcome\": \"answered_with_path\", \"guard_hits\": 0, \"args\": {\"account_id\": \"ACC-1\"}}\n{\"event\": \"tool\", \"session_id\": null, \"tool\": \"rs_path_between\", \"tool_call_id\": \"865001b0-28e4-43e5-a167-ef1108826195\", \"elapsed_ms\": 5.27, \"rows_total\": 3, \"rows_returned\": 3, \"truncated\": false, \"outcome\": \"answered_with_path\", \"guard_hits\": 0, \"algorithm\": \"algo.SPpaths + bounded point-in-time Cypher\", \"args\": {\"src_id\": \"ACC-1\", \"dst_id\": \"ACC-9\"}}\n{\"event\": \"tool\", \"session_id\": null, \"tool\": \"rs_ring_members\", \"tool_call_id\": \"6c1394ca-4493-4351-914a-716c0d269909\", \"elapsed_ms\": 8.51, \"rows_total\": 1, \"rows_returned\": 1, \"truncated\": false, \"outcome\": \"answered_with_path\", \"guard_hits\": 4, \"algorithm\": \"algo.WCC\", \"computed_at\": 1792151000, \"args\": {\"account_id\": \"ACC-1\"}}\n{\"event\": \"tool\", \"session_id\": null, \"tool\": \"rs_hub_rank\", \"tool_call_id\": \"4c38c32c-7951-4f20-beb1-37c3d122c9c2\", \"elapsed_ms\": 2.4, \"rows_total\": 9, \"rows_returned\": 9, \"truncated\": false, \"outcome\": \"answered_with_path\", \"guard_hits\": 0, \"algorithm\": \"algo.pageRank\", \"computed_at\": 1792151000, \"args\": {\"scope\": \"global\"}}\n{\"event\": \"tool\", \"session_id\": null, \"tool\": \"rs_shared_identifiers\", \"tool_call_id\": \"941d4d70-47cc-415d-b1f3-bb4331dd38a1\", \"elapsed_ms\": 10.27, \"rows_total\": 2, \"rows_returned\": 2, \"truncated\": false, \"outcome\": \"answered_with_path\", \"guard_hits\": 0, \"algorithm\": \"weighted identifier projection\", \"args\": {\"account_id\": \"ACC-1\", \"hops\": 2}}\n{\"event\": \"tool\", \"session_id\": null, \"tool\": \"rs_check_restrictions\", \"tool_call_id\": \"16e8a4cf-38d7-4235-9d38-8397dcba9232\", \"elapsed_ms\": 2.86, \"rows_total\": 1, \"rows_returned\": 1, \"truncated\": false, \"outcome\": \"answered_with_path\", \"reason\": null, \"guard_hits\": 0, \"args\": {\"entity_id\": \"ACC-1\"}}\n{\"event\": \"tool\", \"session_id\": null, \"tool\": \"rs_resolve_entity\", \"tool_call_id\": \"d85c62cc-6d6a-4def-b3c3-5d2677adf32f\", \"elapsed_ms\": 1.34, \"rows_total\": 1, \"rows_returned\": 1, \"truncated\": false, \"outcome\": \"resolved\", \"guard_hits\": 0, \"args\": {\"query\": \"[redacted]\"}}\n{\"event\": \"tool\", \"session_id\": null, \"tool\": \"rs_recall_findings\", \"tool_call_id\": \"26c4c82d-ca25-4d20-8e4e-5eb851f63d6c\", \"elapsed_ms\": 2.79, \"rows_total\": 0, \"rows_returned\": 0, \"truncated\": false, \"outcome\": \"not_in_memory\", \"guard_hits\": 0, \"args\": {\"entity_ids\": [\"ACC-1\"]}}\n{\"event\": \"tool\", \"session_id\": null, \"tool\": \"rs_coverage_status\", \"tool_call_id\": \"8125c73d-2f66-4336-a3ce-cc1690ff6d57\", \"elapsed_ms\": 1.54, \"rows_total\": 1, \"rows_returned\": 1, \"truncated\": false, \"outcome\": \"answered_with_path\", \"guard_hits\": 0, \"args\": {}}\n{\"event\": \"tool\", \"session_id\": null, \"tool\": \"rs_money_flow\", \"tool_call_id\": \"45aa87d7-34fd-4fe9-859d-0b9a1b30659e\", \"elapsed_ms\": 12.57, \"rows_total\": 1, \"rows_returned\": 1, \"truncated\": false, \"outcome\": \"answered_with_path\", \"guard_hits\": 0, \"algorithm\": \"algo.maxFlow (aggregated FLOW projection)\", \"computed_at\": 1792151900, \"args\": {\"source_ids\": [\"ACC-1\"], \"sink_ids\": [\"ACC-9\"]}}\n{\"event\": \"tool\", \"session_id\": null, \"tool\": \"rs_account_profile\", \"tool_call_id\": \"690a275b-b861-4c7e-a83a-fe77c905810e\", \"elapsed_ms\": 14.85, \"rows_total\": 1, \"rows_returned\": 1, \"truncated\": false, \"outcome\": \"answered_with_path\", \"guard_hits\": 4, \"args\": {\"account_id\": \"ACC-1\"}}\n{\"event\": \"tool\", \"session_id\": null, \"tool\": \"rs_neighbourhood\", \"tool_call_id\": \"fb7735a7-f9b2-46cd-8121-39e182d5f7dc\", \"elapsed_ms\": 51.85, \"rows_total\": 8, \"rows_returned\": 8, \"truncated\": false, \"outcome\": \"answered_with_path\", \"guard_hits\": 8, \"args\": {\"account_id\": \"ACC-1\", \"hops\": 4}}\n{\"event\": \"tool\", \"session_id\": null, \"tool\": \"rs_fan_pattern\", \"tool_call_id\": \"37d9027b-6c40-436b-9bec-f79e259be1c2\", \"elapsed_ms\": 4.7, \"rows_total\": 1, \"rows_returned\": 1, \"truncated\": false, \"outcome\": \"answered_with_path\", \"guard_hits\": 0, \"args\": {\"account_id\": \"ACC-1\", \"direction\": \"in\"}}\n{\"event\": \"tool\", \"session_id\": null, \"tool\": \"rs_cycles\", \"tool_call_id\": \"ad37cfe3-a792-4cf4-bcf9-cec932de58e2\", \"elapsed_ms\": 10.3, \"rows_total\": 1, \"rows_returned\": 1, \"truncated\": false, \"outcome\": \"answered_with_path\", \"guard_hits\": 4, \"args\": {\"account_id\": \"ACC-1\"}}\n{\"event\": \"tool\", \"session_id\": null, \"tool\": \"rs_scatter_gather\", \"tool_call_id\": \"54550492-c1b6-445c-9a36-ad457d1478c0\", \"elapsed_ms\": 5.25, \"rows_total\": 1, \"rows_returned\": 1, \"truncated\": false, \"outcome\": \"answered_with_path\", \"guard_hits\": 0, \"args\": {\"account_id\": \"ACC-1\"}}\n{\"event\": \"tool\", \"session_id\": null, \"tool\": \"rs_path_between\", \"tool_call_id\": \"9e74986b-def3-4f79-8105-70f8a15e4e48\", \"elapsed_ms\": 7.65, \"rows_total\": 3, \"rows_returned\": 3, \"truncated\": false, \"outcome\": \"answered_with_path\", \"guard_hits\": 0, \"algorithm\": \"algo.SPpaths + bounded point-in-time Cypher\", \"args\": {\"src_id\": \"ACC-1\", \"dst_id\": \"ACC-9\"}}\n{\"event\": \"tool\", \"session_id\": null, \"tool\": \"rs_ring_members\", \"tool_call_id\": \"e891ac60-73bb-4999-8a89-89984dca2a81\", \"elapsed_ms\": 23.51, \"rows_total\": 1, \"rows_returned\": 1, \"truncated\": false, \"outcome\": \"answered_with_path\", \"guard_hits\": 4, \"algorithm\": \"algo.WCC\", \"computed_at\": 1792151000, \"args\": {\"account_id\": \"ACC-1\"}}\n{\"event\": \"tool\", \"session_id\": null, \"tool\": \"rs_hub_rank\", \"tool_call_id\": \"7501d3fe-f2be-4bb0-b26f-e3cd6db49cad\", \"elapsed_ms\": 10.22, \"rows_total\": 9, \"rows_returned\": 9, \"truncated\": false, \"outcome\": \"answered_with_path\", \"guard_hits\": 0, \"algorithm\": \"algo.pageRank\", \"computed_at\": 1792151000, \"args\": {\"scope\": \"global\"}}\n{\"event\": \"tool\", \"session_id\": null, \"tool\": \"rs_shared_identifiers\", \"tool_call_id\": \"252bcccf-72e2-4af0-aca9-7fdd6a1b99e0\", \"elapsed_ms\": 17.4, \"rows_total\": 2, \"rows_returned\": 2, \"truncated\": false, \"outcome\": \"answered_with_path\", \"guard_hits\": 0, \"algorithm\": \"weighted identifier projection\", \"args\": {\"account_id\": \"ACC-1\", \"hops\": 2}}\n{\"event\": \"tool\", \"session_id\": null, \"tool\": \"rs_check_restrictions\", \"tool_call_id\": \"e6629d1a-beb9-4c83-becd-cccaf0231606\", \"elapsed_ms\": 6.06, \"rows_total\": 1, \"rows_returned\": 1, \"truncated\": false, \"outcome\": \"answered_with_path\", \"reason\": null, \"guard_hits\": 0, \"args\": {\"entity_id\": \"ACC-1\"}}\n{\"event\": \"tool\", \"session_id\": null, \"tool\": \"rs_resolve_entity\", \"tool_call_id\": \"8b1b8760-4ea7-4c39-b00d-967d12b31741\", \"elapsed_ms\": 2.97, \"rows_total\": 1, \"rows_returned\": 1, \"truncated\": false, \"outcome\": \"resolved\", \"guard_hits\": 0, \"args\": {\"query\": \"[redacted]\"}}\n{\"event\": \"tool\", \"session_id\": null, \"tool\": \"rs_recall_findings\", \"tool_call_id\": \"556084ed-9a05-4f73-be8c-80bdb53692df\", \"elapsed_ms\": 5.23, \"rows_total\": 0, \"rows_returned\": 0, \"truncated\": false, \"outcome\": \"not_in_memory\", \"guard_hits\": 0, \"args\": {\"entity_ids\": [\"ACC-1\"]}}\n{\"event\": \"tool\", \"session_id\": null, \"tool\": \"rs_coverage_status\", \"tool_call_id\": \"c2aeb1d9-fd56-4904-974b-24b1015f64e4\", \"elapsed_ms\": 3.09, \"rows_total\": 1, \"rows_returned\": 1, \"truncated\": false, \"outcome\": \"answered_with_path\", \"guard_hits\": 0, \"args\": {}}\n{\"event\": \"tool\", \"session_id\": null, \"tool\": \"rs_money_flow\", \"tool_call_id\": \"04205ac8-db53-4064-8c24-fbbbe4c384a1\", \"elapsed_ms\": 24.94, \"rows_total\": 1, \"rows_returned\": 1, \"truncated\": false, \"outcome\": \"answered_with_path\", \"guard_hits\": 0, \"algorithm\": \"algo.maxFlow (aggregated FLOW projection)\", \"computed_at\": 1792151900, \"args\": {\"source_ids\": [\"ACC-1\"], \"sink_ids\": [\"ACC-9\"]}}\n{\"event\": \"tool\", \"session_id\": null, \"tool\": \"rs_resolve_entity\", \"tool_call_id\": \"cbfb74b6-3dde-479c-977c-b86bb310301b\", \"elapsed_ms\": 3.77, \"rows_total\": 0, \"rows_returned\": 0, \"truncated\": false, \"outcome\": \"unknown_entity\", \"reason\": \"unknown_entity\", \"guard_hits\": 0, \"args\": {\"query\": \"[redacted]\"}}\n{\"event\": \"tool\", \"session_id\": null, \"tool\": \"rs_money_flow\", \"tool_call_id\": \"0fc72e56-07bc-407c-bf66-b1e2d12da60c\", \"elapsed_ms\": 8.56, \"rows_total\": 0, \"rows_returned\": 0, \"truncated\": false, \"outcome\": \"tool_error\", \"reason\": \"historical_projection_unavailable\", \"guard_hits\": 0, \"args\": {\"source_ids\": [\"ACC-1\"], \"sink_ids\": [\"ACC-9\"], \"as_of\": 1792132000}}\n"
+      },
+      "teardown": {
+        "duration": 0.0019119159987894818,
+        "outcome": "passed"
+      }
+    },
+    {
+      "nodeid": "tests/test_read_tools.py::test_dense_guard_prevents_explosive_traversal",
+      "lineno": 205,
+      "outcome": "passed",
+      "keywords": [
+        "test_dense_guard_prevents_explosive_traversal",
+        "asyncio",
+        "pytestmark",
+        "test_read_tools.py",
+        "tests",
+        "RingSight",
+        ""
+      ],
+      "setup": {
+        "duration": 0.0008523330034222454,
+        "outcome": "passed"
+      },
+      "call": {
+        "duration": 0.012199832999613136,
+        "outcome": "passed",
+        "stdout": "{\"event\": \"tool\", \"session_id\": null, \"tool\": \"rs_neighbourhood\", \"tool_call_id\": \"bbbdb3e9-ce81-48e8-b097-e889ee050dda\", \"elapsed_ms\": 6.73, \"rows_total\": 0, \"rows_returned\": 0, \"truncated\": false, \"outcome\": \"tool_error\", \"reason\": \"hub_too_dense\", \"guard_hits\": 0, \"args\": {\"account_id\": \"ACC-10\", \"hops\": 4}}\n{\"event\": \"tool\", \"session_id\": null, \"tool\": \"rs_cycles\", \"tool_call_id\": \"989cccb2-27e9-411a-ada1-c405aae00844\", \"elapsed_ms\": 4.2, \"rows_total\": 0, \"rows_returned\": 0, \"truncated\": false, \"outcome\": \"tool_error\", \"reason\": \"hub_too_dense\", \"guard_hits\": 0, \"args\": {\"account_id\": \"ACC-10\"}}\n"
+      },
+      "teardown": {
+        "duration": 0.000850791999255307,
+        "outcome": "passed"
+      }
+    },
+    {
+      "nodeid": "tests/test_read_tools.py::test_historical_answers_do_not_reuse_later_global_snapshots",
+      "lineno": 213,
+      "outcome": "passed",
+      "keywords": [
+        "test_historical_answers_do_not_reuse_later_global_snapshots",
+        "asyncio",
+        "pytestmark",
+        "test_read_tools.py",
+        "tests",
+        "RingSight",
+        ""
+      ],
+      "setup": {
+        "duration": 0.000636665994534269,
+        "outcome": "passed"
+      },
+      "call": {
+        "duration": 0.03431166699738242,
+        "outcome": "passed",
+        "stdout": "{\"event\": \"tool\", \"session_id\": null, \"tool\": \"rs_hub_rank\", \"tool_call_id\": \"6390ab3c-1d8e-4049-ac47-e03a106081aa\", \"elapsed_ms\": 2.95, \"rows_total\": 0, \"rows_returned\": 0, \"truncated\": false, \"outcome\": \"tool_error\", \"reason\": \"historical_snapshot_unavailable\", \"guard_hits\": 0, \"args\": {\"scope\": \"global\", \"as_of\": 1792151999}}\n{\"event\": \"tool\", \"session_id\": null, \"tool\": \"rs_ring_members\", \"tool_call_id\": \"ea495cf3-4bb2-4d1f-8b3d-beacf71f2744\", \"elapsed_ms\": 3.6, \"rows_total\": 0, \"rows_returned\": 0, \"truncated\": false, \"outcome\": \"tool_error\", \"reason\": \"historical_snapshot_unavailable\", \"guard_hits\": 0, \"args\": {\"account_id\": \"ACC-1\", \"as_of\": 1792151999}}\n{\"event\": \"tool\", \"session_id\": null, \"tool\": \"rs_account_profile\", \"tool_call_id\": \"fc4c9e05-bb02-465b-9826-0d9f46e3f04a\", \"elapsed_ms\": 26.42, \"rows_total\": 1, \"rows_returned\": 1, \"truncated\": false, \"outcome\": \"answered_with_path\", \"guard_hits\": 4, \"args\": {\"account_id\": \"ACC-1\", \"as_of\": 1792151999}}\n"
+      },
+      "teardown": {
+        "duration": 0.0009697079949546605,
+        "outcome": "passed"
+      }
+    },
+    {
+      "nodeid": "tests/test_read_tools.py::test_overlapping_cycles_of_all_lengths_preserve_exact_tx_endpoints",
+      "lineno": 224,
+      "outcome": "passed",
+      "keywords": [
+        "test_overlapping_cycles_of_all_lengths_preserve_exact_tx_endpoints",
+        "asyncio",
+        "pytestmark",
+        "test_read_tools.py",
+        "tests",
+        "RingSight",
+        ""
+      ],
+      "setup": {
+        "duration": 0.0006560000038007274,
+        "outcome": "passed"
+      },
+      "call": {
+        "duration": 0.05706933399778791,
+        "outcome": "passed",
+        "stdout": "{\"event\": \"tool\", \"session_id\": null, \"tool\": \"rs_cycles\", \"tool_call_id\": \"6c2eb018-b2f1-4ab6-81b1-d048a448db1b\", \"elapsed_ms\": 21.28, \"rows_total\": 3, \"rows_returned\": 3, \"truncated\": false, \"outcome\": \"answered_with_path\", \"guard_hits\": 12, \"args\": {\"account_id\": \"ACC-1\", \"min_len\": 3, \"max_len\": 5, \"limit\": 200}}\n{\"event\": \"tool\", \"session_id\": null, \"tool\": \"rs_path_between\", \"tool_call_id\": \"712ed7e0-64a5-4df5-8ccc-af60031b9c90\", \"elapsed_ms\": 25.36, \"rows_total\": 2, \"rows_returned\": 2, \"truncated\": false, \"outcome\": \"answered_with_path\", \"guard_hits\": 4, \"algorithm\": \"algo.SPpaths + bounded point-in-time Cypher\", \"args\": {\"src_id\": \"ACC-1\", \"dst_id\": \"ACC-8\", \"max_hops\": 4, \"k\": 5}}\n"
+      },
+      "teardown": {
+        "duration": 0.001253750000614673,
+        "outcome": "passed"
+      }
+    },
+    {
+      "nodeid": "tests/test_read_tools.py::test_shared_relationship_path_preserves_all_null_id_legs",
+      "lineno": 258,
+      "outcome": "passed",
+      "keywords": [
+        "test_shared_relationship_path_preserves_all_null_id_legs",
+        "asyncio",
+        "pytestmark",
+        "test_read_tools.py",
+        "tests",
+        "RingSight",
+        ""
+      ],
+      "setup": {
+        "duration": 0.0009697500063339248,
+        "outcome": "passed"
+      },
+      "call": {
+        "duration": 0.021918250000453554,
+        "outcome": "passed",
+        "stdout": "{\"event\": \"tool\", \"session_id\": null, \"tool\": \"rs_path_between\", \"tool_call_id\": \"9328cdde-4b05-4f56-98ab-5cb2d6ec45fa\", \"elapsed_ms\": 20.72, \"rows_total\": 1, \"rows_returned\": 1, \"truncated\": false, \"outcome\": \"answered_with_path\", \"guard_hits\": 0, \"algorithm\": \"algo.SPpaths + bounded point-in-time Cypher\", \"args\": {\"src_id\": \"ACC-1\", \"dst_id\": \"ACC-9\", \"rel_types\": [\"[redacted]\"], \"k\": 5}}\n"
+      },
+      "teardown": {
+        "duration": 0.0015085839986568317,
+        "outcome": "passed"
+      }
+    },
+    {
+      "nodeid": "tests/test_read_tools.py::test_mule_pattern_totals_count_distinct_transfers_not_join_combinations",
+      "lineno": 267,
+      "outcome": "passed",
+      "keywords": [
+        "test_mule_pattern_totals_count_distinct_transfers_not_join_combinations",
+        "asyncio",
+        "pytestmark",
+        "test_read_tools.py",
+        "tests",
+        "RingSight",
+        ""
+      ],
+      "setup": {
+        "duration": 0.0010969169961754233,
+        "outcome": "passed"
+      },
+      "call": {
+        "duration": 0.028564874999574386,
+        "outcome": "passed",
+        "stdout": "{\"event\": \"tool\", \"session_id\": null, \"tool\": \"rs_scatter_gather\", \"tool_call_id\": \"52efd7ca-5f26-41e1-a27e-eb5a61d0321d\", \"elapsed_ms\": 18.82, \"rows_total\": 1, \"rows_returned\": 1, \"truncated\": false, \"outcome\": \"answered_with_path\", \"guard_hits\": 0, \"args\": {\"account_id\": \"ACC-1\", \"mode\": \"scatter_gather\", \"min_mules\": 3, \"limit\": 200}}\n{\"event\": \"tool\", \"session_id\": null, \"tool\": \"rs_scatter_gather\", \"tool_call_id\": \"2e3b45a3-214d-43bb-bac7-a16065ac4967\", \"elapsed_ms\": 8.45, \"rows_total\": 1, \"rows_returned\": 1, \"truncated\": false, \"outcome\": \"answered_with_path\", \"guard_hits\": 0, \"args\": {\"account_id\": \"ACC-1\", \"mode\": \"gather_scatter\", \"min_mules\": 3, \"limit\": 200}}\n"
+      },
+      "teardown": {
+        "duration": 0.0009314169874414802,
+        "outcome": "passed"
+      }
+    },
+    {
+      "nodeid": "tests/test_read_tools.py::test_neighbourhood_preserves_three_step_routes_across_distinct_layers",
+      "lineno": 286,
+      "outcome": "passed",
+      "keywords": [
+        "test_neighbourhood_preserves_three_step_routes_across_distinct_layers",
+        "asyncio",
+        "pytestmark",
+        "test_read_tools.py",
+        "tests",
+        "RingSight",
+        ""
+      ],
+      "setup": {
+        "duration": 0.0006507499929284677,
+        "outcome": "passed"
+      },
+      "call": {
+        "duration": 0.05887166698812507,
+        "outcome": "passed",
+        "stdout": "{\"event\": \"tool\", \"session_id\": null, \"tool\": \"rs_neighbourhood\", \"tool_call_id\": \"11423f00-e0fd-4848-a8e2-cb23c63c0627\", \"elapsed_ms\": 11.53, \"rows_total\": 4, \"rows_returned\": 4, \"truncated\": false, \"outcome\": \"answered_with_path\", \"guard_hits\": 4, \"args\": {\"account_id\": \"ACC-1\", \"hops\": 1, \"direction\": \"out\", \"limit\": 200}}\n{\"event\": \"tool\", \"session_id\": null, \"tool\": \"rs_neighbourhood\", \"tool_call_id\": \"69e5713c-3b56-40e1-8580-ffd03423ebc1\", \"elapsed_ms\": 42.39, \"rows_total\": 7, \"rows_returned\": 7, \"truncated\": false, \"outcome\": \"answered_with_path\", \"guard_hits\": 8, \"args\": {\"account_id\": \"ACC-1\", \"hops\": 3, \"direction\": \"out\", \"limit\": 200}}\n"
+      },
+      "teardown": {
+        "duration": 0.0010572080063866451,
+        "outcome": "passed"
+      }
+    },
+    {
+      "nodeid": "tests/test_read_tools.py::test_neighbourhood_incoming_and_both_retain_reverse_traversal_money_direction",
+      "lineno": 299,
+      "outcome": "passed",
+      "keywords": [
+        "test_neighbourhood_incoming_and_both_retain_reverse_traversal_money_direction",
+        "asyncio",
+        "pytestmark",
+        "test_read_tools.py",
+        "tests",
+        "RingSight",
+        ""
+      ],
+      "setup": {
+        "duration": 0.0006442919984692708,
+        "outcome": "passed"
+      },
+      "call": {
+        "duration": 0.03145875000336673,
+        "outcome": "passed",
+        "stdout": "{\"event\": \"tool\", \"session_id\": null, \"tool\": \"rs_neighbourhood\", \"tool_call_id\": \"2481e4a9-8f82-47df-8a4d-a70cd396b202\", \"elapsed_ms\": 12.62, \"rows_total\": 3, \"rows_returned\": 3, \"truncated\": false, \"outcome\": \"answered_with_path\", \"guard_hits\": 0, \"args\": {\"account_id\": \"ACC-9\", \"hops\": 1, \"direction\": \"in\"}}\n{\"event\": \"tool\", \"session_id\": null, \"tool\": \"rs_neighbourhood\", \"tool_call_id\": \"92341f60-54ef-446a-aa99-d59406420998\", \"elapsed_ms\": 11.66, \"rows_total\": 3, \"rows_returned\": 3, \"truncated\": false, \"outcome\": \"answered_with_path\", \"guard_hits\": 0, \"args\": {\"account_id\": \"ACC-9\", \"hops\": 1, \"direction\": \"both\"}}\n{\"event\": \"tool\", \"session_id\": null, \"tool\": \"rs_neighbourhood\", \"tool_call_id\": \"f7ff58f0-a275-47a3-bbaa-ed6b893c8df0\", \"elapsed_ms\": 6.07, \"rows_total\": 0, \"rows_returned\": 0, \"truncated\": false, \"outcome\": \"not_in_graph\", \"reason\": \"entity_isolated\", \"guard_hits\": 0, \"args\": {\"account_id\": \"ACC-9\", \"hops\": 1, \"direction\": \"out\"}}\n"
+      },
+      "teardown": {
+        "duration": 0.0016783750033937395,
+        "outcome": "passed"
+      }
+    }
+  ]
+}

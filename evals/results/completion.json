@@ -1,0 +1,124 @@
+{
+  "suite": "goal-completion",
+  "status": "failed",
+  "audited_at": 1792218298,
+  "catalogue_hash": "ebfbbb78273a251f54888ef5dffd9d4658c3248996640835cfc630667fc35e0c",
+  "checks": {
+    "all_local_contracts": {
+      "status": "passed",
+      "detail": null
+    },
+    "full_local_run_matches_current_sources": {
+      "status": "failed",
+      "reason": "pytest.json was written before a relevant source/test edit; rerun the check."
+    },
+    "compose_and_actual_browser": {
+      "status": "failed",
+      "reason": "compose-acceptance.json did not pass."
+    },
+    "compose_matches_current_runtime": {
+      "status": "passed",
+      "detail": null
+    },
+    "synthetic_size_and_native_foundation": {
+      "status": "passed",
+      "detail": {
+        "accounts": 25000,
+        "graph_mb": 39,
+        "seed_version": "rs-synthetic-v2",
+        "reseed_s": 4.799
+      }
+    },
+    "structural_patterns_and_controls": {
+      "status": "passed",
+      "detail": null
+    },
+    "all_120_model_paths": {
+      "status": "failed",
+      "reason": "Model suite is incomplete or failed."
+    },
+    "all_20_model_abstentions": {
+      "status": "failed",
+      "reason": "Missing evals/results/model-abstention.json"
+    },
+    "all_40_exposed_model_injections": {
+      "status": "failed",
+      "reason": "Missing evals/results/model-injections.json"
+    },
+    "public_complete_workflow_and_fallback": {
+      "status": "failed",
+      "reason": "Missing evals/results/live-acceptance.json"
+    },
+    "public_five_concurrent_rss": {
+      "status": "failed",
+      "reason": "Missing evals/results/live-load.json"
+    },
+    "reviewed_demo_snapshot": {
+      "status": "failed",
+      "reason": "A nonempty same-bank schema2 demo snapshot with original evidence/session rows is required."
+    },
+    "actual_three_minute_demo": {
+      "status": "failed",
+      "reason": "Missing evals/results/demo-video.json"
+    },
+    "configured_monitoring_and_daily_probe": {
+      "status": "passed",
+      "detail": null
+    },
+    "ci_ci-v4.22.1": {
+      "status": "failed",
+      "reason": "Missing evals/results/ci-v4.22.1.json"
+    },
+    "ci_ci-6.0.2": {
+      "status": "failed",
+      "reason": "Missing evals/results/ci-6.0.2.json"
+    },
+    "submission_documents_and_live_measurements": {
+      "status": "failed",
+      "reason": "README final disclosure/tracks/live latency or synthetic labels are missing."
+    },
+    "public_candidate_secret_scan": {
+      "status": "passed",
+      "detail": {
+        "status": "passed",
+        "check": "public_candidate_secrets",
+        "files_checked": 315,
+        "candidate_files": 196,
+        "indexed_files": 116,
+        "built_ui_checked": true,
+        "violations": [],
+        "scope": [
+          "git_working_candidates",
+          "git_index",
+          "built_ui"
+        ],
+        "history_checked": false
+      }
+    },
+    "required_files_committed_and_pushed": {
+      "status": "failed",
+      "reason": "Required files are not committed as audited: 81 missing, 49 changed."
+    }
+  },
+  "notes": [
+    "Read-only evidence audit; no network/model calls or git mutations.",
+    "The completion manifest excludes itself from committed-file comparison to avoid a self-changing hash cycle.",
+    "Owner-confirmed monitoring setup is trusted as configuration; no email-delivery or independent monitor-login claim is made.",
+    "Final submission and any cap increase still require explicit owner approval; neither is performed by this gate."
+  ],
+  "failed_checks": [
+    "full_local_run_matches_current_sources",
+    "compose_and_actual_browser",
+    "all_120_model_paths",
+    "all_20_model_abstentions",
+    "all_40_exposed_model_injections",
+    "public_complete_workflow_and_fallback",
+    "public_five_concurrent_rss",
+    "reviewed_demo_snapshot",
+    "actual_three_minute_demo",
+    "ci_ci-v4.22.1",
+    "ci_ci-6.0.2",
+    "submission_documents_and_live_measurements",
+    "required_files_committed_and_pushed"
+  ]
+}

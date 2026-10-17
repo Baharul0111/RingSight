@@ -1,16 +1,16 @@
 # RingSight — Setup (only what YOU must provide)
-> Everything below needs your identity, your browser, or your approval — Claude Code cannot do these for you. Everything else (installing tools, running commands, creating files, generating the synthetic data, writing the queries, building the UI, deploying from the repo) Claude Code does itself; none of that is listed here. Finish this file once, and the build never asks you for anything. Total time ≈ 45 minutes. Do items 1–4 on Friday evening before Claude Code starts.
+> Everything below needs your identity, your browser, or your approval — the coding agent cannot complete account-side controls for you. Everything else (installing tools, running commands, creating files, generating the synthetic data, writing the queries, building the UI, deploying from the repo) the coding agent does itself; none of that is listed here. Finish this file once, and the build never asks you for anything. Total time ≈ 45 minutes. Do items 1–4 on Friday evening before Claude Code starts.
 
 ## Checklist
-- [ ] 1. Hackathon registration confirmed (wemakedevs.org) — do today
-- [ ] 2. Anthropic Console: API key + workspace spending limit
-- [ ] 3. FalkorDB Cloud: free instance → connection string
-- [ ] 4. GitHub: signed in on this machine + public repo name chosen
-- [ ] 5. Render: account + web service created from the repo (after the first push) + env vars pasted
-- [ ] 6. UptimeRobot: free monitor on the live `/health` URL (after item 5)
-- [ ] 7. Cloudflare Worker cron (optional second pinger)
-- [ ] 8. Access keys for the demo (fixed choices)
-- [ ] 9. `.env` created and complete
+- [x] 1. Hackathon registration confirmed (wemakedevs.org) — do today
+- [x] 2. Anthropic Console: API key + workspace spending limit
+- [x] 3. FalkorDB Cloud: free instance → connection string
+- [x] 4. GitHub: signed in on this machine + public repo name chosen
+- [x] 5. Render: account + web service created from the repo (after the first push) + env vars pasted
+- [x] 6. UptimeRobot: free monitor on the live `/health` URL (after item 5)
+- [x] 7. Cloudflare Worker cron (optional second pinger)
+- [x] 8. Access keys for the demo (fixed choices)
+- [x] 9. `.env` created and complete
 
 ## 1. Hackathon registration
 **Why the project needs it:** the submission is made from your WeMakeDevs account; the registration panel is also where the team and the submission form live.
@@ -54,7 +54,7 @@
 **Cost:** free   **Time:** ~5 minutes
 **Steps:**
 1. In a terminal run `gh auth login`, choose **GitHub.com → HTTPS → Login with a web browser**, complete the browser prompt. (If `gh` is not installed, Claude Code installs it; you only do the browser login.)
-2. Decide the repository name. Default: **`ringsight`** under your personal account, **public**. Claude Code will create it with `gh repo create` using your login.
+2. Decide the repository name. Default: **`ringsight`** under your personal account, **public**. The existing repository is https://github.com/Baharul0111/RingSight; initialise this folder and push there. Do not create another repository.
 3. After the first push (Claude Code does it), open the repo → **Settings → Secrets and variables → Actions → New repository secret** and add `HEALTH_URL` = your Render URL + `/health` and `JUDGE_KEY` = the judge key from item 8. (Claude Code can set these with `gh secret set` once you are logged in — only do it by hand if it asks.)
 **You'll end with:** `gh auth status` showing you logged in; a repo URL like `https://github.com/<you>/ringsight`.
 **Where it goes:** the repo name is a fixed choice — tell it in the build prompt (already filled: `ringsight`). Nothing goes in `.env`.
@@ -142,3 +142,6 @@ PUBLIC_URL=
 ```
 
 3. Three rules: `.env` is never committed or shared · never paste its values into any chat · Claude Code never reads or prints it — it uses the values from the environment while building. (You will paste the same lines into Render's environment panel yourself — item 5.)
+
+
+Configuration confirmed on 16 October 2026: Render https://ringsight.onrender.com, health path `/live`; owner set GitHub `HEALTH_URL`/`JUDGE_KEY` secrets and confirmed UptimeRobot plus Cloudflare cron enabled. Do not ask for keys or repeat these setup steps. Actual live/model test results remain separate from this configuration checklist.

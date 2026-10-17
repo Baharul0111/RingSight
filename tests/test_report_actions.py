@@ -1,8 +1,11 @@
 """Reports exercise the actual proposal → PO approval → graph export path."""
 import os
+import copy
+import json
 import uuid
 
 import pytest
+from fastapi import HTTPException
 
 from server.actions import approve, create_session, export_case
 from server.context import Identity, Investigation, current_context
@@ -46,3 +49,47 @@ async def test_report_is_proposed_approved_and_exported_from_graph(report_contex
         assert "unverified-primary" in report["narrative"]
     statuses = await db.read(ctx.identity.tenant, "MATCH (a:Account) RETURN a.status AS status")
     assert {row["status"] for row in statuses} == {"active"}
+
+
+@pytest.mark.parametrize('kind', ['sar_draft','str_draft'])
+async def test_provided_report_cannot_omit_transfer_amount(report_context, kind):
+    from server.narrative import build_draft
+    ctx,evidence=report_context
+    draft=build_draft(kind,['ACC-1'],[evidence])
+    transactions=(draft.get('when') or {}).get('transactions',draft.get('transactions'))
+    transactions[0].pop('amount')
+    result=await propose_action({'kind':kind,'target_ids':['ACC-1'],'evidence_tool_call_ids':[evidence['tool_call_id']],
+                                'rationale':'The returned transfer evidence requires a Principal Officer review and a documented assessment before any further action is considered.','draft':draft})
+    assert result['reason']=='invalid_report'
+    assert await db.read(ctx.identity.tenant,'MATCH (p:PendingAction) RETURN count(p) AS n')==[{'n':0}]
+
+
+async def test_modified_or_legacy_incomplete_report_stays_pending(report_context):
+    ctx,evidence=report_context
+    proposal=await propose_action({'kind':'sar_draft','target_ids':['ACC-1'],'evidence_tool_call_ids':[evidence['tool_call_id']],
+                                   'rationale':'The returned transfer evidence requires a Principal Officer review and a documented assessment before any further action is considered.'})
+    draft=proposal['draft'];bad=copy.deepcopy(draft);bad['when']['transactions'][0].pop('ts')
+    reason='The Principal Officer requires complete facts for each individual transfer.'
+    with pytest.raises(HTTPException) as error:
+        await approve(proposal['pending_id'],'modify',reason,bad)
+    assert error.value.status_code==422
+    # A pending draft written by an older deployment is checked again too.
+    await db.write(ctx.identity.tenant,'MATCH (p:PendingAction {id:$id}) SET p.draft_json=$draft',{'id':proposal['pending_id'],'draft':json.dumps(bad)})
+    with pytest.raises(HTTPException) as error:
+        await approve(proposal['pending_id'],'approve',reason)
+    assert error.value.status_code==422
+    assert await db.read(ctx.identity.tenant,'MATCH (d:Decision) RETURN count(d) AS n')==[{'n':0}]
+    assert await db.read(ctx.identity.tenant,'MATCH (p:PendingAction {id:$id}) RETURN p.status AS status',{'id':proposal['pending_id']})==[{'status':'pending'}]
+    await db.write(ctx.identity.tenant,'MATCH (p:PendingAction {id:$id}) SET p.draft_json=$draft',{'id':proposal['pending_id'],'draft':json.dumps(draft)})
+    assert (await approve(proposal['pending_id'],'approve',reason))['status']=='approved'
+
+
+async def test_restriction_timeout_cannot_create_pending_action(report_context,monkeypatch):
+    from server import mcp_read
+    ctx,evidence=report_context
+    async def failed_control(*args,**kwargs):return {'outcome':'tool_error','is_error':True,'reason':'timeout','rows':[]}
+    monkeypatch.setattr(mcp_read,'call_tool',failed_control)
+    result=await propose_action({'kind':'flag','target_ids':['ACC-1'],'evidence_tool_call_ids':[evidence['tool_call_id']],
+                                'rationale':'The returned transfer evidence requires a named investigator review and a documented assessment before any further action is considered.'})
+    assert result['reason']=='restriction_check_failed' and result['check_reason']=='timeout'
+    assert await db.read(ctx.identity.tenant,'MATCH (p:PendingAction) RETURN count(p) AS n')==[{'n':0}]

@@ -7,7 +7,7 @@ logs:
 	docker compose logs -f app seed
 smoke:
 	docker compose up --build -d
-	python3 ops/smoke.py
+	uv run python ops/smoke.py
 test:
 	uv run python -m pytest --json-report --json-report-file=evals/results/pytest.json
 ui:

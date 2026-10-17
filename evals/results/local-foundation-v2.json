@@ -1,0 +1,186 @@
+{
+  "status": "passed",
+  "local_only": true,
+  "model_calls": 0,
+  "result": {
+    "graph": "rs_structural_eval",
+    "accounts": 25000,
+    "graph_mb": 39,
+    "reseed_s": 4.804,
+    "memory": {
+      "total_graph_sz_mb": 39,
+      "label_matrices_sz_mb": 1,
+      "relation_matrices_sz_mb": 6,
+      "amortized_node_block_sz_mb": 0,
+      "amortized_node_attributes_by_label_sz_mb": [
+        "Account",
+        5,
+        "Person",
+        1,
+        "Bank",
+        0,
+        "Merchant",
+        0,
+        "Device",
+        0,
+        "Phone",
+        0,
+        "Address",
+        0,
+        "Rail",
+        0,
+        "IngestionDay",
+        0,
+        "Restriction",
+        0,
+        "Alert",
+        0,
+        "Tenant",
+        0,
+        "Finding",
+        0,
+        "PendingAction",
+        0,
+        "Case",
+        0,
+        "Spend",
+        0,
+        "Session",
+        0,
+        "ToolCall",
+        0,
+        "Decision",
+        0
+      ],
+      "amortized_unlabeled_nodes_attributes_sz_mb": 0,
+      "amortized_edge_block_sz_mb": 1,
+      "amortized_edge_attributes_by_type_sz_mb": [
+        "TX",
+        2,
+        "OWNS",
+        0,
+        "AT_BANK",
+        0,
+        "USES_DEVICE",
+        0,
+        "HAS_PHONE",
+        0,
+        "HAS_ADDRESS",
+        0,
+        "SHARES",
+        0,
+        "SHARES_STRONG",
+        0,
+        "PAID",
+        0,
+        "ON",
+        0,
+        "FLOW",
+        2
+      ],
+      "indices_sz_mb": 14
+    },
+    "engine": "4.22.1",
+    "algorithms": [
+      {
+        "procedure": "flow_projection",
+        "elapsed_s": 0.5932
+      },
+      {
+        "procedure": "CALL algo.pageRank('Account','TX')",
+        "elapsed_s": 0.1528
+      },
+      {
+        "procedure": "CALL algo.betweenness({nodeLabels:['Account'], relationshipTypes:['TX'], samplingSize:32, samplingSeed:42})",
+        "elapsed_s": 0.1478
+      },
+      {
+        "procedure": "CALL algo.WCC({nodeLabels:['Account'], relationshipTypes:['TX']})",
+        "elapsed_s": 0.1352
+      },
+      {
+        "procedure": "CALL algo.labelPropagation({nodeLabels:['Account'], relationshipTypes:['TX'], maxIterations:10})",
+        "elapsed_s": 0.2834
+      },
+      {
+        "procedure": "CALL algo.WCC({nodeLabels:['Account'], relationshipTypes:['SHARES_STRONG']})",
+        "elapsed_s": 0.175
+      },
+      {
+        "procedure": "degrees_or_timestamp",
+        "elapsed_s": 0.1633
+      },
+      {
+        "procedure": "degrees_or_timestamp",
+        "elapsed_s": 1.0846
+      }
+    ],
+    "schema": {
+      "constraints": [
+        {
+          "kind": "NODE",
+          "label": "Account",
+          "property": "id",
+          "supported": true
+        },
+        {
+          "kind": "NODE",
+          "label": "Person",
+          "property": "id",
+          "supported": true
+        },
+        {
+          "kind": "NODE",
+          "label": "PendingAction",
+          "property": "idem_key",
+          "supported": true
+        },
+        {
+          "kind": "NODE",
+          "label": "Finding",
+          "property": "idem_key",
+          "supported": true
+        },
+        {
+          "kind": "RELATIONSHIP",
+          "label": "TX",
+          "property": "id",
+          "supported": true
+        }
+      ]
+    },
+    "snapshot_findings": 0,
+    "seed_version": "rs-synthetic-v2",
+    "preserved_spend_days": 0,
+    "manifest": {
+      "start": 1776556800,
+      "as_of": 1792108799,
+      "nodes": {
+        "Account": 25000,
+        "Person": 12636,
+        "Bank": 1,
+        "Merchant": 100,
+        "Device": 8726,
+        "Phone": 2830,
+        "Address": 2473,
+        "Rail": 6,
+        "IngestionDay": 1080,
+        "Restriction": 3,
+        "Alert": 60
+      },
+      "edges": {
+        "TX": 32500,
+        "OWNS": 25000,
+        "AT_BANK": 25000,
+        "USES_DEVICE": 9485,
+        "HAS_PHONE": 3187,
+        "HAS_ADDRESS": 2473,
+        "SHARES": 1100,
+        "SHARES_STRONG": 236,
+        "PAID": 30000,
+        "ON": 63
+      },
+      "csv_sha256": "29efd3e0694cbd503473b725767882a3a9a5140c5958eb716b3431528fb67f42"
+    }
+  }
+}

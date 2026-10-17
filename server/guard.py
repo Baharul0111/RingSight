@@ -4,7 +4,7 @@ import re
 import unicodedata
 CAPS={'memo':300,'finding':1200,'text':1200,'rationale':4000,'reason':1000,'name':120}
 ROLE=r'(?:^\s*(?:system|developer)\s*:|\bassistant\s*:|<\||\[/?(?:INST|SYS)\]|</?(?:system|assistant|developer)\b)'
-WRITE_PATTERNS=[('role_mimicry',ROLE),('ignore_instructions',r'\bignore\s+(?:(?:all|previous|prior)\s+)+(?:instructions?|prompts?|rules?|messages?|directions?|safety|polic(?:y|ies))\b'),('skip_approval',r'\bskip\s+(?:the\s+)?approval\b')]
+WRITE_PATTERNS=[('role_mimicry',ROLE.replace(r'^\s*',r'\b')),('ignore_instructions',r'\bignore\s+(?:(?:all|previous|prior)\s+)+(?:instructions?|prompts?|rules?|messages?|directions?|safety|polic(?:y|ies))\b'),('skip_approval',r'\bskip\s+(?:the\s+)?approval\b')]
 READ_PATTERNS=WRITE_PATTERNS+[('ignore_directive',r'\bignore\s+(?:all|previous|prior)\b'),('mark_clean',r'\bmark\b[^.!\n]{0,80}\bclean\b'),('act_on_account',r'\b(?:approve|hold|freeze)\s+(?:this|the)\s+account\b'),('suppress_report',r'\bdo\s+not\s+(?:escalate|report)\b')]
 def normalize(text):
     text=unicodedata.normalize('NFKC',str(text))

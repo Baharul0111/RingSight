@@ -1,0 +1,36 @@
+{
+  "suite": "offline-demo-path-generator",
+  "seed_version": "rs-synthetic-v2",
+  "model_calls": 0,
+  "passed": true,
+  "checks": [
+    {
+      "accounts": 1000,
+      "physical_hops": 4,
+      "identifier_hops": 2,
+      "canonical_path": [
+        "ACC-4471",
+        "DEV-f31c",
+        "ACC-10477",
+        "PER-2291",
+        "ACC-55820"
+      ],
+      "exit_absent_at_identifier_depth_1": true,
+      "money_exit_absent": true
+    },
+    {
+      "accounts": 25000,
+      "physical_hops": 4,
+      "identifier_hops": 2,
+      "canonical_path": [
+        "ACC-4471",
+        "DEV-f31c",
+        "ACC-10477",
+        "PER-2291",
+        "ACC-55820"
+      ],
+      "exit_absent_at_identifier_depth_1": true,
+      "money_exit_absent": true
+    }
+  ]
+}

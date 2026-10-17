@@ -20,14 +20,19 @@ TRANSACTION_FORMAT = {"UPI": "TS1", "NEFT": "TS1", "RTGS": "TS1", "IMPS": "TS1",
 
 
 class Transaction(BaseModel):
-    model_config = ConfigDict(extra="allow")
-    tx_id: str
+    model_config = ConfigDict(extra="allow", strict=True)
+    tx_id: str = Field(pattern=r'^TX-[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*$')
     amount: int = Field(ge=0)
     ts: int = Field(ge=0)
-    from_id: str = ""
-    to_id: str = ""
-    rail: str = ""
+    from_id: str = Field(pattern=r'^ACC-[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*$')
+    to_id: str = Field(pattern=r'^ACC-[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*$')
+    rail: Literal['UPI','NEFT','RTGS','IMPS','CARD','WALLET']
     evidence_tool_call_ids: list[str] = Field(default_factory=list)
+
+
+class SARWhen(BaseModel):
+    model_config = ConfigDict(extra="allow")
+    transactions: list[Transaction] = Field(min_length=1)
 
 
 class SARDraft(BaseModel):
@@ -35,7 +40,7 @@ class SARDraft(BaseModel):
     jurisdiction: Literal["US"] = "US"
     who: list[str] = Field(min_length=1)
     what: dict[str, Any]
-    when: dict[str, Any]
+    when: SARWhen
     where: dict[str, Any]
     why: dict[str, Any]
     how: dict[str, Any]
@@ -49,7 +54,7 @@ class STRDraft(BaseModel):
     jurisdiction: Literal["IN"] = "IN"
     gos_tags: list[str] = Field(min_length=1)
     narration: str = Field(min_length=1, max_length=20000)
-    transactions: list[dict[str, Any]] = Field(min_length=1)
+    transactions: list[Transaction] = Field(min_length=1)
     transaction_format: dict[str, str]
     format_status: str = FIU_NOTICE
     coverage: dict[str, Any] = Field(default_factory=dict)
@@ -116,10 +121,8 @@ def _transactions(draft):
 
 
 def _transaction_sentence(tx: dict) -> str:
-    tx = _dict(tx)
-    tx_id = tx.get("tx_id", tx.get("id", tx.get("tx", "transaction identifier not supplied")))
-    source, target = tx.get("from_id", tx.get("from", "source not supplied")), tx.get("to_id", tx.get("to", "destination not supplied"))
-    return f"On {_when(tx.get('ts', tx.get('date')))}, {source} transferred {_money(tx.get('amount', 0))} to {target} via {tx.get('rail') or 'rail not supplied'} ({tx_id})."
+    tx = Transaction.model_validate(_dict(tx)).model_dump()
+    return f"On {_when(tx['ts'])}, {tx['from_id']} transferred {_money(tx['amount'])} to {tx['to_id']} via {tx['rail']} ({tx['tx_id']})."
 
 
 def render_sar(draft: dict | SARDraft, coverage=None) -> str:
@@ -127,6 +130,8 @@ def render_sar(draft: dict | SARDraft, coverage=None) -> str:
     transactions = _transactions(draft)
     if not transactions:
         raise ValueError("A SAR draft requires at least one evidenced transaction with its individual date and amount.")
+    draft = SARDraft.model_validate(draft).model_dump()
+    transactions = _transactions(draft)
     sections = [SYNTHETIC_NOTICE, "US-style suspicious activity report narrative", "INTRODUCTION", f"Who: {_prose(draft.get('who'))}.", _prose(draft.get("intro")), "BODY", f"What: {_prose(draft.get('what'))}.", f"When: {len(transactions)} individually evidenced transfers are listed below.", *[_transaction_sentence(tx) for tx in transactions], f"Where: {_prose(draft.get('where'))}.", f"Why: {_prose(draft.get('why'))}.", f"How: {_prose(draft.get('how'))}.", "CONCLUSION", _prose(draft.get("conclusion")) or "Human review is required.", "A report draft does not establish criminal conduct and does not itself restrict any account.", coverage_statement(coverage or draft.get("coverage"))]
     return "\n\n".join(sections)
 
@@ -141,6 +146,8 @@ def render_str(draft: dict | STRDraft, coverage=None) -> str:
     transactions = _transactions(draft)
     if not transactions:
         raise ValueError("An STR draft requires at least one evidenced transaction.")
+    draft = STRDraft.model_validate(draft).model_dump()
+    transactions = _transactions(draft)
     formats = draft.get("transaction_format", {})
     lines = [SYNTHETIC_NOTICE, "Indian-style suspicious transaction report draft", FIU_NOTICE, "Grounds of suspicion: " + ", ".join(tags), f"Narration ({len(narration)} / 20,000 characters):", narration, "TRANSACTION SHEETS (provisional mapping; unverified-primary)"]
     for tx in transactions:
@@ -171,7 +178,9 @@ def build_draft(kind: str, targets: list[str], evidence: list | dict, coverage=N
                 tools.add(call_id)
             identifier = value.get("tx_id", value.get("tx", value.get("id", "")))
             if str(identifier).startswith("TX") and "amount" in value and "ts" in value:
-                txs[identifier] = {"tx_id": identifier, "amount": int(value["amount"]), "ts": int(value["ts"]), "from_id": value.get("from", value.get("from_id", parent.get("source", parent.get("account", "")))), "to_id": value.get("to", value.get("to_id", value.get("target", parent.get("gatherer", parent.get("account", ""))))), "rail": value.get("rail", ""), "evidence_tool_call_ids": [call_id] if call_id else []}
+                item = {"tx_id": identifier, "amount": value["amount"], "ts": value["ts"], "from_id": value.get("from", value.get("from_id", parent.get("source", parent.get("account", "")))), "to_id": value.get("to", value.get("to_id", value.get("target", parent.get("gatherer", parent.get("account", ""))))), "rail": value.get("rail", ""), "evidence_tool_call_ids": [call_id] if call_id else []}
+                try:txs[identifier] = Transaction.model_validate(item).model_dump()
+                except ValueError:pass  # The report can use only complete evidence.
             for child in value.values():
                 if isinstance(child, (list, dict)):
                     walk(child, call_id, parent)

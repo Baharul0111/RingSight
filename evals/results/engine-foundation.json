@@ -6,16 +6,16 @@
     "maxflow_capacityProperty": "passed",
     "parallel_count_and_sppaths": "passed",
     "recall_in_plan": [
-      "Results | Records produced: 2, Execution time: 0.000333 ms",
-      "    Project | Records produced: 2, Execution time: 0.001334 ms",
-      "        Node By Index Scan | (e:Account) | Records produced: 2, Execution time: 0.014333 ms"
+      "Results | Records produced: 2, Execution time: 0.000416 ms",
+      "    Project | Records produced: 2, Execution time: 0.001416 ms",
+      "        Node By Index Scan | (e:Account) | Records produced: 2, Execution time: 0.017792 ms"
     ],
     "ring_count_plan": [
-      "Results | Records produced: 1, Execution time: 0.000208 ms",
-      "    Aggregate | Records produced: 1, Execution time: 0.010083 ms",
-      "        Node By Index Scan | (m:Account) | Records produced: 3, Execution time: 0.005459 ms",
-      "            Project | Records produced: 1, Execution time: 0.000542 ms",
-      "                Node By Index Scan | (seed:Account) | Records produced: 1, Execution time: 0.007833 ms"
+      "Results | Records produced: 1, Execution time: 0.000251 ms",
+      "    Aggregate | Records produced: 1, Execution time: 0.021166 ms",
+      "        Node By Index Scan | (m:Account) | Records produced: 3, Execution time: 0.007041 ms",
+      "            Project | Records produced: 1, Execution time: 0.000626 ms",
+      "                Node By Index Scan | (seed:Account) | Records produced: 1, Execution time: 0.008291 ms"
     ],
     "ro_query_write_refused": "passed",
     "timeout_max_read": [

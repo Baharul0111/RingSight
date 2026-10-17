@@ -115,17 +115,31 @@ def seed_graph(graph: str = "rs_bank_a", accounts: int = 25000, force: bool = Fa
     graph = graph_name(graph)
     database = GraphDB(redis_url=redis_url)
     with _SYNC_SEED_LOCK:
+        from .control_checkpoint import RebuildCheckpoint
+        daily_cap = min(8., float(cap if cap is not None else os.getenv("DAILY_USD_CAP", "8")))
+        checkpoint = RebuildCheckpoint(database, graph, daily_cap)
         started = time.monotonic()
         exists = database.redis.exists(graph)
         if exists and not force:
             existing = database.sync_read(graph, "MATCH (m:Meta) RETURN m.seed_complete AS complete, m.reseed_s AS reseed_s, m.graph_mb AS graph_mb LIMIT 1")
             if existing and existing[0].get("complete"):
+                if checkpoint.path.exists():
+                    # An earlier process may have died after its final Meta
+                    # write but before removing its private rebuild bridge.
+                    checkpoint.capture(True)
+                    checkpoint.restore()
+                    checkpoint.finish()
                 return {"graph": graph, "reused": True, **existing[0]}
-        if exists:
-            database.redis.execute_command("GRAPH.DELETE", graph)
-        directory_context = tempfile.TemporaryDirectory(prefix="ringsight-seed-") if output is None else None
-        directory = Path(directory_context.name) if directory_context else Path(output)
+        # Capture controls and all days' spend durably before GRAPH.DELETE.
+        # Failed reads or checkpoint writes abort without deleting a graph.
+        checkpoint.capture(bool(exists))
+        directory_context = None
+        succeeded = False
         try:
+            if exists:
+                database.redis.execute_command("GRAPH.DELETE", graph)
+            directory_context = tempfile.TemporaryDirectory(prefix="ringsight-seed-") if output is None else None
+            directory = Path(directory_context.name) if directory_context else Path(output)
             dataset = generate(accounts=accounts)
             manifest = write_dataset(dataset, directory)
             # Save only the answer keys and manifest outside the graph; CSVs
@@ -135,6 +149,7 @@ def seed_graph(graph: str = "rs_bank_a", accounts: int = 25000, force: bool = Fa
                 for name in ("rings", "injections", "restricted", "name_variants", "manifest"):
                     (ROOT / "data" / f"{name}.json").write_bytes((directory / f"{name}.json").read_bytes())
             bulk_load(database, graph, directory, list(dataset.nodes), [k for k, v in dataset.edges.items() if v])
+            preserved_spend_days = checkpoint.restore()
             if progress:
                 progress("bulk_load", {"stage": "complete"})
             schema = create_schema(database, graph)
@@ -143,7 +158,6 @@ def seed_graph(graph: str = "rs_bank_a", accounts: int = 25000, force: bool = Fa
             algorithms = precompute(database, graph, progress=progress, sampling_size=sampling_size)
             now = int(time.time())
             tenant = graph.removeprefix("rs_")
-            daily_cap = float(cap if cap is not None else os.getenv("DAILY_USD_CAP", "8"))
             database.sync_write(graph, "MERGE (t:Tenant {name:$tenant}) ON CREATE SET t.halted=false,t.llm_enabled=true,t.daily_usd_cap=$cap,t.rpm=10,t.memo_to_model='scrubbed',t.created_at=$now",
                                 {"tenant": tenant, "cap": daily_cap, "now": now})
             from .snapshot import restore_snapshot
@@ -159,13 +173,23 @@ def seed_graph(graph: str = "rs_bank_a", accounts: int = 25000, force: bool = Fa
             result = {"graph": graph, "accounts": accounts, "graph_mb": mb, "reseed_s": round(elapsed, 3),
                       "memory": memory, "engine": database.sync_version(), "algorithms": algorithms,
                       "schema": schema, "snapshot_findings": restored, "seed_version": SEED_VERSION,
+                      "preserved_spend_days": preserved_spend_days,
                       "manifest": {k: v for k, v in manifest.items() if k in ("nodes", "edges", "csv_sha256", "start", "as_of")}}
             if toy and graph == "rs_bank_a":
                 seed_toy(database, daily_cap)
+            checkpoint.finish()
+            succeeded = True
             return result
         finally:
-            if directory_context:
-                directory_context.cleanup()
+            try:
+                if not succeeded:
+                    # If bulk/precompute fails, restore controls even into the
+                    # partial graph. Meta stays incomplete and the durable
+                    # file remains available to the next loader process.
+                    checkpoint.restore()
+            finally:
+                if directory_context:
+                    directory_context.cleanup()
 
 
 def seed_toy(database: GraphDB, cap: float = 8) -> None:

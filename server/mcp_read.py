@@ -21,7 +21,7 @@ from fastmcp import FastMCP
 from pydantic import ValidationError
 from rapidfuzz import fuzz
 
-from server.context import get_context
+from server.context import get_context,internal_control
 from server.db import db
 from server.guard import guard_read
 from server.schemas import *
@@ -58,11 +58,13 @@ def _offset(cursor: str | None) -> int:
 
 
 def _label(entity_id: str) -> str | None:
-    return {"ACC": "Account", "PER": "Person", "DEV": "Device", "MER": "Merchant", "MRC": "Merchant", "PH": "Phone", "PHN": "Phone", "ADR": "Address", "ADD": "Address", "AL": "Alert", "ALT": "Alert"}.get(entity_id.split("-", 1)[0])
+    return {"ACC": "Account", "PER": "Person", "DEV": "Device", "MER": "Merchant", "MRC": "Merchant", "PH": "Phone", "PHN": "Phone", "ADR": "Address", "ADDR": "Address", "ADD": "Address", "AL": "Alert", "ALT": "Alert", "ALERT": "Alert", "RES": "Restriction", "TX": "Transfer"}.get(entity_id.split("-", 1)[0].upper())
 
 
-async def _resolve_exact(entity_id: str, allowed: tuple[str, ...] = ("Account", "Person", "Device", "Merchant", "Phone", "Address", "Alert")) -> dict | None:
+async def _resolve_exact(entity_id: str, allowed: tuple[str, ...] = ("Account", "Person", "Device", "Merchant", "Phone", "Address", "Alert", "Restriction")) -> dict | None:
     label = _label(entity_id)
+    if label and label not in allowed:
+        return None
     labels = [label] if label in allowed else list(allowed)
     for item in labels:
         rows = await read(query("rs_resolve_entity", label=item), {"q": entity_id})
@@ -104,17 +106,28 @@ def _result(rows: list[dict], reason: str = "no_path_within_depth", **extra) -> 
 
 
 async def _resolve(args: ResolveInput) -> dict:
-    labels = {"account": ["Account"], "person": ["Person"], "merchant": ["Merchant"], "device": ["Device"], "any": ["Account", "Person", "Merchant", "Device"]}[args.kind]
+    labels = {"account": ["Account"], "person": ["Person"], "merchant": ["Merchant"], "device": ["Device"], "any": ["Account", "Person", "Merchant", "Device", "Phone", "Address", "Alert", "Restriction"]}[args.kind]
     q = args.query.strip()
+    label = _label(q)
+    as_of = args.as_of if args.as_of is not None else get_context().as_of
+    if label == 'Transfer':
+        # Transfer ids identify edges, not nodes. Never fall back to an
+        # unfiltered prefix scan: a future transfer must remain undisclosed.
+        exact = await read(query('rs_resolve_transfer'), {'q': q, 'as_of': as_of}) if args.kind == 'any' else []
+        return {'outcome': 'resolved', 'rows': exact[:args.k]} if exact else {'outcome': 'unknown_entity', 'reason': 'unknown_entity', 'rows': [], 'suggestions': []}
+    if label:
+        if label not in labels:
+            return {'outcome': 'unknown_entity', 'reason': 'unknown_entity', 'rows': [], 'suggestions': []}
+        labels = [label]
     exact = []
     for label in labels:
-        exact += await read(query("rs_resolve_entity", label=label), {"q": q})
+        exact += await read(query('rs_resolve_alert') if label == 'Alert' else query("rs_resolve_entity", label=label), {"q": q, "as_of": as_of})
     if exact:
         return {"outcome": "resolved", "rows": exact[:args.k]}
     candidates = []
     for label in labels:
-        candidates += await read(f"MATCH (e:{label}) WHERE e.id STARTS WITH $q RETURN '{label}' AS label,e.id AS id,0.9 AS score,'prefix' AS how LIMIT $k", {"q": q.upper(), "k": args.k})
-    if not candidates and not re.fullmatch(r"[A-Z]+-\d+", q):
+        candidates += await read(f"MATCH (e:{label}) WHERE e.id STARTS WITH $q" + (" AND e.raised_at <= $as_of" if label == 'Alert' else "") + f" RETURN '{label}' AS label,e.id AS id,0.9 AS score,'prefix' AS how LIMIT $k", {"q": q, "k": args.k, "as_of": as_of})
+    if not candidates and not re.fullmatch(r"[A-Z]+-[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*", q):
         ft = "|".join(re.findall(r"[\w]+", q.lower(), flags=re.UNICODE))[:100]
         for label, prop in (("Person", "name_norm"), ("Merchant", "name")):
             if label not in labels or not ft:
@@ -138,7 +151,7 @@ async def _resolve(args: ResolveInput) -> dict:
     # Suggestions contain opaque ids only; an unknown id is never silently used.
     nearest = []
     for label in labels[:1]:
-        pool = await read(f"MATCH (e:{label}) RETURN '{label}' AS label,e.id AS id LIMIT 1000")
+        pool = await read(f"MATCH (e:{label})" + (" WHERE e.raised_at <= $as_of" if label == 'Alert' else "") + f" RETURN '{label}' AS label,e.id AS id LIMIT 1000", {"as_of": as_of})
         pool.sort(key=lambda x: -fuzz.ratio(q, x["id"]))
         nearest = [{**r, "score": round(fuzz.ratio(q, r["id"]) / 100, 3), "how": "fuzzy"} for r in pool[:min(args.k, 5)]]
     return {"outcome": "unknown_entity", "reason": "unknown_entity", "rows": [], "suggestions": nearest}
@@ -174,6 +187,14 @@ async def _recall(args: RecallInput) -> dict:
                 continue
         row["memory_label"] = f"learned {row['date_learned']}, author {row.get('author')}, reviewed: {'yes' if row.get('reviewed') else 'no'}"
         bounded.append(row)
+    call_ids=list(dict.fromkeys(cid for row in bounded for cid in (row.get('evidence_tool_call_ids') or [])))[:100]
+    old_calls=await read('MATCH (t:ToolCall) WHERE t.id IN $ids RETURN t.id AS id,t.rows_json AS rows_json',{'ids':call_ids}) if call_ids else []
+    old_rows={}
+    for call in old_calls:
+        try:old_rows[call['id']]=json.loads(call.get('rows_json') or '[]')
+        except (ValueError,TypeError):old_rows[call['id']]=[]
+    for row in bounded:
+        row['evidence']=[{'tool_call_id':cid,'rows':old_rows[cid]} for cid in (row.get('evidence_tool_call_ids') or []) if cid in old_rows]
     return {"outcome": "answered_from_memory" if bounded else "not_in_memory", "rows": bounded}
 
 
@@ -208,12 +229,28 @@ async def _neighbourhood(args: NeighbourhoodInput) -> dict:
         dense = await _dense(args.account_id)
         if dense:
             return dense
-    traversal = {"out": f"-[:TX*1..{args.hops}]->", "in": f"<-[:TX*1..{args.hops}]-", "both": f"-[:TX*1..{args.hops}]-"}[args.direction]
     params = {"id": args.account_id, "from": args.as_of - args.window_days * 86400, "as_of": args.as_of, "min": args.min_amount, "limit": 201}
-    statement = query("rs_neighbourhood", traversal=traversal)
-    rows = await read(statement, params, timeout=10000)
-    counted = await read(statement.split("WITH b,length(p)")[0] + " RETURN count(DISTINCT b) AS n", params, timeout=10000)
-    return _result(rows, "entity_isolated", depth=args.hops, rows_total=counted[0]["n"] if counted else len(rows))
+    rows={};neighbours=set()
+    for length in range(1,args.hops+1):
+        expansions=[]
+        for i in range(1,length+1):
+            source,target=f'n{i-1}',f'n{i}'
+            relation={'out':f'-[r{i}:TX]->','in':f'<-[r{i}:TX]-','both':f'-[r{i}:TX]-'}[args.direction]
+            edge=f"{{id:r{i}.id,amount:r{i}.amount,ts:r{i}.ts,rail:r{i}.rail,memo:r{i}.memo,source:startNode(r{i}).id,target:endNode(r{i}).id,type:'TX'}}"
+            # CASE keeps this a filter over the anchored adjacency. The C
+            # relationship-range-index plan otherwise drops inbound matches.
+            expansions.append(f'MATCH ({source}){relation}({target}:Account) WHERE CASE WHEN r{i}.ts>$from AND r{i}.ts<=$as_of AND r{i}.amount>=$min THEN true ELSE false END\nWITH {target},path{i-1},edges{i-1},r{i} ORDER BY r{i}.ts,path{i-1}\nWITH {target},head(collect({{path_ids:path{i-1}+[n{i}.id],edges:edges{i-1}+[ {edge} ]}})) AS route{i}\nWITH {target},route{i}.path_ids AS path{i},route{i}.edges AS edges{i}')
+        statement=query('rs_neighbourhood',expansions='\n'.join(expansions),hops=length)
+        found=await read(statement,params,timeout=10000)
+        for row in found:
+            for source,target,edge in zip(row['path_ids'],row['path_ids'][1:],row['edges']):
+                endpoints=(edge.get('source'),edge.get('target'))
+                valid=endpoints==(source,target) if args.direction=='out' else endpoints==(target,source) if args.direction=='in' else endpoints in {(source,target),(target,source)}
+                if not valid:return {'outcome':'tool_error','reason':'inconsistent_path','hint':'The graph returned inconsistent neighbourhood endpoints.','rows':[]}
+        counted=await read(statement.split('RETURN b.id')[0]+' RETURN collect(DISTINCT b.id) AS ids',params,timeout=10000)
+        for row in found:rows.setdefault(row['neighbour'],row)
+        for row in counted:neighbours.update(row.get('ids') or [])
+    return _result(sorted(rows.values(),key=lambda r:(r['hops'],r['neighbour'])),"entity_isolated",depth=args.hops,rows_total=len(neighbours))
 
 
 async def _fan(args: FanInput) -> dict:
@@ -238,13 +275,44 @@ async def _cycles(args: CyclesInput) -> dict:
         nodes = ["a"] + list("bcde")[:length - 1] + ["a"]
         pattern = "(a:Account {id:$id})" + "".join(f"-[r{i+1}:TX]->({nodes[i+1]}{':Account' if i<length-1 else ''})" for i in range(length))
         predicates = [f"r{i}.ts>$from AND r{i}.ts<=$as_of" for i in range(1, length + 1)]
+        # The C planner can bind disconnected legs in a longer cyclic match.
+        # Check actual relationship endpoints, independently of node aliases.
+        predicates += ['startNode(r1).id=$id',f'endNode(r{length}).id=$id']
+        predicates += [f'endNode(r{i}).id=startNode(r{i+1}).id' for i in range(1,length)]
         predicates += [f"{nodes[i]}<>{nodes[j]}" for i in range(length) for j in range(i + 1, length)]
         if args.chronological:
             predicates += [f"r{i}.ts<r{i+1}.ts" for i in range(1, length)]
         predicates += [f"r{i+1}.amount >= r{i}.amount*(100-$decay)/100 AND r{i+1}.amount<=r{i}.amount" for i in range(1, length)]
-        branches.append(query("rs_cycles", pattern=pattern, predicates=" AND ".join(predicates), length=length, last_index=length - 1))
+        # Return the bound aliases themselves. On the pinned C engine, the
+        # former path-object projection could pair one relationship with a
+        # different path's next node across multiple UNION branches.
+        edges = [f"{{id:r{i}.id,amount:r{i}.amount,ts:r{i}.ts,rail:r{i}.rail,memo:r{i}.memo,source:startNode(r{i}).id,target:endNode(r{i}).id,type:'TX'}}" for i in range(1, length + 1)]
+        branches.append(query("rs_cycles", pattern=pattern, predicates=" AND ".join(predicates), length=length, accounts=','.join(node + '.id' for node in nodes), edges=','.join(edges)))
     rows = await read("\nUNION ALL\n".join(branches), {"id": args.account_id, "from": args.as_of - args.window_days * 86400, "as_of": args.as_of, "decay": args.max_decay_pct, "limit": 201}, timeout=10000)
+    if not _consistent_cycles(rows):
+        return {'outcome':'tool_error','reason':'inconsistent_path','hint':'The graph returned inconsistent cycle endpoints. Retry a narrower cycle window.','rows':[]}
     return _result(rows, "no_cycle_in_window", typology_hit=bool(rows), typology="cycle")
+
+
+def _consistent_cycles(rows: list[dict]) -> bool:
+    """Hop lists and repeated transfer ids must describe the same graph facts."""
+    transfers = {}
+    for row in rows:
+        accounts, edges = row.get('accounts') or [], row.get('edges') or []
+        length = row.get('len')
+        if length not in {3,4,5} or len(edges)!=length or len(accounts)!=length+1:
+            return False
+        if accounts[0]!=accounts[-1] or len(set(accounts[:-1]))!=length:
+            return False
+        for source,target,edge in zip(accounts,accounts[1:],edges):
+            if not isinstance(edge,dict) or edge.get('source')!=source or edge.get('target')!=target:
+                return False
+            identifier=edge.get('id')
+            facts=tuple(edge.get(field) for field in ('source','target','amount','ts','rail'))
+            if not identifier or (identifier in transfers and transfers[identifier]!=facts):
+                return False
+            transfers[identifier]=facts
+    return True
 
 
 async def _scatter(args: ScatterInput) -> dict:
@@ -367,13 +435,13 @@ async def _shared(args: SharedInput) -> dict:
                 if not links:
                     valid = False
                     break
-                chosen = min(links, key=lambda r: len(r["path_ids"]))
+                chosen = min(links, key=lambda r: (len(r["path_ids"]),tuple(r["path_ids"])))
                 concrete += chosen["path_ids"][1:]
                 kinds += chosen["link_kinds"]
             if valid:
                 rows.append({**row, "path_ids": concrete, "link_kinds": kinds})
     unique = {}
-    for row in sorted(rows, key=lambda r: r["hops"]):
+    for row in sorted(rows, key=lambda r: (r["hops"],len(r["path_ids"]),tuple(r["path_ids"]))):
         unique.setdefault(row["linked"], row)
     return _result(list(unique.values()), "no_shared_identifiers_at_depth", depth=args.hops, typology_hit=bool(unique), typology="shared_identifier", algorithm="weighted identifier projection")
 
@@ -430,6 +498,12 @@ async def _sanitize(value: Any, key: str = "", names: set[str] | None = None) ->
         return guarded, hits if isinstance(hits, int) else len(hits)
     if isinstance(value, float) and value.is_integer() and key in {"amount", "total", "in_sum", "out_sum", "drain_sum", "scattered", "gathered", "internal_amount", "amount_after_closure_request", "maxFlow"}:
         return int(value), 0
+    if isinstance(value,str):
+        # A free-text value in a new graph field must not bypass the scanner.
+        from server.guard import scan
+        if scan(value,'read'):
+            guarded,hits=guard_read(value,field=key or 'text',source='graph')
+            return guarded,hits
     return value, 0
 
 
@@ -437,8 +511,8 @@ def _paths_from_rows(rows: list[dict]) -> tuple[list[dict], list[dict]]:
     nodes, edges = {}, {}
 
     def node(eid):
-        if isinstance(eid, str) and (eid.startswith(("ACC-", "PER-", "DEV-", "PH-", "PHN-", "ADR-", "ADD-", "MER-", "RES-"))):
-            nodes[eid] = {"id": eid, "label": _label(eid) or "Restriction"}
+        if isinstance(eid, str) and _label(eid) not in {None, 'Transfer'}:
+            nodes[eid] = {"id": eid, "label": _label(eid)}
 
     def visit(value):
         if isinstance(value, list):
@@ -462,7 +536,7 @@ def _paths_from_rows(rows: list[dict]) -> tuple[list[dict], list[dict]]:
                 visit(v)
             src, dst = value.get("source", value.get("from")), value.get("target", value.get("to"))
             if isinstance(src, str) and isinstance(dst, str):
-                eid = value.get("id", value.get("tx", f"{src}:{dst}"))
+                eid = value.get("id") or value.get("tx") or f"{src}:{dst}:{value.get('type','LINK')}"
                 edges[eid] = {**value, "id": eid, "source": src, "target": dst}
             if value.get("out_tx") and value.get("mule"):
                 for prefix, src, dst in (("out", value.get("source"), value["mule"]), ("in", value["mule"], value.get("gatherer"))):
@@ -482,7 +556,7 @@ async def run_tool(name: str, args: dict | None = None) -> dict:
     arguments = args or {}
     as_of = arguments.get("as_of") or ctx.as_of
     try:
-        if ctx.session_id and not getattr(ctx, "internal_read", False):
+        if ctx.session_id and not internal_control.get():
             if ctx.tool_count >= 10:
                 raise ValueError("investigation tool-call budget exhausted")
             ctx.tool_count += 1

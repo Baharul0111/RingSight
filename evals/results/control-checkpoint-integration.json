@@ -1,0 +1,88 @@
+{
+  "created": 1792219719.8107898,
+  "source": "evals/results/pytest.json",
+  "source_sha256": "24c75222fd9012f2470e55e0874182ce22d001362f11e7da719b2d53200fde32",
+  "derived_without_rerun": true,
+  "exitcode": 0,
+  "summary": {
+    "passed": 3,
+    "failed": 0,
+    "total": 3
+  },
+  "tests": [
+    {
+      "nodeid": "tests/test_control_checkpoint_integration.py::test_force_reseed_retains_disabled_halted_tenant_and_paid_liability",
+      "lineno": 41,
+      "outcome": "passed",
+      "keywords": [
+        "test_force_reseed_retains_disabled_halted_tenant_and_paid_liability",
+        "test_control_checkpoint_integration.py",
+        "tests",
+        "RingSight",
+        ""
+      ],
+      "setup": {
+        "duration": 0.0008146249892888591,
+        "outcome": "passed"
+      },
+      "call": {
+        "duration": 0.6201942920015426,
+        "outcome": "passed",
+        "stdout": "Account\nPerson\nBank\nMerchant\nDevice\nPhone\nAddress\nRail\nIngestionDay\nRestriction\nAlert\nTX\nOWNS\nAT_BANK\nUSES_DEVICE\nHAS_PHONE\nHAS_ADDRESS\nSHARES\nSHARES_STRONG\nPAID\nON\n"
+      },
+      "teardown": {
+        "duration": 0.0026938749942928553,
+        "outcome": "passed"
+      }
+    },
+    {
+      "nodeid": "tests/test_control_checkpoint_integration.py::test_failed_bulk_restores_controls_then_next_process_recovers_missing_graph",
+      "lineno": 53,
+      "outcome": "passed",
+      "keywords": [
+        "test_failed_bulk_restores_controls_then_next_process_recovers_missing_graph",
+        "test_control_checkpoint_integration.py",
+        "tests",
+        "RingSight",
+        ""
+      ],
+      "setup": {
+        "duration": 0.001281833989196457,
+        "outcome": "passed"
+      },
+      "call": {
+        "duration": 0.7405478750006296,
+        "outcome": "passed",
+        "stdout": "Account\nPerson\nBank\nMerchant\nDevice\nPhone\nAddress\nRail\nIngestionDay\nRestriction\nAlert\nTX\nOWNS\nAT_BANK\nUSES_DEVICE\nHAS_PHONE\nHAS_ADDRESS\nSHARES\nSHARES_STRONG\nPAID\nON\n"
+      },
+      "teardown": {
+        "duration": 0.001415499995346181,
+        "outcome": "passed"
+      }
+    },
+    {
+      "nodeid": "tests/test_control_checkpoint_integration.py::test_restore_cypher_never_reduces_later_spend_or_current_reservation",
+      "lineno": 77,
+      "outcome": "passed",
+      "keywords": [
+        "test_restore_cypher_never_reduces_later_spend_or_current_reservation",
+        "test_control_checkpoint_integration.py",
+        "tests",
+        "RingSight",
+        ""
+      ],
+      "setup": {
+        "duration": 0.0011887080036103725,
+        "outcome": "passed"
+      },
+      "call": {
+        "duration": 0.025089957998716272,
+        "outcome": "passed"
+      },
+      "teardown": {
+        "duration": 0.0011726660013664514,
+        "outcome": "passed"
+      }
+    }
+  ]
+}

@@ -14,7 +14,7 @@ from typing import Any
 from dotenv import load_dotenv
 from falkordb import FalkorDB
 from redis.backoff import ExponentialBackoff
-from redis.exceptions import ConnectionError, TimeoutError
+from redis.exceptions import ConnectionError, TimeoutError, ResponseError
 from redis.retry import Retry
 
 load_dotenv(Path(__file__).resolve().parents[1] / ".env", override=False)
@@ -94,25 +94,30 @@ class GraphDB:
         # MERGE/idempotency or the caller's guarded state transition.
         return rows(self.writer.select_graph(graph_name(tenant)).query(query, params=params or {}, timeout=timeout))
 
-    async def read(self, tenant: str, query: str, params: dict | None = None, timeout: int = 5000) -> list[dict]:
+    async def _bounded(self, function, tenant, query, params, timeout):
         try:
             await asyncio.wait_for(DB_SEMAPHORE.acquire(), timeout=2)
         except asyncio.TimeoutError as exc:
             raise DatabaseBusy("Graph is busy; retry in a moment") from exc
+        operation = asyncio.create_task(asyncio.to_thread(function, tenant, query, params, timeout))
         try:
-            return await asyncio.to_thread(self.sync_read, tenant, query, params, timeout)
+            return await asyncio.shield(operation)
         finally:
-            DB_SEMAPHORE.release()
+            if operation.done():
+                DB_SEMAPHORE.release()
+            else:
+                # Cancelling an investigation does not cancel a running Redis
+                # thread. Keep its slot until that actual graph call finishes.
+                def completed(task):
+                    DB_SEMAPHORE.release()
+                    if not task.cancelled():task.exception()
+                operation.add_done_callback(completed)
+
+    async def read(self, tenant: str, query: str, params: dict | None = None, timeout: int = 5000) -> list[dict]:
+        return await self._bounded(self.sync_read, tenant, query, params, timeout)
 
     async def write(self, tenant: str, query: str, params: dict | None = None, timeout: int = 5000) -> list[dict]:
-        try:
-            await asyncio.wait_for(DB_SEMAPHORE.acquire(), timeout=2)
-        except asyncio.TimeoutError as exc:
-            raise DatabaseBusy("Graph is busy; retry in a moment") from exc
-        try:
-            return await asyncio.to_thread(self.sync_write, tenant, query, params, timeout)
-        finally:
-            DB_SEMAPHORE.release()
+        return await self._bounded(self.sync_write, tenant, query, params, timeout)
 
     def sync_memory(self, tenant: str) -> dict[str, Any]:
         result = self.redis.execute_command("GRAPH.MEMORY", "USAGE", graph_name(tenant))
@@ -142,7 +147,10 @@ class GraphDB:
         return await asyncio.to_thread(self.sync_version)
 
     async def is_seeded(self, tenant: str) -> bool:
-        result = await self.read(tenant, "MATCH (m:Meta) RETURN m.seed_complete AS complete LIMIT 1", timeout=2000)
+        try:result = await self.read(tenant, "MATCH (m:Meta) RETURN m.seed_complete AS complete LIMIT 1", timeout=2000)
+        except ResponseError as error:
+            if 'empty key' not in str(error).lower():raise
+            return False
         return bool(result and result[0]["complete"])
 
     async def close(self) -> None:

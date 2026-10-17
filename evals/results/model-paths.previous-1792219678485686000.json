@@ -1,0 +1,577 @@
+{
+  "cases": [
+    {
+      "case_key": "path:1:depth:1",
+      "cost_usd": 0.04004,
+      "depth": 1,
+      "elapsed_s": 17.145,
+      "first_completed_read": "rs_fan_pattern",
+      "first_investigation_tool": "rs_fan_pattern",
+      "first_selected_tool_batch": [
+        "rs_fan_pattern",
+        "rs_account_profile",
+        "rs_neighbourhood"
+      ],
+      "first_tool_exact_match": true,
+      "first_tool_expected": [
+        "rs_fan_pattern"
+      ],
+      "judge": {
+        "missing_queries": [
+          "Prior history and typical flow volumes for ACC-4471 and ACC-10477 to establish a baseline",
+          "Relationship, ownership or KYC links among ACC-1..6, ACC-10477 and ACC-3",
+          "Whether ACC-3's 55,000,000 receipt moves onward or returns to the originating accounts"
+        ],
+        "unsupported_claims": [
+          "The thesis only asserts a path ACC-4471 \u2192 ACC-10477, but the evidence shows ACC-10477 sent 11,000,000 to ACC-4471 (TX-1) minutes before receiving 11,000,000 back (TX-8), a round trip the thesis does not describe.",
+          "The larger pattern (7 counterparties in, 55,000,000 out to ACC-3 which also funded ACC-4471) is not reflected in the thesis."
+        ],
+        "verdict": "weak"
+      },
+      "model_requests": 4,
+      "path_correctness": {
+        "checked_edges": 12,
+        "checked_identifier_edges": 0,
+        "checked_untyped_adjacencies": 2,
+        "cited_transfers": 10,
+        "correct": true,
+        "errors": []
+      },
+      "path_node_count": 11,
+      "planted_member_recall": 0.8888888888888888,
+      "question_id": 1,
+      "reason": null,
+      "ring_id": "RING-01",
+      "session_id": "fc9b9480-6a95-441c-9ec0-75b79053d766",
+      "shape": "answered_with_path",
+      "stop_detail": null,
+      "text": "The graph returned this evidence path: ACC-4471 \u2192 ACC-10477. Review the transfer evidence before deciding. These connections do not establish laundering; a named analyst must assess them.",
+      "tokens": {
+        "cache": 3200,
+        "input": 14891,
+        "output": 1113
+      },
+      "tool_error_count": 0,
+      "tool_names": [
+        "rs_resolve_entity",
+        "rs_recall_findings",
+        "rs_coverage_status",
+        "rs_fan_pattern",
+        "rs_neighbourhood",
+        "rs_account_profile",
+        "rs_record_finding",
+        "rs_check_restrictions",
+        "rs_propose_action"
+      ],
+      "typology": "fan_in",
+      "verifier": {
+        "normalizations": [],
+        "replacement_verified": "pass",
+        "status": "replaced",
+        "unsupported": [
+          "86",
+          "890",
+          "66",
+          "76",
+          "Fan",
+          "Proposed"
+        ]
+      }
+    },
+    {
+      "case_key": "path:1:depth:2",
+      "cost_usd": 0.0335844,
+      "depth": 2,
+      "elapsed_s": 22.9,
+      "first_completed_read": "rs_fan_pattern",
+      "first_investigation_tool": "rs_account_profile",
+      "first_selected_tool_batch": [
+        "rs_account_profile",
+        "rs_fan_pattern",
+        "rs_neighbourhood"
+      ],
+      "first_tool_exact_match": true,
+      "first_tool_expected": [
+        "rs_fan_pattern"
+      ],
+      "judge": {
+        "missing_queries": [
+          "Onward flows from ACC-3 and ACC-1 after receiving funds, to test for circularity or dispersal",
+          "Historical baseline of ACC-4471 activity and counterparty set to compare against this burst",
+          "Complete counterparty list beyond the 7 returned by fan pattern, including any external or cross-rail destinations"
+        ],
+        "unsupported_claims": [
+          "The thesis cites path ACC-4471 \u2192 ACC-10477 \u2192 ACC-1, but evidence shows only an indirect link; it omits that ACC-4471 sent 55,000,000 of its 66,000,000 outflow to ACC-3, which is also one of its funding sources.",
+          "The thesis does not mention that ACC-10477 sent funds to ACC-4471 first (TX-1) before receiving funds back (TX-8), a round-trip pattern absent from the stated path.",
+          "Account profile in_sum (86,890,000) and out_sum (66,000,000) are not reconciled in the thesis; it is unclear how the 20,890,000 residual balance is characterized."
+        ],
+        "verdict": "weak"
+      },
+      "model_requests": 3,
+      "path_correctness": {
+        "checked_edges": 14,
+        "checked_identifier_edges": 0,
+        "checked_untyped_adjacencies": 3,
+        "cited_transfers": 11,
+        "correct": true,
+        "errors": []
+      },
+      "path_node_count": 11,
+      "planted_member_recall": 0.8888888888888888,
+      "question_id": 1,
+      "reason": null,
+      "ring_id": "RING-01",
+      "session_id": "c4d878b6-712e-492f-a6b1-6a04ffbf1b20",
+      "shape": "answered_with_path",
+      "stop_detail": null,
+      "text": "The graph returned this evidence path: ACC-4471 \u2192 ACC-10477 \u2192 ACC-1. Review the transfer evidence before deciding. These connections do not establish laundering; a named analyst must assess them.",
+      "tokens": {
+        "cache": 4204,
+        "input": 10311,
+        "output": 2095
+      },
+      "tool_error_count": 0,
+      "tool_names": [
+        "rs_resolve_entity",
+        "rs_recall_findings",
+        "rs_coverage_status",
+        "rs_fan_pattern",
+        "rs_account_profile",
+        "rs_neighbourhood",
+        "rs_record_finding",
+        "rs_check_restrictions",
+        "rs_propose_action"
+      ],
+      "typology": "fan_in",
+      "verifier": {
+        "normalizations": [],
+        "replacement_verified": "pass",
+        "status": "replaced",
+        "unsupported": [
+          "86",
+          "890",
+          "38",
+          "66",
+          "560",
+          "11",
+          "55",
+          "Timed"
+        ]
+      }
+    },
+    {
+      "case_key": "path:1:depth:4",
+      "cost_usd": 0.0353604,
+      "depth": 4,
+      "elapsed_s": 16.801,
+      "first_completed_read": "rs_fan_pattern",
+      "first_investigation_tool": "rs_fan_pattern",
+      "first_selected_tool_batch": [
+        "rs_fan_pattern",
+        "rs_account_profile",
+        "rs_neighbourhood"
+      ],
+      "first_tool_exact_match": true,
+      "first_tool_expected": [
+        "rs_fan_pattern"
+      ],
+      "judge": {
+        "missing_queries": [
+          "Where ACC-3 sends the 55,000,000 after receipt, and whether it also sent funds into ACC-4471 via TX-4",
+          "Historical baseline for ACC-4471 and ACC-10477 to see whether this inflow and outflow pattern is normal for the business",
+          "Whether ACC-1, ACC-2 and ACC-3 share devices, owners or other links, and the sources of ACC-10477's inflows"
+        ],
+        "unsupported_claims": [
+          "The thesis path ACC-4471 \u2192 ACC-10477 \u2192 ACC-1 \u2192 ACC-2 is supported by TX-8, TX-9 and TX-10, but the thesis lists it in the opposite direction to the funds, and the path is only one branch of the activity",
+          "The path omits TX-12 (55,000,000 to ACC-3), the largest outflow and about 83% of drain_sum, which the thesis does not address",
+          "The pattern is consistent with fan-in then layering, but nothing here shows the purpose of the flows, the beneficial owners or whether the activity is legitimate"
+        ],
+        "verdict": "weak"
+      },
+      "model_requests": 4,
+      "path_correctness": {
+        "checked_edges": 16,
+        "checked_identifier_edges": 0,
+        "checked_untyped_adjacencies": 4,
+        "cited_transfers": 12,
+        "correct": true,
+        "errors": []
+      },
+      "path_node_count": 11,
+      "planted_member_recall": 0.8888888888888888,
+      "question_id": 1,
+      "reason": null,
+      "ring_id": "RING-01",
+      "session_id": "7d41e37c-bb47-43ff-b997-6e030f8e550b",
+      "shape": "answered_with_path",
+      "stop_detail": null,
+      "text": "The graph returned this evidence path: ACC-4471 \u2192 ACC-10477 \u2192 ACC-1 \u2192 ACC-2. Review the transfer evidence before deciding. These connections do not establish laundering; a named analyst must assess them.",
+      "tokens": {
+        "cache": 5804,
+        "input": 16364,
+        "output": 1366
+      },
+      "tool_error_count": 0,
+      "tool_names": [
+        "rs_resolve_entity",
+        "rs_recall_findings",
+        "rs_coverage_status",
+        "rs_fan_pattern",
+        "rs_account_profile",
+        "rs_neighbourhood",
+        "rs_record_finding",
+        "rs_check_restrictions",
+        "rs_propose_action"
+      ],
+      "typology": "fan_in",
+      "verifier": {
+        "normalizations": [],
+        "replacement_verified": "pass",
+        "status": "replaced",
+        "unsupported": [
+          "86",
+          "890",
+          "66",
+          "75.96",
+          "55",
+          "11"
+        ]
+      }
+    },
+    {
+      "case_key": "path:2:depth:1",
+      "cost_usd": 0.023826399999999998,
+      "depth": 1,
+      "elapsed_s": 11.014,
+      "first_completed_read": "rs_fan_pattern",
+      "first_investigation_tool": "rs_fan_pattern",
+      "first_selected_tool_batch": [
+        "rs_fan_pattern",
+        "rs_account_profile",
+        "rs_neighbourhood"
+      ],
+      "first_tool_exact_match": true,
+      "first_tool_expected": [
+        "rs_fan_pattern"
+      ],
+      "judge": {
+        "missing_queries": [
+          "Profile and onward flows of ACC-14 (destination of the 63.27M drain)",
+          "History and KYC/relationship of the six source accounts ACC-8 to ACC-13 to ACC-7 versus normal activity baseline",
+          "ACC-7 prior transaction history to test whether this fan-in/out burst is atypical"
+        ],
+        "unsupported_claims": [
+          "The thesis names no laundering conclusion, but the evidence cannot establish intent or illicit origin; it only shows structure."
+        ],
+        "verdict": "support"
+      },
+      "model_requests": 4,
+      "path_correctness": {
+        "checked_edges": 8,
+        "checked_identifier_edges": 0,
+        "checked_untyped_adjacencies": 1,
+        "cited_transfers": 7,
+        "correct": true,
+        "errors": []
+      },
+      "path_node_count": 11,
+      "planted_member_recall": 1.0,
+      "question_id": 2,
+      "reason": null,
+      "ring_id": "RING-02",
+      "session_id": "81f4a187-aba2-4c0c-8063-ac5c4e0febd2",
+      "shape": "answered_with_path",
+      "stop_detail": null,
+      "text": "The graph returned this evidence path: ACC-7 \u2192 ACC-14. Review the transfer evidence before deciding. These connections do not establish laundering; a named analyst must assess them.",
+      "tokens": {
+        "cache": 5804,
+        "input": 13727,
+        "output": 740
+      },
+      "tool_error_count": 0,
+      "tool_names": [
+        "rs_resolve_entity",
+        "rs_recall_findings",
+        "rs_coverage_status",
+        "rs_fan_pattern",
+        "rs_neighbourhood",
+        "rs_account_profile",
+        "rs_record_finding",
+        "rs_check_restrictions",
+        "rs_propose_action"
+      ],
+      "typology": "fan_in",
+      "verifier": {
+        "reason": "invalid_model_output",
+        "replacement_verified": "pass",
+        "status": "replaced",
+        "unsupported": []
+      }
+    },
+    {
+      "case_key": "path:2:depth:2",
+      "cost_usd": 0.0299544,
+      "depth": 2,
+      "elapsed_s": 14.901,
+      "first_completed_read": "rs_fan_pattern",
+      "first_investigation_tool": "rs_account_profile",
+      "first_selected_tool_batch": [
+        "rs_account_profile",
+        "rs_fan_pattern",
+        "rs_neighbourhood"
+      ],
+      "first_tool_exact_match": true,
+      "first_tool_expected": [
+        "rs_fan_pattern"
+      ],
+      "judge": {
+        "missing_queries": [
+          "Downstream activity of ACC-14: onward transfers, cash-out, or account closure after receiving funds",
+          "Historical behaviour of ACC-7 and sources ACC-8 to ACC-13: prior transaction patterns, account age, and common ownership or shared attributes",
+          "Whether ACC-8 to ACC-13 have other links, such as common counterparties or devices, and the nature of the 3.48M retained by ACC-7"
+        ],
+        "unsupported_claims": [
+          "The thesis only asserts a path ACC-7 to ACC-14 and disclaims any laundering conclusion, so it makes no testable claim about intent.",
+          "Evidence shows fan-in of six NEFT transfers into ACC-7 within about 5 minutes and a single outbound of 63.27M, but this alone does not show layering or illicit purpose."
+        ],
+        "verdict": "weak"
+      },
+      "model_requests": 4,
+      "path_correctness": {
+        "checked_edges": 8,
+        "checked_identifier_edges": 0,
+        "checked_untyped_adjacencies": 1,
+        "cited_transfers": 7,
+        "correct": true,
+        "errors": []
+      },
+      "path_node_count": 11,
+      "planted_member_recall": 1.0,
+      "question_id": 2,
+      "reason": null,
+      "ring_id": "RING-02",
+      "session_id": "bc7b8183-d124-40e6-8862-0d6e2cc6afb4",
+      "shape": "answered_with_path",
+      "stop_detail": null,
+      "text": "The graph returned this evidence path: ACC-7 \u2192 ACC-14. Review the transfer evidence before deciding. These connections do not establish laundering; a named analyst must assess them.",
+      "tokens": {
+        "cache": 5804,
+        "input": 13696,
+        "output": 1359
+      },
+      "tool_error_count": 0,
+      "tool_names": [
+        "rs_resolve_entity",
+        "rs_recall_findings",
+        "rs_coverage_status",
+        "rs_fan_pattern",
+        "rs_account_profile",
+        "rs_neighbourhood",
+        "rs_record_finding",
+        "rs_check_restrictions",
+        "rs_propose_action"
+      ],
+      "typology": "fan_in",
+      "verifier": {
+        "normalizations": [],
+        "replacement_verified": "pass",
+        "status": "replaced",
+        "unsupported": [
+          "11",
+          "66",
+          "63",
+          "94.8",
+          "25",
+          "Timed",
+          "Six",
+          "Paths"
+        ]
+      }
+    },
+    {
+      "case_key": "path:2:depth:4",
+      "cost_usd": 0.0244444,
+      "depth": 4,
+      "elapsed_s": 11.162,
+      "first_completed_read": "rs_fan_pattern",
+      "first_investigation_tool": "rs_fan_pattern",
+      "first_selected_tool_batch": [
+        "rs_fan_pattern",
+        "rs_account_profile",
+        "rs_neighbourhood"
+      ],
+      "first_tool_exact_match": true,
+      "first_tool_expected": [
+        "rs_fan_pattern"
+      ],
+      "judge": {
+        "missing_queries": [
+          "What happens downstream of ACC-14: onward transfers, cash-out or return flows?",
+          "What is the history of ACC-7 and its six senders: prior activity, relationships and baseline behaviour?",
+          "Are the six senders (ACC-8 to ACC-13) related to one another, and are there other counterparties or rails?"
+        ],
+        "unsupported_claims": [
+          "The thesis names only the single hop ACC-7 -> ACC-14, but the evidence also shows a six-source fan-in to ACC-7 that the thesis does not mention.",
+          "The evidence shows structure only (six near-equal inflows, then ~94.8% of the total forwarded in one transfer). It shows nothing about the accounts' purpose, ownership or legitimacy, so it cannot support or refute laundering."
+        ],
+        "verdict": "weak"
+      },
+      "model_requests": 4,
+      "path_correctness": {
+        "checked_edges": 8,
+        "checked_identifier_edges": 0,
+        "checked_untyped_adjacencies": 1,
+        "cited_transfers": 7,
+        "correct": true,
+        "errors": []
+      },
+      "path_node_count": 11,
+      "planted_member_recall": 1.0,
+      "question_id": 2,
+      "reason": null,
+      "ring_id": "RING-02",
+      "session_id": "25fa7027-a3d1-4fc5-ab04-df24ef21b06c",
+      "shape": "answered_with_path",
+      "stop_detail": null,
+      "text": "The graph returned this evidence path: ACC-7 \u2192 ACC-14. Review the transfer evidence before deciding. These connections do not establish laundering; a named analyst must assess them.",
+      "tokens": {
+        "cache": 5804,
+        "input": 13706,
+        "output": 806
+      },
+      "tool_error_count": 0,
+      "tool_names": [
+        "rs_resolve_entity",
+        "rs_recall_findings",
+        "rs_coverage_status",
+        "rs_fan_pattern",
+        "rs_account_profile",
+        "rs_neighbourhood",
+        "rs_record_finding",
+        "rs_check_restrictions",
+        "rs_propose_action"
+      ],
+      "typology": "fan_in",
+      "verifier": {
+        "reason": "invalid_model_output",
+        "replacement_verified": "pass",
+        "status": "replaced",
+        "unsupported": []
+      }
+    },
+    {
+      "case_key": "path:3:depth:1",
+      "cost_usd": 0.033156399999999996,
+      "depth": 1,
+      "elapsed_s": 18.25,
+      "first_completed_read": "rs_fan_pattern",
+      "first_investigation_tool": "rs_fan_pattern",
+      "first_selected_tool_batch": [
+        "rs_fan_pattern",
+        "rs_account_profile",
+        "rs_neighbourhood"
+      ],
+      "first_tool_exact_match": true,
+      "first_tool_expected": [
+        "rs_fan_pattern"
+      ],
+      "judge": {
+        "missing_queries": [
+          "Baseline history of ACC-15 to see whether this fan-in/out is typical",
+          "Onward flows from ACC-22 after receiving the 63.84M",
+          "Account-opening/KYC attributes of ACC-16 to ACC-21 and ACC-22 to check for common ownership"
+        ],
+        "unsupported_claims": [
+          "The thesis is deliberately non-conclusive and makes no laundering claim; evidence supports only the structural fan-in/drain pattern, not intent."
+        ],
+        "verdict": "support"
+      },
+      "model_requests": 4,
+      "path_correctness": {
+        "checked_edges": 8,
+        "checked_identifier_edges": 0,
+        "checked_untyped_adjacencies": 1,
+        "cited_transfers": 7,
+        "correct": true,
+        "errors": []
+      },
+      "path_node_count": 9,
+      "planted_member_recall": 1.0,
+      "question_id": 3,
+      "reason": null,
+      "ring_id": "RING-03",
+      "session_id": "f9cba3b4-a89a-4334-9b82-276ba53ee954",
+      "shape": "answered_with_path",
+      "stop_detail": null,
+      "text": "The graph returned this evidence path: ACC-15 \u2192 ACC-22. Review the transfer evidence before deciding. These connections do not establish laundering; a named analyst must assess them.",
+      "tokens": {
+        "cache": 5804,
+        "input": 14127,
+        "output": 1593
+      },
+      "tool_error_count": 0,
+      "tool_names": [
+        "rs_resolve_entity",
+        "rs_recall_findings",
+        "rs_coverage_status",
+        "rs_fan_pattern",
+        "rs_neighbourhood",
+        "rs_account_profile",
+        "rs_record_finding",
+        "rs_check_restrictions",
+        "rs_propose_action"
+      ],
+      "typology": "fan_in",
+      "verifier": {
+        "normalizations": [],
+        "replacement_verified": "pass",
+        "status": "replaced",
+        "unsupported": [
+          "67",
+          "350",
+          "5",
+          "63",
+          "840",
+          "94.8",
+          "25",
+          "Timed",
+          "One",
+          "Depth"
+        ]
+      }
+    }
+  ],
+  "complete": false,
+  "completed_cases": 7,
+  "local_only": true,
+  "passed": false,
+  "planned_cases": 120,
+  "protocol": 2,
+  "resume_policy": "Completed attempts, including failures, are retained without resampling. Spend is preserved across reseeds.",
+  "signature": {
+    "hash": "674a159b55de3fb9a05a61bfd29c5b0fd6aac97931ba5cf26b3161f70e4c136f",
+    "inputs": {
+      "as_of": 1792108799,
+      "catalogue_hash": "ebfbbb78273a251f54888ef5dffd9d4658c3248996640835cfc630667fc35e0c",
+      "daily_cap_usd": 8.0,
+      "dataset_sha256": "1bd7d5739735978c122029ec71ea3191756e1d4dff973d1e8af4b9b0190fa450",
+      "dimensions": {
+        "depths": [
+          1,
+          2,
+          4
+        ],
+        "questions": 40
+      },
+      "harness_sha256": "c735cd36f3ca19b4970faa4ae539f854bc9f3d50db6c8ef63016d746ae0a025e",
+      "model_judge": "claude-sonnet-5-5",
+      "model_planner": "claude-sonnet-5-5",
+      "prompt_sha256": "94b761359a1ee58022bcc202e1f23a0b3bb6f89e580ce223fd999a86ed74b20a",
+      "protocol": 2,
+      "seed_version": "rs-synthetic-v2",
+      "suite": "paths"
+    }
+  },
+  "suite": "model-paths",
+  "synthetic_demo_only": true
+}

@@ -2,8 +2,8 @@ services:
   falkordb:
     image: falkordb/falkordb:v4.22.1
     ports:
-      - "127.0.0.1:6379:6379"
-      - "127.0.0.1:3000:3000"
+      - "127.0.0.1:${RS_REDIS_PORT:-6379}:6379"
+      - "127.0.0.1:${RS_BROWSER_PORT:-3000}:3000"
     environment:
       FALKORDB_PASSWORD: "${FALKORDB_PASSWORD:-change-me-local}"
       REDIS_ARGS: "--requirepass ${FALKORDB_PASSWORD:-change-me-local} --appendonly yes --appendfsync everysec --maxmemory 2gb --maxmemory-policy noeviction"
@@ -31,14 +31,14 @@ services:
         condition: service_healthy
   app:
     build: .
-    ports: ["127.0.0.1:8000:8000"]
+    ports: ["127.0.0.1:${RS_APP_PORT:-8000}:8000"]
     env_file: .env
     environment:
       FALKORDB_HOST: falkordb
       FALKORDB_PORT: "6379"
       REDIS_URL: "redis://:${FALKORDB_PASSWORD:-change-me-local}@falkordb:6379"
       GRAPH_NAME: rs_bank_a
-      PUBLIC_URL: http://localhost:8000
+      PUBLIC_URL: "http://localhost:${RS_APP_PORT:-8000}"
     depends_on:
       seed:
         condition: service_completed_successfully

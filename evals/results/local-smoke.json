@@ -1,0 +1,96 @@
+{
+  "suite": "local-compose-smoke",
+  "status": "passed",
+  "started_at": 1792219710,
+  "target": "http://127.0.0.1:18000",
+  "graph": "rs_bank_a",
+  "compose_project": "rs_acceptance",
+  "ports": {
+    "app": 18000,
+    "redis": 16379,
+    "browser": 13000
+  },
+  "model_calls": 0,
+  "health_cache_used": false,
+  "checks": {
+    "expected_synthetic_graph_ready": {
+      "status": "passed",
+      "details": {
+        "accounts": 25000,
+        "seed_complete": true,
+        "seed_version": "rs-synthetic-v2",
+        "seeded_at": 1792170718,
+        "reseed_s": 4.78275620999921
+      }
+    },
+    "compiled_investigator_page_served": {
+      "status": "passed",
+      "details": null
+    },
+    "local_judge_key_maps_to_expected_identity": {
+      "status": "passed",
+      "details": {
+        "user": "judge",
+        "role": "analyst",
+        "tenant": "bank_a"
+      }
+    },
+    "aof_enabled_everysec": {
+      "status": "passed",
+      "details": {
+        "appendfsync": "everysec",
+        "appendonly": "yes"
+      }
+    },
+    "unique_persistence_probe_created": {
+      "status": "passed",
+      "details": {
+        "id": "10e9c8cf-efc3-4c9f-8f74-0f8db0b3cb7d",
+        "created_at": 1792219714
+      }
+    },
+    "compose_database_restarted": {
+      "status": "passed",
+      "details": null
+    },
+    "original_probe_survives_restart": {
+      "status": "passed",
+      "details": {
+        "actual": [
+          [
+            "10e9c8cf-efc3-4c9f-8f74-0f8db0b3cb7d",
+            1792219714
+          ]
+        ],
+        "expected": [
+          [
+            "10e9c8cf-efc3-4c9f-8f74-0f8db0b3cb7d",
+            1792219714
+          ]
+        ]
+      }
+    },
+    "original_seed_not_regenerated": {
+      "status": "passed",
+      "details": {
+        "seeded_at_before": 1792170718,
+        "seeded_at_after": 1792170718
+      }
+    }
+  },
+  "before_restart": {
+    "accounts": 25000,
+    "seed_complete": true,
+    "seed_version": "rs-synthetic-v2",
+    "seeded_at": 1792170718,
+    "reseed_s": 4.78275620999921
+  },
+  "after_restart": {
+    "accounts": 25000,
+    "seed_complete": true,
+    "seed_version": "rs-synthetic-v2",
+    "seeded_at": 1792170718,
+    "reseed_s": 4.78275620999921
+  },
+  "finished_at": 1792219717
+}

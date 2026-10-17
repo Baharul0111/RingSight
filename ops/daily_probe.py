@@ -16,5 +16,7 @@ with urllib.request.urlopen(request, timeout=120) as response:
                     answers.append(data.get("answer", data))
     else:
         answers.append(json.load(response))
-assert answers and answers[-1].get("shape", answers[-1].get("outcome")) == "answered_with_path", "Daily investigation did not return an evidenced path"
-print("Daily depth-one investigation: answered_with_path")
+assert answers, "Daily investigation did not return an answer"
+answer=answers[-1]
+assert answer.get("shape", answer.get("outcome")) in {"answered_with_path","answered_from_memory"} and answer.get("path_edges"), "Daily investigation did not return an evidenced path"
+print("Daily depth-one investigation: " + answer["shape"])
