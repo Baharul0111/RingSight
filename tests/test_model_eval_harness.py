@@ -1,5 +1,6 @@
 """No-network protocol tests: resume cannot resample failures or erase spend."""
 import copy
+import asyncio
 import json
 from types import SimpleNamespace
 
@@ -133,6 +134,68 @@ async def test_completed_path_trial_resumes_without_resampling_failure(monkeypat
     assert len(calls) == 3 and first["complete"] and not first["passed"]
     resumed = await harness.path_suite("eval", dataset, 1, path, signature=signature)
     assert len(calls) == 3 and resumed["cases"] == first["cases"] and not resumed["passed"]
+
+
+async def test_concurrent_paths_have_bounded_independent_sessions_and_one_cleanup(monkeypatch, tmp_path):
+    dataset = SimpleNamespace(rings=[{"seed_account": "ACC-1", "accounts": ["ACC-1", "ACC-2"],
+        "ring_id": "RING-1", "typology": "stack", "expected_tools": ["rs_neighbourhood"]}], manifest={"as_of": 100})
+    active = peak = cleared = 0
+    calls = []
+    async def clear(tenant):
+        nonlocal cleared
+        assert active == 0
+        cleared += 1
+    async def ask(tenant, question, depth, as_of, *, clear_memory=True):
+        nonlocal active, peak
+        assert not clear_memory and cleared == 1
+        active += 1
+        peak = max(peak, active)
+        calls.append((question, depth))
+        try:
+            await asyncio.sleep(.001)
+            return result(), context(), .1
+        finally:
+            active -= 1
+    async def check(*args):
+        return {"correct": True, "checked_edges": 1, "errors": [], "cited_transfers": 1}
+    monkeypatch.setattr(harness, "ask", ask)
+    monkeypatch.setattr(harness, "path_check", check)
+    monkeypatch.setattr(harness, "clear_session_memory", clear)
+    path = tmp_path / "parallel.json"
+    body = await harness.path_suite("eval", dataset, 2, path, signature={"hash": "parallel"}, concurrency=3)
+    assert body["passed"] and len(calls) == 6 and peak == 3 and active == 0 and cleared == 1
+    assert len({case["case_key"] for case in body["cases"]}) == 6
+    await harness.path_suite("eval", dataset, 2, path, signature={"hash": "parallel"}, concurrency=3)
+    assert len(calls) == 6 and cleared == 1
+
+
+async def test_parallel_failure_cancels_and_awaits_other_cases(monkeypatch, tmp_path):
+    dataset = SimpleNamespace(rings=[{"seed_account": "ACC-1", "accounts": ["ACC-1"],
+        "ring_id": "RING-1", "typology": "stack", "expected_tools": []}], manifest={"as_of": 100})
+    active = 0
+    async def clear(*args):
+        pass
+    async def ask(tenant, question, depth, as_of, **kwargs):
+        nonlocal active
+        active += 1
+        try:
+            if depth == 1:
+                await asyncio.sleep(.001)
+                raise RuntimeError("bounded model failure")
+            await asyncio.Event().wait()
+        finally:
+            active -= 1
+    monkeypatch.setattr(harness, "ask", ask)
+    monkeypatch.setattr(harness, "clear_session_memory", clear)
+    with pytest.raises(RuntimeError, match="bounded model failure"):
+        await harness.path_suite("eval", dataset, 1, tmp_path / "failure.json", signature={"hash": "parallel"}, concurrency=3)
+    assert active == 0
+
+
+async def test_concurrent_paths_refuse_future_as_of_before_cleanup(monkeypatch, tmp_path):
+    dataset = SimpleNamespace(manifest={"as_of": harness.time.time() + 60})
+    with pytest.raises(ValueError, match="historical"):
+        await harness.path_suite("eval", dataset, 1, tmp_path / "future.json", concurrency=3)
 
 
 @pytest.mark.parametrize("exposed", [False, True])

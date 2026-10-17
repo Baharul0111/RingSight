@@ -1431,3 +1431,22 @@ nullable-column compact-reply panic, and enriches optional supersession/action/
 decision context with separate fixed queries. Both engine suites exercise
 findings with no proposal, a pending proposal and a named decision. Ring-member
 lists are sorted before applying the result bound for deterministic evidence.
+
+**Mule-path endpoint correction:** the interrupted model trial exposed a
+scatter-gather projection whose transfer ids and node aliases disagreed on
+the indexed4.22.x engine. Both mule queries now compare actual relationship
+endpoints and keep their chronological/time-window predicates inside an
+anchored CASE filter, preventing the range-index plan from dropping the
+connecting leg. Their emitted legs also read actual relationship endpoints.
+The structural evaluation now checks every returned path against authoritative
+dated TX facts for all35 planted rings, in addition to measuring member recall.
+The same physical-path oracle is exercised on both supported engine versions.
+
+Local path evaluations may use up to three concurrent independent sessions.
+They clear memory once before launch and use a historical as-of preceding all
+new findings, so one case cannot recall another case's new memory. Fixture-
+mutating injection and deleted-ring tests remain sequential. Timings identify
+this execution mode explicitly. The owner-approved12 USD limit applies only
+to the local eval_model tenant on UTC20261017, preserves all prior liability,
+and restores the original tenant cap afterward; public and Console limits
+are unchanged.

@@ -16,6 +16,7 @@ from pathlib import Path
 from server.context import Identity, Investigation, current_context
 from server.db import db
 from server.mcp_read import run_tool
+from evals.model_eval import path_check
 
 
 async def evaluate(tenant: str, output: Path):
@@ -38,12 +39,16 @@ async def evaluate(tenant: str, output: Path):
         elif tool == "rs_scatter_gather":
             args.update(mode=pattern, window_hours=720)
         result = await run_tool(tool, args)
+        correctness = await path_check(tenant, {'evidence': [result]}, as_of)
         found = set(re.findall(r"ACC-[A-Za-z0-9]+", json.dumps(result["rows"]))) | ({account} if result["rows"] else set())
         expected = set(ring["accounts"])
         profile = await db.read(tenant, "MATCH (a:Account {id:$id}) RETURN a.in_deg AS in_deg,a.ring_id AS ring_id", {"id": account})
         record = {"ring_id": ring["ring_id"], "typology": pattern, "tool": tool, "seed": account, "expected_members": len(expected), "recalled_members": len(found & expected), "member_recall": len(found & expected) / len(expected), "returned_accounts": len(found), "member_precision": len(found & expected) / len(found) if found else 0, "recipient_in_degree": profile[0]["in_deg"], "elapsed_ms": result["elapsed_ms"], "outcome": result["outcome"]}
         if result["outcome"] == "tool_error":
             errors.append({"ring_id": ring["ring_id"], "reason": result["reason"]})
+        record['path_correctness'] = correctness
+        if not correctness['correct']:
+            errors.append({'ring_id': ring['ring_id'], 'reason': 'incorrect_path_facts', 'errors': correctness['errors']})
         records.append(record)
     degrees = sorted(r["recipient_in_degree"] for r in records)
     thresholds = [degrees[len(degrees)//3], degrees[len(degrees)*2//3]]

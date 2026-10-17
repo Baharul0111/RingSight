@@ -17,6 +17,8 @@ import os
 import re
 import tempfile
 import time
+from contextlib import asynccontextmanager, contextmanager
+from dataclasses import replace
 from pathlib import Path
 from urllib.parse import urlsplit
 
@@ -34,6 +36,83 @@ LABELS = {"ACC": "Account", "PER": "Person", "DEV": "Device", "PH": "Phone", "PH
           "ADR": "Address", "ADDR": "Address", "ADD": "Address", "MER": "Merchant", "MRC": "Merchant",
           "AL": "Alert", "ALT": "Alert", "ALERT": "Alert", "RES": "Restriction"}
 RELATIONS = {"TX", "FLOW", "OWNS", "USES_DEVICE", "HAS_PHONE", "HAS_ADDRESS", "SHARES", "SHARES_STRONG", "ON"}
+_EVAL_APPROVAL = None
+
+
+def validate_eval_approval(cap=None, approved_day=None):
+    """Only an explicit, current-UTC-day local evaluation approval may exceed8."""
+    if cap is None and approved_day is None:
+        return None
+    require_local()
+    if cap is None or approved_day is None or isinstance(cap, bool):
+        raise ValueError("Supply approved evaluation cap and UTC approval day together")
+    cap = float(cap)
+    if not math.isfinite(cap) or not 0 < cap <= 12:
+        raise ValueError("Approved local evaluation cap must be positive and at most12 USD")
+    if approved_day != day_utc():
+        raise ValueError("Local evaluation spending approval is valid only on its stated UTC day")
+    return {"tenant": "eval_model", "cap_usd": cap, "approved_day": approved_day}
+
+
+def _approved_scope(approval, caller):
+    from server import config
+    require_local()
+    endpoints = (config.settings.redis_url, getattr(db, "url", ""), getattr(db, "ro_url", ""))
+    if caller != "eval_model" or any(urlsplit(url).hostname not in {"localhost", "127.0.0.1", "::1", "falkordb"} for url in endpoints):
+        raise RuntimeError("Approved evaluation budget requires only the local eval_model tenant")
+    if day_utc() != approval["approved_day"]:
+        raise RuntimeError("Local evaluation spending approval expired at the UTC day boundary")
+
+
+@contextmanager
+def approved_eval_budget(cap=None, approved_day=None, *, tenant="eval_model"):
+    """Temporarily scope the user's explicit approval to one local eval tenant.
+
+    No environment, production source, Console setting or Spend row is changed.
+    Every request/reservation rechecks the tenant, actual DB endpoints and day.
+    """
+    global _EVAL_APPROVAL, model_gate
+    approval = validate_eval_approval(cap, approved_day)
+    if approval is None:
+        yield None
+        return
+    from server import config, safety, model as model_module
+    if tenant != "eval_model" or _EVAL_APPROVAL is not None:
+        raise ValueError("Approved evaluation budget is restricted to one eval_model run")
+    _approved_scope(approval, tenant)
+    original = (config.settings, safety.settings, safety.model_gate, model_module.model_gate, model_gate)
+    async def scoped_gate(caller):
+        _approved_scope(approval, caller)
+        return await original[2](caller)
+    try:
+        config.settings = replace(config.settings, daily_cap=approval["cap_usd"])
+        safety.settings = config.settings
+        safety.model_gate = model_module.model_gate = model_gate = scoped_gate
+        _EVAL_APPROVAL = approval
+        yield approval
+    finally:
+        config.settings, safety.settings, safety.model_gate, model_module.model_gate, model_gate = original
+        _EVAL_APPROVAL = None
+
+
+@asynccontextmanager
+async def approved_tenant_cap(tenant):
+    """Change only the eval Tenant cap after rebuild; restore it without Spend writes."""
+    if _EVAL_APPROVAL is None:
+        yield
+        return
+    _approved_scope(_EVAL_APPROVAL, tenant)
+    rows = await db.read(tenant, "MATCH (t:Tenant {name:$name}) RETURN t.daily_usd_cap AS cap", {"name": tenant})
+    if len(rows) != 1 or rows[0].get("cap") is None:
+        raise ValueError("Evaluation Tenant must have an existing cap before approval is applied")
+    previous = float(rows[0]["cap"])
+    if not math.isfinite(previous) or previous < 0:
+        raise ValueError("Evaluation Tenant cap is invalid")
+    try:
+        await db.write(tenant, "MATCH (t:Tenant {name:$name}) SET t.daily_usd_cap=$cap RETURN t.daily_usd_cap AS cap", {"name": tenant, "cap": _EVAL_APPROVAL["cap_usd"]})
+        yield
+    finally:
+        await db.write(tenant, "MATCH (t:Tenant {name:$name}) SET t.daily_usd_cap=$cap RETURN t.daily_usd_cap AS cap", {"name": tenant, "cap": previous})
 
 
 def dump(path, body):
@@ -108,6 +187,8 @@ def run_signature(dataset, suite, dimensions):
               "catalogue_hash": meta["hash"], "prompt_sha256": meta["prompt_sha256"],
               "model_planner": settings.planner, "model_judge": settings.judge,
               "daily_cap_usd": settings.daily_cap,
+              "approved_eval_cap_day": _EVAL_APPROVAL["approved_day"] if _EVAL_APPROVAL else None,
+              "approved_eval_tenant": _EVAL_APPROVAL["tenant"] if _EVAL_APPROVAL else None,
               "harness_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest()}
     return {"hash": _digest(inputs), "inputs": inputs}
 
@@ -149,8 +230,9 @@ async def clear_session_memory(tenant):
         await db.write(tenant, f"MATCH (n:{label}) DETACH DELETE n")
 
 
-async def ask(tenant, question, depth, as_of):
-    await clear_session_memory(tenant)
+async def ask(tenant, question, depth, as_of, *, clear_memory=True):
+    if clear_memory:
+        await clear_session_memory(tenant)
     ctx = Investigation(Identity("offline_eval", "analyst", tenant), as_of=as_of)
     token = current_context.set(ctx)
     started = time.perf_counter()
@@ -261,20 +343,28 @@ def path_question(ring, depth):
     return f"{category} involving {account}. Show exact graph paths at requested depth {depth}, with dated money movements where present. Do not infer innocence from an absent path."
 
 
-async def path_suite(tenant, dataset, count, output, *, signature=None, resume=True):
+async def path_suite(tenant, dataset, count, output, *, signature=None, resume=True, concurrency=1):
+    if concurrency not in (1, 2, 3):
+        raise ValueError("Path concurrency must be between one and three")
+    as_of = dataset.manifest["as_of"]
+    if concurrency > 1 and as_of >= time.time():
+        raise ValueError("Concurrent path evaluations require a historical as-of before new session memory")
     keys = [f"path:{i + 1}:depth:{depth}" for i in range(count) for depth in (1, 2, 4)]
-    signature = signature or run_signature(dataset, "paths", {"questions": count, "depths": [1, 2, 4]})
+    signature = signature or run_signature(dataset, "paths", {"questions": count, "depths": [1, 2, 4], "concurrency": concurrency})
     body = open_report(output, "model-paths", keys, signature, resume)
     completed = {case["case_key"] for case in body["cases"]}
     dump(output, body)
-    for i in range(count):
+    semaphore = asyncio.Semaphore(concurrency)
+    async def run_case(i, depth, key):
         ring = dataset.rings[i % len(dataset.rings)]
-        for depth in (1, 2, 4):
-            key = f"path:{i + 1}:depth:{depth}"
-            if key in completed:
-                continue
-            result, ctx, elapsed = await ask(tenant, path_question(ring, depth), depth, dataset.manifest["as_of"])
-            check = await path_check(tenant, result, dataset.manifest["as_of"])
+        async with semaphore:
+            if concurrency == 1:
+                result, ctx, elapsed = await ask(tenant, path_question(ring, depth), depth, as_of)
+            else:
+                # Cleared once before launch. Fresh sessions cannot recall each
+                # other's new findings through the historical as-of boundary.
+                result, ctx, elapsed = await ask(tenant, path_question(ring, depth), depth, as_of, clear_memory=False)
+            check = await path_check(tenant, result, as_of)
             seen = set(re.findall(r"ACC-[A-Za-z0-9]+", json.dumps(result.get("evidence", []))))
             expected = set(ring["accounts"])
             entry = {"case_key": key, "question_id": i + 1, "depth": depth, "ring_id": ring["ring_id"], "typology": ring["typology"],
@@ -282,6 +372,18 @@ async def path_suite(tenant, dataset, count, output, *, signature=None, resume=T
                      "planted_member_recall": len(seen & expected) / len(expected), "first_tool_expected": ring["expected_tools"]}
             entry["first_tool_exact_match"] = bool(set(entry["first_selected_tool_batch"]) & set(ring["expected_tools"]))
             record_case(body, output, entry)
+    pending = [(i, depth, f"path:{i + 1}:depth:{depth}") for i in range(count) for depth in (1, 2, 4)
+               if f"path:{i + 1}:depth:{depth}" not in completed]
+    if pending and concurrency > 1:
+        await clear_session_memory(tenant)
+    tasks = [asyncio.create_task(run_case(*case)) for case in pending]
+    try:
+        await asyncio.gather(*tasks)
+    finally:
+        for task in tasks:
+            if not task.done():
+                task.cancel()
+        await asyncio.gather(*tasks, return_exceptions=True)
     cases = body["cases"]
     body["complete"] = {case["case_key"] for case in cases} == set(keys)
     body["metrics"] = {
@@ -412,16 +514,19 @@ async def injection_suite(tenant, dataset, count, repeats, output, *, signature=
     return body
 
 
-async def main(options):
+async def _run_model_evaluations(options):
     require_local()
     from seed import seed_graph
     from synth.generate import generate
     if options.questions < 1 or not 1 <= options.attacks <= 20 or options.repeats < 1 or options.abstentions < 1:
         raise ValueError("Question/repeat counts must be positive; attacks must be 1..20")
+    path_concurrency=getattr(options,"path_concurrency",1)
+    if path_concurrency not in {1,2,3}:
+        raise ValueError("Path concurrency must be1,2 or3")
     dataset = generate(accounts=1000)
     tenant = "eval_model"
     suites = [options.suite] if options.suite != "all" else ["paths", "injections", "abstention"]
-    dimensions = {"paths": {"questions": options.questions, "depths": [1, 2, 4]},
+    dimensions = {"paths": {"questions": options.questions, "depths": [1, 2, 4], "concurrency": path_concurrency},
                   "injections": {"attacks": options.attacks, "repeats": options.repeats},
                   "abstention": {"questions": options.abstentions}}
     signatures = {suite: run_signature(dataset, suite, dimensions[suite]) for suite in suites}
@@ -440,13 +545,18 @@ async def main(options):
             # liability: finally restores it, and the next startup takes the
             # max with the private checkpoint if the process was terminated.
             await restore_spend(checkpoint)
+    async with approved_tenant_cap(tenant):
+        return await _execute_suites(options, tenant, dataset, suites, signatures)
+
+
+async def _execute_suites(options, tenant, dataset, suites, signatures):
     all_results = []
     for suite in suites:
         path = OUT / ("model-" + suite + ".json")
         try:
             kwargs = {"signature": signatures[suite], "resume": options.resume}
             if suite == "paths":
-                result = await path_suite(tenant, dataset, options.questions, path, **kwargs)
+                result = await path_suite(tenant, dataset, options.questions, path, concurrency=getattr(options,"path_concurrency",1), **kwargs)
             elif suite == "injections":
                 result = await injection_suite(tenant, dataset, options.attacks, options.repeats, path, **kwargs)
             else:
@@ -456,11 +566,17 @@ async def main(options):
         except Exception as exc:
             partial = json.loads(path.read_text()) if path.exists() else {"suite": suite, "cases": []}
             partial.update(complete=False, passed=False, stopped_reason=type(exc).__name__,
-                           message="The local evaluation stopped. Resume with the same command after resolving the error or after the UTC daily budget reset; caps are unchanged.")
+                           message="The local evaluation stopped. Spend and prior attempts are preserved. An explicitly approved local evaluation budget expires on its stated UTC day; public/Console limits are unchanged.")
             dump(path, partial)
             print(json.dumps({"suite": suite, "passed": False, "stopped_reason": type(exc).__name__}), flush=True)
             raise
     return all(result["passed"] for result in all_results)
+
+
+async def main(options):
+    require_local()
+    with approved_eval_budget(getattr(options, "approved_eval_cap_usd", None), getattr(options, "approved_cap_day", None)):
+        return await _run_model_evaluations(options)
 
 
 if __name__ == "__main__":
@@ -471,4 +587,7 @@ if __name__ == "__main__":
     parser.add_argument("--attacks", type=int, default=20)
     parser.add_argument("--repeats", type=int, default=2)
     parser.add_argument("--resume", action=argparse.BooleanOptionalAction, default=True)
+    parser.add_argument("--approved-eval-cap-usd", type=float, help="Explicit owner-approved local eval_model daily cap, at most12 USD; never changes public/Console limits.")
+    parser.add_argument("--approved-cap-day", type=int, help="UTC YYYYMMDD of the explicit approval; expires at UTC midnight.")
+    parser.add_argument("--path-concurrency", type=int, choices=(1,2,3), default=1, help="Path-only concurrency; concurrent timings must be labelled. Other suites remain serial.")
     raise SystemExit(0 if asyncio.run(main(parser.parse_args())) else 1)

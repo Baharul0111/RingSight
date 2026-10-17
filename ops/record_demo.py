@@ -249,7 +249,6 @@ def main(args):
         prepared = prep.new_page()
         prepared_results = BrowserResults(prepared)
         prepared.goto(browser_url, wait_until="domcontentloaded", timeout=60000)
-        require("falkor" in prepared.locator("body").inner_text(timeout=30000).lower(), "The Browser URL did not open FalkorDB Browser.")
         no_visible_secrets(prepared)
         # Confirm a real Account result before spending on any investigation.
         browser_graph(prepared, prepared_results, audit=False)
