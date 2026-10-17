@@ -1,7 +1,7 @@
 {
   "suite": "isolated-compose-acceptance",
   "status": "passed",
-  "started_at": 1792219672,
+  "started_at": 1792249626,
   "project": "rs_acceptance",
   "target": "http://127.0.0.1:18000",
   "ports": {
@@ -20,13 +20,13 @@
         "smoke"
       ],
       "status": "passed",
-      "started_at": 1792219672.795149,
+      "started_at": 1792249626.539437,
       "artifact": {
         "path": "evals/results/local-smoke.json",
-        "sha256": "9dd7eef19f0b3a67686e635157f4c03c388d973f24b0d79164f819beb18813d1",
+        "sha256": "22f0485451a9470137890a11c52dd2c00f1049eaf24cd2413530aebc7e916cd1",
         "status": "passed"
       },
-      "elapsed_s": 44.824
+      "elapsed_s": 7.028
     },
     {
       "name": "Actual headless browser against the built app and graph",
@@ -37,13 +37,13 @@
         "http://127.0.0.1:18000"
       ],
       "status": "passed",
-      "started_at": 1792219718.542492,
+      "started_at": 1792249634.440119,
       "artifact": {
         "path": "evals/results/ui-real-local.json",
-        "sha256": "32184dcc38e2aa8705266435e0a25c71ac2280e1a10f386f1f5669af4c26f05d",
+        "sha256": "06f468cdb0e6678b561b910677a3b00b26dee5404f740c766a5f37c21742636f",
         "status": "passed"
       },
-      "elapsed_s": 3.117
+      "elapsed_s": 2.164
     },
     {
       "name": "Frontend interaction contracts against built assets (API fixtures)",
@@ -52,23 +52,23 @@
         "ops/ui_browser.py"
       ],
       "status": "passed",
-      "started_at": 1792219721.6598022,
+      "started_at": 1792249636.604254,
       "artifact": {
         "path": "evals/results/ui-browser.json",
-        "sha256": "00a0f29e6b778b713b5607aea6299e20771fc232d50adee5444d1cc3fc265251",
+        "sha256": "84de03aa920abc447a283bf147073e79695580ab1db67c29072ec0238104a598",
         "status": "passed"
       },
-      "elapsed_s": 2.17
+      "elapsed_s": 2.142
     }
   ],
   "volume_existed_before_run": true,
   "fresh_volume_note": "Existing acceptance volume retained; this proves rebuild/start/persistence, not an empty-volume start.",
   "built_app_image": {
-    "id": "sha256:6108ad8e8e43f11ac455ed635a32e42985ea05269ab9d5d726a1f690a8753a78",
+    "id": "sha256:aa7d485ce277ca8ac3c52aba6149e0c699e4f3a2a0fd489fe50516bf2cf6d4ed",
     "architecture": "arm64",
-    "dockerfile_sha256": "c7800eb27ec98e8562bdfa9107103ee972a6fef45e3a6e999cef14b9b8c379c7",
+    "dockerfile_sha256": "0c69b907fac061ffbaeadc33b1cd36ab8ef5448c006285edd15788b893354d7c",
     "uv_lock_sha256": "33584958c7b3807ccc79ecfbd334b4821369c2f296445bcb401c05f011d19241",
     "frontend_lock_sha256": "0808401bdfc950cf77d7fddf26c73f8f1c1da7a3cc81fae56efb986e803cfb7a"
   },
-  "finished_at": 1792219723
+  "finished_at": 1792249638
 }

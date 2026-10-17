@@ -1,0 +1,457 @@
+{
+  "suite": "live-acceptance",
+  "target": "http://127.0.0.1:18000",
+  "started_at": 1792220553,
+  "status": "passed",
+  "synthetic": true,
+  "mode": "read_only",
+  "checks": {
+    "hold_proposal_within_caps": {
+      "status": "passed",
+      "detail": {
+        "elapsed_s": 26.3,
+        "cost_usd": 0.098367
+      }
+    },
+    "hold_pending_after_guarded_wording_repair": {
+      "status": "passed",
+      "detail": null
+    }
+  },
+  "investigations": [
+    {
+      "label": "hold_proposal",
+      "depth": 4,
+      "session_id": "fd2060dc-1bc4-4a5c-8960-84fa3b5900bf",
+      "shape": "not_in_graph",
+      "reason": "no_path_within_depth",
+      "text": "The graph returned this evidence path: ACC-4471 → DEV-f31c → ACC-10477 → DEV-r00-1 → ACC-1. Review the transfer evidence before deciding.",
+      "as_of": 1792220553,
+      "tokens": {
+        "input": 49280,
+        "output": 1966,
+        "cache_read": 10449
+      },
+      "cost_usd": 0.098367,
+      "model_requests": 6,
+      "tool_calls": 9,
+      "judge": {
+        "verdict": "support",
+        "unsupported_claims": [
+          "The thesis path ACC-4471 → DEV-f31c → ACC-10477 → DEV-r00-1 → ACC-1 shows only shared identifiers, not that money flowed along it.",
+          "The outbound transfer rows (TX-12, TX-8) are not shown to follow the same path, so the thesis does not establish where funds went."
+        ],
+        "missing_queries": [
+          "Trace outbound funds from ACC-4471, especially the 55,000,000 UPI transfer TX-12 to ACC-3, and confirm whether ACC-3 is a pass-through account.",
+          "Check the in/out timing and velocity of ACC-4471 against its inbound transfers from ACC-1 to ACC-6 (all ~11M, within about 6 minutes).",
+          "Check DEV-f31c and DEV-r00-1 for legitimate shared-device explanations (e.g. family or business use) before the hold."
+        ]
+      },
+      "verifier": {
+        "status": "replaced",
+        "unsupported": [
+          "Seven"
+        ],
+        "normalizations": [],
+        "replacement_verified": "pass"
+      },
+      "stop_detail": null,
+      "memory": null,
+      "elapsed_s": 26.304,
+      "path_nodes": [
+        {
+          "id": "ACC-10477",
+          "label": "Account"
+        },
+        {
+          "id": "ACC-4471",
+          "label": "Account"
+        },
+        {
+          "id": "DEV-f31c",
+          "label": "Device"
+        },
+        {
+          "id": "ACC-1",
+          "label": "Account"
+        },
+        {
+          "id": "DEV-r00-1",
+          "label": "Device"
+        },
+        {
+          "id": "ACC-55820",
+          "label": "Account"
+        },
+        {
+          "id": "PER-2291",
+          "label": "Person"
+        },
+        {
+          "id": "DEV-r00-0",
+          "label": "Device"
+        },
+        {
+          "id": "ALERT-1",
+          "label": "Alert"
+        },
+        {
+          "id": "ACC-3",
+          "label": "Account"
+        },
+        {
+          "id": "ACC-2",
+          "label": "Account"
+        },
+        {
+          "id": "ACC-4",
+          "label": "Account"
+        },
+        {
+          "id": "ACC-5",
+          "label": "Account"
+        },
+        {
+          "id": "ACC-6",
+          "label": "Account"
+        }
+      ],
+      "path_edges": [
+        {
+          "source": "ACC-4471",
+          "target": "DEV-f31c",
+          "type": "USES_DEVICE"
+        },
+        {
+          "source": "ACC-10477",
+          "target": "DEV-f31c",
+          "type": "USES_DEVICE"
+        },
+        {
+          "source": "ACC-10477",
+          "target": "DEV-r00-1",
+          "type": "USES_DEVICE"
+        },
+        {
+          "source": "ACC-1",
+          "target": "DEV-r00-1",
+          "type": "USES_DEVICE"
+        },
+        {
+          "source": "PER-2291",
+          "target": "ACC-10477",
+          "type": "OWNS"
+        },
+        {
+          "source": "PER-2291",
+          "target": "ACC-55820",
+          "type": "OWNS"
+        },
+        {
+          "id": "TX-12",
+          "source": "ACC-4471",
+          "target": "ACC-3",
+          "amount": 55000000,
+          "ts": 1792100699,
+          "rail": "UPI",
+          "memo": null,
+          "type": "TX"
+        },
+        {
+          "id": "TX-8",
+          "source": "ACC-4471",
+          "target": "ACC-10477",
+          "amount": 11000000,
+          "ts": 1792100099,
+          "rail": "UPI",
+          "memo": null,
+          "type": "TX"
+        },
+        {
+          "source": "ACC-4471",
+          "target": "ACC-1",
+          "type": "LINK"
+        },
+        {
+          "id": "TX-2",
+          "amount": 11010000,
+          "ts": 1792098059,
+          "rail": "UPI",
+          "memo": null,
+          "source": "ACC-1",
+          "target": "ACC-4471",
+          "type": "TX"
+        },
+        {
+          "source": "ACC-4471",
+          "target": "ACC-10477",
+          "type": "LINK"
+        },
+        {
+          "id": "TX-1",
+          "amount": 11000000,
+          "ts": 1792097999,
+          "rail": "UPI",
+          "memo": null,
+          "source": "ACC-10477",
+          "target": "ACC-4471",
+          "type": "TX"
+        },
+        {
+          "source": "ACC-4471",
+          "target": "ACC-2",
+          "type": "LINK"
+        },
+        {
+          "id": "TX-3",
+          "amount": 11020000,
+          "ts": 1792098119,
+          "rail": "UPI",
+          "memo": null,
+          "source": "ACC-2",
+          "target": "ACC-4471",
+          "type": "TX"
+        },
+        {
+          "source": "ACC-4471",
+          "target": "ACC-3",
+          "type": "LINK"
+        },
+        {
+          "id": "TX-4",
+          "amount": 11030000,
+          "ts": 1792098179,
+          "rail": "UPI",
+          "memo": null,
+          "source": "ACC-3",
+          "target": "ACC-4471",
+          "type": "TX"
+        },
+        {
+          "source": "ACC-4471",
+          "target": "ACC-4",
+          "type": "LINK"
+        },
+        {
+          "id": "TX-5",
+          "amount": 11040000,
+          "ts": 1792098239,
+          "rail": "UPI",
+          "memo": null,
+          "source": "ACC-4",
+          "target": "ACC-4471",
+          "type": "TX"
+        },
+        {
+          "source": "ACC-4471",
+          "target": "ACC-5",
+          "type": "LINK"
+        },
+        {
+          "id": "TX-6",
+          "amount": 11050000,
+          "ts": 1792098299,
+          "rail": "UPI",
+          "memo": null,
+          "source": "ACC-5",
+          "target": "ACC-4471",
+          "type": "TX"
+        },
+        {
+          "source": "ACC-4471",
+          "target": "ACC-6",
+          "type": "LINK"
+        },
+        {
+          "id": "TX-7",
+          "amount": 11060000,
+          "ts": 1792098359,
+          "rail": "UPI",
+          "memo": null,
+          "source": "ACC-6",
+          "target": "ACC-4471",
+          "type": "TX"
+        }
+      ],
+      "trace": [
+        {
+          "tool": "rs_resolve_entity",
+          "args": {
+            "query": "<redacted>"
+          },
+          "tool_call_id": "53fc80d3-994b-4c7b-9cbb-b211cc47f3ae",
+          "outcome": "resolved",
+          "reason": null,
+          "rows_total": 1,
+          "elapsed_ms": 1.42,
+          "guard_hits": 0
+        },
+        {
+          "tool": "rs_recall_findings",
+          "args": {
+            "entity_ids": [
+              "ACC-4471"
+            ]
+          },
+          "tool_call_id": "9da77a2e-d402-48c3-903b-9275ff3c67a7",
+          "outcome": "answered_from_memory",
+          "reason": null,
+          "rows_total": 7,
+          "elapsed_ms": 12.04,
+          "guard_hits": 0
+        },
+        {
+          "tool": "rs_coverage_status",
+          "args": {
+            "rail": null
+          },
+          "tool_call_id": "f3509a99-08d7-4457-af67-22f53e24ebfe",
+          "outcome": "answered_with_path",
+          "reason": null,
+          "rows_total": 1,
+          "elapsed_ms": 22.98,
+          "guard_hits": 0
+        },
+        {
+          "tool": "rs_shared_identifiers",
+          "args": {
+            "as_of": 1792220553,
+            "limit": 50,
+            "cursor": null,
+            "account_id": "ACC-4471",
+            "hops": 2,
+            "kinds": [
+              "device",
+              "phone",
+              "address",
+              "owner"
+            ],
+            "max_identifier_degree": 50
+          },
+          "tool_call_id": "cf4d4368-8ac1-4791-a18f-5b4c63640d33",
+          "outcome": "answered_with_path",
+          "reason": null,
+          "rows_total": 3,
+          "elapsed_ms": 14.42,
+          "guard_hits": 0
+        },
+        {
+          "tool": "rs_account_profile",
+          "args": {
+            "as_of": 1792220553,
+            "limit": 50,
+            "cursor": null,
+            "account_id": "ACC-4471",
+            "window_days": 90
+          },
+          "tool_call_id": "19306b87-f220-4bd5-8c01-5e0aeb5a13cf",
+          "outcome": "answered_with_path",
+          "reason": null,
+          "rows_total": 1,
+          "elapsed_ms": 69.61,
+          "guard_hits": 0
+        },
+        {
+          "tool": "rs_neighbourhood",
+          "args": {
+            "as_of": 1792220553,
+            "limit": 50,
+            "cursor": null,
+            "account_id": "ACC-4471",
+            "window_days": 90,
+            "hops": 4,
+            "direction": "both",
+            "min_amount": 0
+          },
+          "tool_call_id": "67e83dc3-0ec0-4c04-a660-d881d2a3cf21",
+          "outcome": "answered_with_path",
+          "reason": null,
+          "rows_total": 7,
+          "elapsed_ms": 89.09,
+          "guard_hits": 0
+        },
+        {
+          "tool": "rs_propose_action",
+          "args": {
+            "kind": "hold_proposal",
+            "target_ids": [
+              "ACC-4471"
+            ],
+            "evidence_tool_call_ids": [
+              "cf4d4368-8ac1-4791-a18f-5b4c63640d33",
+              "19306b87-f220-4bd5-8c01-5e0aeb5a13cf",
+              "67e83dc3-0ec0-4c04-a660-d881d2a3cf21"
+            ],
+            "rationale": "<redacted>",
+            "finding_ids": [],
+            "case_id": null,
+            "draft": "<redacted>"
+          },
+          "tool_call_id": "9a2ec22c-c111-4c5c-b30c-08941a60fa29",
+          "outcome": "tool_error",
+          "reason": "unsupported_claim",
+          "rows_total": 0,
+          "elapsed_ms": 0,
+          "guard_hits": 0
+        },
+        {
+          "tool": "rs_check_restrictions",
+          "args": {
+            "entity_id": "ACC-4471",
+            "as_of": 1792220553
+          },
+          "tool_call_id": "1564272c-52c0-4d6c-b942-86795f18e8dc",
+          "outcome": "not_in_graph",
+          "reason": "no_restrictions",
+          "rows_total": 1,
+          "elapsed_ms": 4.16,
+          "guard_hits": 0
+        },
+        {
+          "tool": "rs_propose_action",
+          "args": {
+            "kind": "hold_proposal",
+            "targets": [
+              "ACC-4471"
+            ]
+          },
+          "tool_call_id": "ef5675e4-da7c-49f2-b025-cca94e66e261",
+          "outcome": "pending",
+          "reason": null,
+          "rows_total": 1,
+          "elapsed_ms": 0,
+          "guard_hits": 0
+        },
+        {
+          "tool": "rs_record_finding",
+          "args": {
+            "entity_ids": [
+              "ACC-4471"
+            ]
+          },
+          "tool_call_id": "d7486c38-b2b7-49ba-919d-4d69ff8937fe",
+          "outcome": "recorded",
+          "reason": null,
+          "rows_total": 1,
+          "elapsed_ms": 0,
+          "guard_hits": 0
+        }
+      ],
+      "pending": [
+        {
+          "pending_id": "08a246b1-52bb-4244-9d28-af47200fe762",
+          "kind": "hold_proposal",
+          "status": "pending",
+          "targets": [
+            "ACC-4471"
+          ],
+          "session_id": "fd2060dc-1bc4-4a5c-8960-84fa3b5900bf"
+        }
+      ]
+    }
+  ],
+  "notes": [
+    "Live operational smoke checks, not structural/model evaluation fixtures. No graph edges are deleted or inserted by this client.",
+    "All reported timings are observed; small samples do not establish an SLO."
+  ]
+}

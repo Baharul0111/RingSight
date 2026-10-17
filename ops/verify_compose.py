@@ -130,8 +130,19 @@ def main(args):
         image_ids = images.stdout.decode().strip().splitlines()
         if len(image_ids) != 1:
             raise AssertionError("Expected the single app image built for this Compose project.")
-        image = subprocess.run(["docker", "image", "inspect", "--format", "{{.Id}} {{.Architecture}}", image_ids[0]], cwd=ROOT, env=env, capture_output=True, timeout=30, check=True)
-        identifier, architecture = image.stdout.decode().strip().split()
+        image = subprocess.run(["docker", "image", "inspect", "--format", "{{.Id}} {{.Architecture}}", image_ids[0]], cwd=ROOT, env=env, capture_output=True, timeout=30)
+        if image.returncode == 0:
+            identifier, architecture = image.stdout.decode().strip().split()
+        else:
+            # Docker's containerd store may expose only the OCI index as a
+            # standalone image; Compose reports the unaddressable config id.
+            # Read the running container's actual platform manifest instead.
+            container = subprocess.run(["docker", "compose", "ps", "--quiet", "app"], cwd=ROOT, env=env, capture_output=True, timeout=30, check=True).stdout.decode().strip()
+            if not container or len(container.splitlines()) != 1:
+                raise AssertionError("Expected exactly one running acceptance app.")
+            inspected = subprocess.run(["docker", "inspect", "--format", "{{json .ImageManifestDescriptor}}", container], cwd=ROOT, env=env, capture_output=True, timeout=30, check=True)
+            descriptor = json.loads(inspected.stdout)
+            identifier, architecture = descriptor["digest"], descriptor["platform"]["architecture"]
         if not re.fullmatch(r"sha256:[a-f0-9]{64}", identifier):
             raise AssertionError("Docker did not return a verifiable app image digest.")
         report["built_app_image"] = {"id": identifier, "architecture": architecture, "dockerfile_sha256": hashlib.sha256((ROOT / "Dockerfile").read_bytes()).hexdigest(), "uv_lock_sha256": hashlib.sha256((ROOT / "uv.lock").read_bytes()).hexdigest(), "frontend_lock_sha256": hashlib.sha256((ROOT / "ui/package-lock.json").read_bytes()).hexdigest()}

@@ -5,7 +5,7 @@
     "passed": 5
   },
   "errors": [],
-  "executed_at": 1792219677,
+  "executed_at": 1792249323,
   "hub_ids": [
     "ACC-3997",
     "ACC-10784",
@@ -138,7 +138,7 @@
   },
   "rings": [
     {
-      "elapsed_ms": 48.06,
+      "elapsed_ms": 49.35,
       "expected_members": 9,
       "member_precision": 1.0,
       "member_recall": 0.8888888888888888,
@@ -153,7 +153,7 @@
       "typology": "fan_in"
     },
     {
-      "elapsed_ms": 3.18,
+      "elapsed_ms": 2.82,
       "expected_members": 8,
       "member_precision": 1.0,
       "member_recall": 1.0,
@@ -168,7 +168,7 @@
       "typology": "fan_in"
     },
     {
-      "elapsed_ms": 2.83,
+      "elapsed_ms": 2.58,
       "expected_members": 8,
       "member_precision": 1.0,
       "member_recall": 1.0,
@@ -183,7 +183,7 @@
       "typology": "fan_in"
     },
     {
-      "elapsed_ms": 2.61,
+      "elapsed_ms": 2.51,
       "expected_members": 8,
       "member_precision": 1.0,
       "member_recall": 1.0,
@@ -198,7 +198,7 @@
       "typology": "fan_in"
     },
     {
-      "elapsed_ms": 2.54,
+      "elapsed_ms": 2.38,
       "expected_members": 8,
       "member_precision": 1.0,
       "member_recall": 1.0,
@@ -213,7 +213,7 @@
       "typology": "fan_in"
     },
     {
-      "elapsed_ms": 3.82,
+      "elapsed_ms": 3.88,
       "expected_members": 8,
       "member_precision": 1.0,
       "member_recall": 0.875,
@@ -228,7 +228,7 @@
       "typology": "fan_out"
     },
     {
-      "elapsed_ms": 2.42,
+      "elapsed_ms": 2.45,
       "expected_members": 8,
       "member_precision": 1.0,
       "member_recall": 0.875,
@@ -243,7 +243,7 @@
       "typology": "fan_out"
     },
     {
-      "elapsed_ms": 2.42,
+      "elapsed_ms": 2.45,
       "expected_members": 8,
       "member_precision": 1.0,
       "member_recall": 0.875,
@@ -258,7 +258,7 @@
       "typology": "fan_out"
     },
     {
-      "elapsed_ms": 2.31,
+      "elapsed_ms": 2.42,
       "expected_members": 8,
       "member_precision": 1.0,
       "member_recall": 0.875,
@@ -273,7 +273,7 @@
       "typology": "fan_out"
     },
     {
-      "elapsed_ms": 2.44,
+      "elapsed_ms": 2.53,
       "expected_members": 8,
       "member_precision": 1.0,
       "member_recall": 0.875,
@@ -288,7 +288,7 @@
       "typology": "fan_out"
     },
     {
-      "elapsed_ms": 7.87,
+      "elapsed_ms": 7.81,
       "expected_members": 3,
       "member_precision": 1.0,
       "member_recall": 1.0,
@@ -303,7 +303,7 @@
       "typology": "cycle"
     },
     {
-      "elapsed_ms": 3.85,
+      "elapsed_ms": 3.92,
       "expected_members": 4,
       "member_precision": 1.0,
       "member_recall": 1.0,
@@ -318,7 +318,7 @@
       "typology": "cycle"
     },
     {
-      "elapsed_ms": 4.08,
+      "elapsed_ms": 3.88,
       "expected_members": 5,
       "member_precision": 1.0,
       "member_recall": 1.0,
@@ -333,7 +333,7 @@
       "typology": "cycle"
     },
     {
-      "elapsed_ms": 3.98,
+      "elapsed_ms": 5.2,
       "expected_members": 3,
       "member_precision": 1.0,
       "member_recall": 1.0,
@@ -348,7 +348,7 @@
       "typology": "cycle"
     },
     {
-      "elapsed_ms": 4.16,
+      "elapsed_ms": 5.57,
       "expected_members": 4,
       "member_precision": 1.0,
       "member_recall": 1.0,
@@ -363,7 +363,7 @@
       "typology": "cycle"
     },
     {
-      "elapsed_ms": 8.14,
+      "elapsed_ms": 8.12,
       "expected_members": 8,
       "member_precision": 1.0,
       "member_recall": 1.0,
@@ -378,7 +378,7 @@
       "typology": "bipartite"
     },
     {
-      "elapsed_ms": 6.18,
+      "elapsed_ms": 6.69,
       "expected_members": 8,
       "member_precision": 1.0,
       "member_recall": 1.0,
@@ -393,7 +393,7 @@
       "typology": "bipartite"
     },
     {
-      "elapsed_ms": 6.25,
+      "elapsed_ms": 6.92,
       "expected_members": 8,
       "member_precision": 1.0,
       "member_recall": 1.0,
@@ -408,7 +408,7 @@
       "typology": "bipartite"
     },
     {
-      "elapsed_ms": 8.0,
+      "elapsed_ms": 6.47,
       "expected_members": 8,
       "member_precision": 1.0,
       "member_recall": 1.0,
@@ -423,7 +423,7 @@
       "typology": "bipartite"
     },
     {
-      "elapsed_ms": 7.48,
+      "elapsed_ms": 6.4,
       "expected_members": 8,
       "member_precision": 1.0,
       "member_recall": 1.0,
@@ -438,7 +438,7 @@
       "typology": "bipartite"
     },
     {
-      "elapsed_ms": 38.31,
+      "elapsed_ms": 39.18,
       "expected_members": 9,
       "member_precision": 1.0,
       "member_recall": 1.0,
@@ -453,7 +453,7 @@
       "typology": "stack"
     },
     {
-      "elapsed_ms": 14.86,
+      "elapsed_ms": 13.19,
       "expected_members": 9,
       "member_precision": 1.0,
       "member_recall": 1.0,
@@ -468,7 +468,7 @@
       "typology": "stack"
     },
     {
-      "elapsed_ms": 13.02,
+      "elapsed_ms": 12.44,
       "expected_members": 9,
       "member_precision": 1.0,
       "member_recall": 1.0,
@@ -483,7 +483,7 @@
       "typology": "stack"
     },
     {
-      "elapsed_ms": 12.42,
+      "elapsed_ms": 13.01,
       "expected_members": 9,
       "member_precision": 1.0,
       "member_recall": 1.0,
@@ -498,7 +498,7 @@
       "typology": "stack"
     },
     {
-      "elapsed_ms": 12.82,
+      "elapsed_ms": 12.49,
       "expected_members": 9,
       "member_precision": 1.0,
       "member_recall": 1.0,
@@ -513,7 +513,7 @@
       "typology": "stack"
     },
     {
-      "elapsed_ms": 35.48,
+      "elapsed_ms": 39.31,
       "expected_members": 8,
       "member_precision": 0.13114754098360656,
       "member_recall": 1.0,
@@ -528,7 +528,7 @@
       "typology": "scatter_gather"
     },
     {
-      "elapsed_ms": 53.96,
+      "elapsed_ms": 54.04,
       "expected_members": 8,
       "member_precision": 0.08247422680412371,
       "member_recall": 1.0,
@@ -543,7 +543,7 @@
       "typology": "scatter_gather"
     },
     {
-      "elapsed_ms": 78.91,
+      "elapsed_ms": 76.76,
       "expected_members": 8,
       "member_precision": 0.06015037593984962,
       "member_recall": 1.0,
@@ -558,7 +558,7 @@
       "typology": "scatter_gather"
     },
     {
-      "elapsed_ms": 101.84,
+      "elapsed_ms": 101.3,
       "expected_members": 8,
       "member_precision": 0.047337278106508875,
       "member_recall": 1.0,
@@ -573,7 +573,7 @@
       "typology": "scatter_gather"
     },
     {
-      "elapsed_ms": 192.78,
+      "elapsed_ms": 189.7,
       "expected_members": 8,
       "member_precision": 0.03902439024390244,
       "member_recall": 1.0,
@@ -588,7 +588,7 @@
       "typology": "scatter_gather"
     },
     {
-      "elapsed_ms": 4.72,
+      "elapsed_ms": 4.99,
       "expected_members": 9,
       "member_precision": 1.0,
       "member_recall": 1.0,
@@ -603,7 +603,7 @@
       "typology": "gather_scatter"
     },
     {
-      "elapsed_ms": 3.64,
+      "elapsed_ms": 3.77,
       "expected_members": 9,
       "member_precision": 1.0,
       "member_recall": 1.0,
@@ -618,7 +618,7 @@
       "typology": "gather_scatter"
     },
     {
-      "elapsed_ms": 3.41,
+      "elapsed_ms": 4.23,
       "expected_members": 9,
       "member_precision": 1.0,
       "member_recall": 1.0,
@@ -633,7 +633,7 @@
       "typology": "gather_scatter"
     },
     {
-      "elapsed_ms": 4.32,
+      "elapsed_ms": 4.04,
       "expected_members": 9,
       "member_precision": 1.0,
       "member_recall": 1.0,
@@ -648,7 +648,7 @@
       "typology": "gather_scatter"
     },
     {
-      "elapsed_ms": 3.93,
+      "elapsed_ms": 3.8,
       "expected_members": 9,
       "member_precision": 1.0,
       "member_recall": 1.0,

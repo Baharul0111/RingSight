@@ -11,7 +11,7 @@ import sys
 import time
 
 from dotenv import load_dotenv
-from playwright.sync_api import sync_playwright, expect
+from playwright.sync_api import sync_playwright, expect, TimeoutError as PlaywrightTimeout
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
@@ -38,10 +38,15 @@ def main(url=None):
         expect(page.locator(".identity strong")).to_have_text("judge", timeout=15000)
         result["checks"]["real_server_identity"] = "passed"
         expect(page.locator(".tool-console")).to_be_visible(timeout=15000)
+        form = page.locator(".tool-console form")
         toggle = page.get_by_role("button", name="Open tools +", exact=True)
         if toggle.is_visible():
-            toggle.click()
-        form = page.locator(".tool-console form")
+            try:
+                toggle.click(timeout=2000)
+            except PlaywrightTimeout:
+                # The asynchronous health result may already have opened it.
+                expect(form).to_be_visible(timeout=15000)
+        expect(form).to_be_visible(timeout=15000)
         form.get_by_role("button", name="Run read-only tool", exact=True).click()
         expect(page.locator(".trace-row")).to_have_count(1, timeout=15000)
         expect(page.locator(".answer-panel .badge")).to_have_text("Answered with a path", timeout=15000)

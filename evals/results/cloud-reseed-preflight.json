@@ -1,0 +1,42 @@
+{
+  "suite": "cloud-reseed-preflight",
+  "status": "review_ready",
+  "read_only": true,
+  "at": 1792249036,
+  "graph": "rs_bank_a",
+  "current_counts": {
+    "Account": 25000,
+    "Finding": 1,
+    "PendingAction": 1,
+    "Decision": 0,
+    "Case": 0,
+    "ReportDraft": 0,
+    "Spend": 2
+  },
+  "tenant_controls": [
+    {
+      "tenant": "bank_a",
+      "daily_usd_cap": 8.0,
+      "halted": false,
+      "llm_enabled": true
+    }
+  ],
+  "spend": [
+    {
+      "day": 20261016,
+      "usd": 5.92e-05,
+      "reserved": 0.0,
+      "calls": 37
+    },
+    {
+      "day": 20261017,
+      "usd": 0.0329614999999999,
+      "reserved": 0.0,
+      "calls": 69
+    }
+  ],
+  "findings_export": "artifacts/private/cloud-snapshot-before-v2.json",
+  "replacement": "Deterministic synthetic v2,25000 accounts,35 planted rings; preserve tenant controls and spend through the reseed checkpoint. No real data or regulator filing.",
+  "private_operational_archive": "artifacts/private/cloud-operational-before-v2.json",
+  "findings_export_refreshed": true
+}

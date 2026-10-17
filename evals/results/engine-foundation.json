@@ -6,16 +6,15 @@
     "maxflow_capacityProperty": "passed",
     "parallel_count_and_sppaths": "passed",
     "recall_in_plan": [
-      "Results | Records produced: 2, Execution time: 0.000416 ms",
-      "    Project | Records produced: 2, Execution time: 0.001416 ms",
-      "        Node By Index Scan | (e:Account) | Records produced: 2, Execution time: 0.017792 ms"
+      "Project | Records produced: 2, Execution time: 0.002333 ms",
+      "    Node By Index Scan | (e:Account) | Records produced: 2, Execution time: 0.015667 ms"
     ],
     "ring_count_plan": [
-      "Results | Records produced: 1, Execution time: 0.000251 ms",
-      "    Aggregate | Records produced: 1, Execution time: 0.021166 ms",
-      "        Node By Index Scan | (m:Account) | Records produced: 3, Execution time: 0.007041 ms",
-      "            Project | Records produced: 1, Execution time: 0.000626 ms",
-      "                Node By Index Scan | (seed:Account) | Records produced: 1, Execution time: 0.008291 ms"
+      "Aggregate | Records produced: 1, Execution time: 0.006500 ms",
+      "    Filter | Records produced: 3, Execution time: 0.002334 ms",
+      "        Node By Index Scan | (m:Account) | Records produced: 3, Execution time: 0.005291 ms",
+      "            Project | Records produced: 1, Execution time: 0.002624 ms",
+      "                Node By Index Scan | (seed:Account) | Records produced: 1, Execution time: 0.013959 ms"
     ],
     "ro_query_write_refused": "passed",
     "timeout_max_read": [
@@ -26,7 +25,7 @@
     "wcc_both_casings": "passed",
     "with_all_and_unrolled_cycle": "passed"
   },
-  "engine": "4.22.1",
+  "engine": "6.0.2",
   "synthetic": true,
   "target": "local disposable graph"
 }

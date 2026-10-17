@@ -1,8 +1,8 @@
 {
   "suite": "goal-completion",
   "status": "failed",
-  "audited_at": 1792218298,
-  "catalogue_hash": "ebfbbb78273a251f54888ef5dffd9d4658c3248996640835cfc630667fc35e0c",
+  "audited_at": 1792249749,
+  "catalogue_hash": "7365b2e1b981c5c9523e8ddf6eee68570302d44d1a73e570a708824c694327c6",
   "checks": {
     "all_local_contracts": {
       "status": "passed",
@@ -13,8 +13,11 @@
       "reason": "pytest.json was written before a relevant source/test edit; rerun the check."
     },
     "compose_and_actual_browser": {
-      "status": "failed",
-      "reason": "compose-acceptance.json did not pass."
+      "status": "passed",
+      "detail": {
+        "image": "sha256:aa7d485ce277ca8ac3c52aba6149e0c699e4f3a2a0fd489fe50516bf2cf6d4ed",
+        "fresh_volume_observed": false
+      }
     },
     "compose_matches_current_runtime": {
       "status": "passed",
@@ -26,7 +29,7 @@
         "accounts": 25000,
         "graph_mb": 39,
         "seed_version": "rs-synthetic-v2",
-        "reseed_s": 4.799
+        "reseed_s": 4.554
       }
     },
     "structural_patterns_and_controls": {
@@ -47,7 +50,7 @@
     },
     "public_complete_workflow_and_fallback": {
       "status": "failed",
-      "reason": "Missing evals/results/live-acceptance.json"
+      "reason": "Current public deployment evidence is missing or failed."
     },
     "public_five_concurrent_rss": {
       "status": "failed",
@@ -55,7 +58,7 @@
     },
     "reviewed_demo_snapshot": {
       "status": "failed",
-      "reason": "A nonempty same-bank schema2 demo snapshot with original evidence/session rows is required."
+      "reason": "The saved real demo findings need a reviewed observation."
     },
     "actual_three_minute_demo": {
       "status": "failed",
@@ -65,13 +68,17 @@
       "status": "passed",
       "detail": null
     },
-    "ci_ci-v4.22.1": {
+    "successful_current_source_operational_jobs": {
       "status": "failed",
-      "reason": "Missing evals/results/ci-v4.22.1.json"
+      "reason": "Missing evals/results/operational-probes.json"
+    },
+    "ci_ci-v4.22.1": {
+      "status": "passed",
+      "detail": null
     },
     "ci_ci-6.0.2": {
-      "status": "failed",
-      "reason": "Missing evals/results/ci-6.0.2.json"
+      "status": "passed",
+      "detail": null
     },
     "submission_documents_and_live_measurements": {
       "status": "failed",
@@ -82,9 +89,9 @@
       "detail": {
         "status": "passed",
         "check": "public_candidate_secrets",
-        "files_checked": 315,
-        "candidate_files": 196,
-        "indexed_files": 116,
+        "files_checked": 437,
+        "candidate_files": 221,
+        "indexed_files": 213,
         "built_ui_checked": true,
         "violations": [],
         "scope": [
@@ -97,7 +104,7 @@
     },
     "required_files_committed_and_pushed": {
       "status": "failed",
-      "reason": "Required files are not committed as audited: 81 missing, 49 changed."
+      "reason": "Required files are not committed as audited: 11 missing, 22 changed."
     }
   },
   "notes": [
@@ -108,7 +115,6 @@
   ],
   "failed_checks": [
     "full_local_run_matches_current_sources",
-    "compose_and_actual_browser",
     "all_120_model_paths",
     "all_20_model_abstentions",
     "all_40_exposed_model_injections",
@@ -116,8 +122,7 @@
     "public_five_concurrent_rss",
     "reviewed_demo_snapshot",
     "actual_three_minute_demo",
-    "ci_ci-v4.22.1",
-    "ci_ci-6.0.2",
+    "successful_current_source_operational_jobs",
     "submission_documents_and_live_measurements",
     "required_files_committed_and_pushed"
   ]

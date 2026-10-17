@@ -6,7 +6,7 @@
     "graph": "rs_structural_eval",
     "accounts": 25000,
     "graph_mb": 39,
-    "reseed_s": 4.804,
+    "reseed_s": 4.554,
     "memory": {
       "total_graph_sz_mb": 39,
       "label_matrices_sz_mb": 1,
@@ -84,35 +84,35 @@
     "algorithms": [
       {
         "procedure": "flow_projection",
-        "elapsed_s": 0.5932
+        "elapsed_s": 0.5222
       },
       {
         "procedure": "CALL algo.pageRank('Account','TX')",
-        "elapsed_s": 0.1528
+        "elapsed_s": 0.135
       },
       {
         "procedure": "CALL algo.betweenness({nodeLabels:['Account'], relationshipTypes:['TX'], samplingSize:32, samplingSeed:42})",
-        "elapsed_s": 0.1478
+        "elapsed_s": 0.1384
       },
       {
         "procedure": "CALL algo.WCC({nodeLabels:['Account'], relationshipTypes:['TX']})",
-        "elapsed_s": 0.1352
+        "elapsed_s": 0.1269
       },
       {
         "procedure": "CALL algo.labelPropagation({nodeLabels:['Account'], relationshipTypes:['TX'], maxIterations:10})",
-        "elapsed_s": 0.2834
+        "elapsed_s": 0.3133
       },
       {
         "procedure": "CALL algo.WCC({nodeLabels:['Account'], relationshipTypes:['SHARES_STRONG']})",
-        "elapsed_s": 0.175
+        "elapsed_s": 0.1393
       },
       {
         "procedure": "degrees_or_timestamp",
-        "elapsed_s": 0.1633
+        "elapsed_s": 0.1337
       },
       {
         "procedure": "degrees_or_timestamp",
-        "elapsed_s": 1.0846
+        "elapsed_s": 0.8601
       }
     ],
     "schema": {
@@ -147,7 +147,8 @@
           "property": "id",
           "supported": true
         }
-      ]
+      ],
+      "fulltext_syntax": "procedure"
     },
     "snapshot_findings": 0,
     "seed_version": "rs-synthetic-v2",

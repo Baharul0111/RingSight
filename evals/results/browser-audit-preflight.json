@@ -1,0 +1,16 @@
+{
+  "suite": "actual-browser-audit-preflight",
+  "status": "passed",
+  "at": 1792250006,
+  "graph": "rs_bank_a",
+  "labels": [
+    "Account",
+    "Decision",
+    "Finding",
+    "PendingAction"
+  ],
+  "completed_results": 1,
+  "blocked_mutations": [],
+  "mocked_responses": false,
+  "model_calls": 0
+}

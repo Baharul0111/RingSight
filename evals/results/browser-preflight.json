@@ -1,0 +1,14 @@
+{
+  "suite": "browser-preflight",
+  "status": "passed",
+  "graph": "rs_bank_a",
+  "query": "Account ACC-4471",
+  "labels": [
+    "Account"
+  ],
+  "completed_results": 1,
+  "blocked_mutations": [],
+  "mocked_responses": false,
+  "model_calls": 0,
+  "checked_at": 1792249382
+}

@@ -1,7 +1,7 @@
 {
   "suite": "local-compose-smoke",
   "status": "passed",
-  "started_at": 1792219710,
+  "started_at": 1792249631,
   "target": "http://127.0.0.1:18000",
   "graph": "rs_bank_a",
   "compose_project": "rs_acceptance",
@@ -38,15 +38,15 @@
     "aof_enabled_everysec": {
       "status": "passed",
       "details": {
-        "appendfsync": "everysec",
-        "appendonly": "yes"
+        "appendonly": "yes",
+        "appendfsync": "everysec"
       }
     },
     "unique_persistence_probe_created": {
       "status": "passed",
       "details": {
-        "id": "10e9c8cf-efc3-4c9f-8f74-0f8db0b3cb7d",
-        "created_at": 1792219714
+        "id": "f006df10-fcb1-4c76-b231-8b7636ab6c37",
+        "created_at": 1792249631
       }
     },
     "compose_database_restarted": {
@@ -58,14 +58,14 @@
       "details": {
         "actual": [
           [
-            "10e9c8cf-efc3-4c9f-8f74-0f8db0b3cb7d",
-            1792219714
+            "f006df10-fcb1-4c76-b231-8b7636ab6c37",
+            1792249631
           ]
         ],
         "expected": [
           [
-            "10e9c8cf-efc3-4c9f-8f74-0f8db0b3cb7d",
-            1792219714
+            "f006df10-fcb1-4c76-b231-8b7636ab6c37",
+            1792249631
           ]
         ]
       }
@@ -92,5 +92,5 @@
     "seeded_at": 1792170718,
     "reseed_s": 4.78275620999921
   },
-  "finished_at": 1792219717
+  "finished_at": 1792249633
 }
