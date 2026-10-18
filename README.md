@@ -177,7 +177,7 @@ No detection result is a claim about real banking data. Model evaluations mutate
 
 | [completion-gate-tests.json](evals/results/completion-gate-tests.json) | 4 passed; 0 failed; 0 error; 0 skipped; exit 0 |
 
-| [completion.json](evals/results/completion.json) | failed |
+| [completion.json](evals/results/completion.json) | passed |
 
 | [compose-acceptance.json](evals/results/compose-acceptance.json) | passed |
 
