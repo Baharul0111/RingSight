@@ -1,21 +1,21 @@
 {
   "suite": "goal-completion",
-  "status": "failed",
-  "audited_at": 1792249749,
-  "catalogue_hash": "7365b2e1b981c5c9523e8ddf6eee68570302d44d1a73e570a708824c694327c6",
+  "status": "passed",
+  "audited_at": 1792288063,
+  "catalogue_hash": "646cf5a0e31e477ffaf3e0484b45efdbc293376ca1007939f9c50e8886c10de3",
   "checks": {
     "all_local_contracts": {
       "status": "passed",
       "detail": null
     },
     "full_local_run_matches_current_sources": {
-      "status": "failed",
-      "reason": "pytest.json was written before a relevant source/test edit; rerun the check."
+      "status": "passed",
+      "detail": null
     },
     "compose_and_actual_browser": {
       "status": "passed",
       "detail": {
-        "image": "sha256:aa7d485ce277ca8ac3c52aba6149e0c699e4f3a2a0fd489fe50516bf2cf6d4ed",
+        "image": "sha256:ce7596f85071e44e24af82b30a0f02a58d417bea9f07175dc650de157a650130",
         "fresh_volume_observed": false
       }
     },
@@ -29,7 +29,7 @@
         "accounts": 25000,
         "graph_mb": 39,
         "seed_version": "rs-synthetic-v2",
-        "reseed_s": 4.554
+        "reseed_s": 4.446
       }
     },
     "structural_patterns_and_controls": {
@@ -37,40 +37,40 @@
       "detail": null
     },
     "all_120_model_paths": {
-      "status": "failed",
-      "reason": "Model suite is incomplete or failed."
+      "status": "passed",
+      "detail": null
     },
     "all_20_model_abstentions": {
-      "status": "failed",
-      "reason": "Missing evals/results/model-abstention.json"
+      "status": "passed",
+      "detail": null
     },
     "all_40_exposed_model_injections": {
-      "status": "failed",
-      "reason": "Missing evals/results/model-injections.json"
+      "status": "passed",
+      "detail": null
     },
     "public_complete_workflow_and_fallback": {
-      "status": "failed",
-      "reason": "Current public deployment evidence is missing or failed."
+      "status": "passed",
+      "detail": null
     },
     "public_five_concurrent_rss": {
-      "status": "failed",
-      "reason": "Missing evals/results/live-load.json"
+      "status": "passed",
+      "detail": null
     },
     "reviewed_demo_snapshot": {
-      "status": "failed",
-      "reason": "The saved real demo findings need a reviewed observation."
+      "status": "passed",
+      "detail": null
     },
     "actual_three_minute_demo": {
-      "status": "failed",
-      "reason": "Missing evals/results/demo-video.json"
+      "status": "passed",
+      "detail": null
     },
     "configured_monitoring_and_daily_probe": {
       "status": "passed",
       "detail": null
     },
     "successful_current_source_operational_jobs": {
-      "status": "failed",
-      "reason": "Missing evals/results/operational-probes.json"
+      "status": "passed",
+      "detail": null
     },
     "ci_ci-v4.22.1": {
       "status": "passed",
@@ -81,17 +81,17 @@
       "detail": null
     },
     "submission_documents_and_live_measurements": {
-      "status": "failed",
-      "reason": "README final disclosure/tracks/live latency or synthetic labels are missing."
+      "status": "passed",
+      "detail": null
     },
     "public_candidate_secret_scan": {
       "status": "passed",
       "detail": {
         "status": "passed",
         "check": "public_candidate_secrets",
-        "files_checked": 437,
-        "candidate_files": 221,
-        "indexed_files": 213,
+        "files_checked": 477,
+        "candidate_files": 237,
+        "indexed_files": 237,
         "built_ui_checked": true,
         "violations": [],
         "scope": [
@@ -103,8 +103,12 @@
       }
     },
     "required_files_committed_and_pushed": {
-      "status": "failed",
-      "reason": "Required files are not committed as audited: 11 missing, 22 changed."
+      "status": "passed",
+      "detail": {
+        "required_committed_files": 228,
+        "local_tracking_ref_matches": true,
+        "network_rechecked": false
+      }
     }
   },
   "notes": [
@@ -113,17 +117,5 @@
     "Owner-confirmed monitoring setup is trusted as configuration; no email-delivery or independent monitor-login claim is made.",
     "Final submission and any cap increase still require explicit owner approval; neither is performed by this gate."
   ],
-  "failed_checks": [
-    "full_local_run_matches_current_sources",
-    "all_120_model_paths",
-    "all_20_model_abstentions",
-    "all_40_exposed_model_injections",
-    "public_complete_workflow_and_fallback",
-    "public_five_concurrent_rss",
-    "reviewed_demo_snapshot",
-    "actual_three_minute_demo",
-    "successful_current_source_operational_jobs",
-    "submission_documents_and_live_measurements",
-    "required_files_committed_and_pushed"
-  ]
+  "failed_checks": []
 }
