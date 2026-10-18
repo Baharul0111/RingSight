@@ -4,7 +4,106 @@ Live: https://ringsight.onrender.com · Judge access key: `424b676a8a7818860fe95
 
 **Track 01 (primary) · Track 02 (memory)**
 
-Evidence first. A graph investigation assistant that explains connections and waits for a named human decision. Synthetic demonstration only; no real regulatory filing.
+## The problem
+
+When a bank flags an account, an investigator needs to understand what happened before deciding what to do. The useful clues can be spread across transfers, account owners, shared devices, phone numbers and earlier investigations. Looking at one account at a time can hide a wider network. A missing connection also needs an explanation: was nothing found, was the search too shallow, or was the payment data never loaded?
+
+## The solution
+
+RingSight is an investigation assistant that brings those clues together. An investigator asks a question in plain English, watches the checks run, and receives the exact connections and transfers behind the answer. The assistant can remember earlier findings and propose a case, escalation, hold recommendation or report draft. A named person must review the proposal and give a written reason before it is approved or denied. All demonstration data is synthetic; no real account is frozen and no real report is filed.
+
+## Why this approach, and how it works
+
+The problem is about connections, so RingSight stores and follows those connections directly. The server first checks the account, earlier findings and available data. It then offers the model a relevant group from a fixed menu of tools. The model chooses tools and supplies checked inputs; human-written database queries retrieve the evidence. A fact checker validates the answer and a separate model pass reviews its support. Unsupported wording is replaced with text built from the returned facts. The human keeps the final decision.
+
+## How RingSight uses FalkorDB
+
+FalkorDB is the main database and the source of evidence for the product. Each bank has its own graph containing accounts, people, transfers, shared identifiers, data coverage, findings, proposals and human decisions. RingSight queries that graph to discover paths, runs graph algorithms inside FalkorDB, and saves what the investigator learns back into the same graph. The picture on screen displays returned graph evidence. Without FalkorDB, the assistant cannot obtain new evidence, recall findings, create proposals or record decisions; even the manual tool form needs the graph.
+
+## Map of the graph
+
+A **node** is a thing, such as an account or person. A **relationship** says how two things connect. **Properties** hold details: a transfer has an ID, an amount in whole paise, a UTC timestamp and a payment rail. The diagrams show the stored relationship directions.
+
+### Bank data: people, accounts and money
+
+```mermaid
+flowchart LR
+    person[Person] -->|OWNS| account[Account]
+    person -->|HAS_PHONE| phone[Phone]
+    person -->|HAS_ADDRESS| address[Address]
+    account -->|USES_DEVICE| device[Device]
+    other[Another Account] -->|USES_DEVICE| device
+    account -->|TX| other
+    account -->|AT_BANK| bank[Bank]
+    account -->|PAID| merchant[Merchant]
+    alert[Alert] -->|ON| account
+    restriction[Restriction] -->|ON| account
+```
+
+This is a map of relationship types, not a claim that a particular pair of accounts paid each other. **TX means an actual recorded transfer; sharing a device or owner means a connection, not a payment or proof of laundering.** Derived SHARES/SHARES_STRONG links help find accounts with shared identifiers. FLOW aggregates transfer capacity for max-flow; original TX edges remain the transfer evidence.
+
+### Investigation data: evidence, memory and human decisions
+
+```mermaid
+flowchart LR
+    call[ToolCall] -->|IN| session[Session]
+    finding[Finding] -->|MADE_IN| session
+    finding -->|ABOUT| account[Account]
+    pending[PendingAction] -->|IN| session
+    pending -->|BASED_ON| finding
+    pending -->|TARGETS| account
+    decision[Decision] -->|ON| pending
+    case[Case] -->|HAS| finding
+    case -->|INCLUDES| account
+    report["SARDraft: US SAR or Indian STR"] -->|FOR| case
+    report -->|FROM| decision
+    hold[HoldProposal] -->|FROM| decision
+    hold -->|TARGETS| account
+```
+
+A Finding keeps its learned date, validity dates, author, review state and original evidence-call IDs. Those IDs refer back to ToolCall records in the same bank. A Decision keeps the human's identity, role, reason and time. Corrections create a new Finding linked to the earlier one by SUPERSEDES. SAR and STR exports share the SARDraft node label and have different jurisdiction properties.
+
+The graph also holds Rail and IngestionDay coverage records, plus Tenant, Spend, Meta and catalogue records for controls and auditing. Coverage days identify their rail through a stored property; the diagrams do not invent relationships between these metadata nodes. The complete labels, properties, indexes and Cypher appear below.
+
+## How the agent queries the graph
+
+For **“Is ACC-4471 part of a ring, and how does the money move?”**, the work follows this sequence:
+
+1. **Check the starting point.** Fixed queries resolve ACC-4471, recall its dated findings and inspect loaded rails. An unknown account or missing CASH data gets an explicit answer rather than a guessed story.
+2. **Choose bounded reads.** Server rules offer the relevant tools, such as account profile, transfer neighbourhood and shared identifiers. The model chooses within that group. For example, `rs_shared_identifiers({"account_id":"ACC-4471","hops":1})` asks for nearby shared identifiers.
+3. **Run human-written Cypher.** The server validates the ID and supplies the session's evidence date, degree limits and bound parameters. Reads use GRAPH.RO_QUERY. This shortened device query shows the actual traversal; [the full query](server/cypher/rs_shared_identifiers.cypher) is also printed below:
+
+```cypher
+MATCH (a:Account {id:$id})-[u1:USES_DEVICE]->(d:Device)
+      <-[u2:USES_DEVICE]-(b:Account)
+WHERE b<>a AND d.degree<=$max_deg
+  AND u1.first_seen<=$as_of AND u2.first_seen<=$as_of
+RETURN [a.id,d.id,b.id] AS path_ids
+LIMIT $limit
+```
+
+4. **Return an inspectable path.** The seeded example connects `ACC-4471 → DEV-f31c → ACC-10477 → PER-2291 → ACC-55820`. These arrows describe walking the connection: both first accounts use the device, and PER-2291 owns the two later accounts. They do not describe money flowing through a device or person. The shallow demo excludes the exit; the deeper demo includes it. Each tool enforces its own depth and date rules.
+5. **Check and propose.** The verifier checks factual details against returned rows, and the separate judge reviews support. A supported graph observation can be saved with its original evidence and linked to a pending case action. Weak support leads the ordinary review proposal toward escalation. A pending closure rejected by the judge is withdrawn and replaced with escalation.
+6. **Wait for the human.** A separate authenticated route records approve, deny or modify, with a reason. The model has no approval tool. The next session can recall the finding and show whether a human reviewed it.
+
+## Where graph evidence changes the outcome
+
+| What FalkorDB returns | What RingSight is allowed to do | Inspect the implementation |
+|---|---|---|
+| No matching account | Return unknown_entity and graph-sourced suggestions. | [Entity lookup and preflight](server/agent.py) |
+| Rail or date coverage is missing | Explain the gap; do not conclude that the activity never happened. | [Coverage query](server/cypher/rs_coverage_status.cypher) |
+| Actual TX or identifier paths | Show those paths and their transfer facts; replace unsupported prose with evidence-built wording. | [Read tools](server/mcp_read.py), [verifier](server/verifier.py) |
+| Nonempty multi-edge pattern evidence from the current session | A hold recommendation may become pending. A single transfer is insufficient, and approval still cannot freeze an account. | [Proposal checks](server/mcp_write.py) |
+| At least two distinct nonempty checks, with no suspicious pattern evidence | A closure proposal may be eligible; empty results cannot justify closing. | [Closure policy](server/mcp_write.py) |
+| Existing restriction records | Recheck restrictions before each proposal and show them to the reviewer. A failed restriction read blocks the proposal; a restriction is not automatically a veto on every action. | [Restriction and write checks](server/mcp_write.py) |
+| Dated findings and their original evidence | Answer from memory with learned date, author and review state. | [Recall](server/mcp_read.py) |
+| A pending action plus a named human decision | Record denial or create the allowed case, recommendation or approved report draft. Account.status remains unchanged. | [Human decision route](server/actions.py) |
+
+FalkorDB also runs shortest-path operations, weakly connected components, label propagation, PageRank, sampled betweenness and max-flow on the supported projection. Global results carry their computed time; they are not a promise of arbitrary historical recalculation. See [precomputation](seed/__init__.py) and the inline queries below.
+
+**How this is checked:** [all planted path facts](tests/test_seeded_path_facts.py), [hold/closure/human-action checks](tests/test_actions.py), [report and restriction checks](tests/test_report_safety.py), and [120 real-model path cases](evals/results/model-paths.json). The public trace exposes the tool, inputs, returned rows, timing, guard hits and final checks. Model confidence alone cannot authorize an effect. If the database is unavailable, the static page or /live may still respond, but investigation, memory, manual graph reads and new decisions cannot complete.
+
+## How the components fit together
 
 ![Architecture](docs/architecture.svg)
 

@@ -1,7 +1,7 @@
 {
-  "created": 1792288029.753969,
+  "created": 1792333563.3966248,
   "source": "evals/results/pytest.json",
-  "source_sha256": "3fefcf883dcaeedd094c8d4025cd4f954dafba86a02d6b57de2d37728049866a",
+  "source_sha256": "f64eb268b6a6b5fd915007090fce4f8423cf457cca547a8adbe36d9e8a248537",
   "derived_without_rerun": true,
   "exitcode": 0,
   "summary": {
@@ -22,15 +22,15 @@
         ""
       ],
       "setup": {
-        "duration": 0.00010504201054573059,
+        "duration": 9.608300752006471e-05,
         "outcome": "passed"
       },
       "call": {
-        "duration": 0.00037404200702439994,
+        "duration": 0.0003121249901596457,
         "outcome": "passed"
       },
       "teardown": {
-        "duration": 8.30000062705949e-05,
+        "duration": 8.191700908355415e-05,
         "outcome": "passed"
       }
     },
@@ -46,15 +46,15 @@
         ""
       ],
       "setup": {
-        "duration": 9.320900426246226e-05,
+        "duration": 8.7958003859967e-05,
         "outcome": "passed"
       },
       "call": {
-        "duration": 0.00030845800938550383,
+        "duration": 0.0002837089996319264,
         "outcome": "passed"
       },
       "teardown": {
-        "duration": 8.304200309794396e-05,
+        "duration": 8.112499199341983e-05,
         "outcome": "passed"
       }
     },
@@ -70,15 +70,15 @@
         ""
       ],
       "setup": {
-        "duration": 8.900000830180943e-05,
+        "duration": 8.808299025986344e-05,
         "outcome": "passed"
       },
       "call": {
-        "duration": 0.00020049999875482172,
+        "duration": 0.00017762499919626862,
         "outcome": "passed"
       },
       "teardown": {
-        "duration": 8.075000368990004e-05,
+        "duration": 8.287500531878322e-05,
         "outcome": "passed"
       }
     }

@@ -1,7 +1,7 @@
 {
-  "created": 1792288029.753969,
+  "created": 1792333563.3966248,
   "source": "evals/results/pytest.json",
-  "source_sha256": "3fefcf883dcaeedd094c8d4025cd4f954dafba86a02d6b57de2d37728049866a",
+  "source_sha256": "f64eb268b6a6b5fd915007090fce4f8423cf457cca547a8adbe36d9e8a248537",
   "derived_without_rerun": true,
   "exitcode": 0,
   "summary": {
@@ -26,17 +26,17 @@
         ""
       ],
       "setup": {
-        "duration": 0.026152999998885207,
+        "duration": 0.023349125011009164,
         "outcome": "passed",
-        "stdout": "{\"event\": \"tool\", \"session_id\": \"8e2212e2-2c76-4122-a5d1-1c49796a5a16\", \"tool\": \"rs_neighbourhood\", \"tool_call_id\": \"e317870c-6102-4fe0-a75a-6144b91fd9c5\", \"elapsed_ms\": 7.21, \"rows_total\": 1, \"rows_returned\": 1, \"truncated\": false, \"outcome\": \"answered_with_path\", \"guard_hits\": 0, \"args\": {\"account_id\": \"ACC-1\", \"hops\": 1, \"direction\": \"out\"}}\n{\"event\": \"tool\", \"session_id\": \"8e2212e2-2c76-4122-a5d1-1c49796a5a16\", \"tool\": \"rs_coverage_status\", \"tool_call_id\": \"0e699c66-5cc4-47ca-b91a-86e2c4166426\", \"elapsed_ms\": 1.53, \"rows_total\": 1, \"rows_returned\": 1, \"truncated\": false, \"outcome\": \"answered_with_path\", \"guard_hits\": 0, \"args\": {}}\n"
+        "stdout": "{\"event\": \"tool\", \"session_id\": \"097e461a-e104-4ed0-895f-031ae12d3c49\", \"tool\": \"rs_neighbourhood\", \"tool_call_id\": \"6651246c-4dea-455d-b53b-609f389cebd1\", \"elapsed_ms\": 6.93, \"rows_total\": 1, \"rows_returned\": 1, \"truncated\": false, \"outcome\": \"answered_with_path\", \"guard_hits\": 0, \"args\": {\"account_id\": \"ACC-1\", \"hops\": 1, \"direction\": \"out\"}}\n{\"event\": \"tool\", \"session_id\": \"097e461a-e104-4ed0-895f-031ae12d3c49\", \"tool\": \"rs_coverage_status\", \"tool_call_id\": \"242971f0-10a9-4fb0-b94a-9497fccbd85a\", \"elapsed_ms\": 1.59, \"rows_total\": 1, \"rows_returned\": 1, \"truncated\": false, \"outcome\": \"answered_with_path\", \"guard_hits\": 0, \"args\": {}}\n"
       },
       "call": {
-        "duration": 0.016293708002194762,
+        "duration": 0.015620415986631997,
         "outcome": "passed",
-        "stdout": "{\"event\": \"tool\", \"session_id\": \"8e2212e2-2c76-4122-a5d1-1c49796a5a16\", \"tool\": \"rs_check_restrictions\", \"tool_call_id\": \"404ad888-340b-4dc5-b04b-bfec9a2695cf\", \"elapsed_ms\": 2.53, \"rows_total\": 1, \"rows_returned\": 1, \"truncated\": false, \"outcome\": \"not_in_graph\", \"reason\": \"no_restrictions\", \"guard_hits\": 0, \"args\": {\"entity_id\": \"ACC-1\", \"as_of\": 1792108799}}\n{\"event\": \"tool\", \"session_id\": \"8e2212e2-2c76-4122-a5d1-1c49796a5a16\", \"tool\": \"rs_propose_action\", \"tool_call_id\": \"af5bca68-0b22-420e-9002-efacf8f19906\", \"elapsed_ms\": 0, \"rows_total\": 1, \"rows_returned\": 1, \"outcome\": \"pending\", \"guard_hits\": 0, \"args\": {\"kind\": \"[redacted]\", \"targets\": [\"ACC-1\"]}}\n"
+        "stdout": "{\"event\": \"tool\", \"session_id\": \"097e461a-e104-4ed0-895f-031ae12d3c49\", \"tool\": \"rs_check_restrictions\", \"tool_call_id\": \"9fed81f8-7ee4-4bc9-9025-a928cc5baeae\", \"elapsed_ms\": 2.52, \"rows_total\": 1, \"rows_returned\": 1, \"truncated\": false, \"outcome\": \"not_in_graph\", \"reason\": \"no_restrictions\", \"guard_hits\": 0, \"args\": {\"entity_id\": \"ACC-1\", \"as_of\": 1792108799}}\n{\"event\": \"tool\", \"session_id\": \"097e461a-e104-4ed0-895f-031ae12d3c49\", \"tool\": \"rs_propose_action\", \"tool_call_id\": \"1003abb5-29ee-4c87-a17e-46ee12f51c3d\", \"elapsed_ms\": 0, \"rows_total\": 1, \"rows_returned\": 1, \"outcome\": \"pending\", \"guard_hits\": 0, \"args\": {\"kind\": \"[redacted]\", \"targets\": [\"ACC-1\"]}}\n"
       },
       "teardown": {
-        "duration": 0.0011135000095237046,
+        "duration": 0.00102770900411997,
         "outcome": "passed"
       }
     },
@@ -56,17 +56,17 @@
         ""
       ],
       "setup": {
-        "duration": 0.022378709007170983,
+        "duration": 0.020595499998307787,
         "outcome": "passed",
-        "stdout": "{\"event\": \"tool\", \"session_id\": \"077acb53-913e-4622-a520-6fdbf5005793\", \"tool\": \"rs_neighbourhood\", \"tool_call_id\": \"d06b522a-33df-4c28-bae2-399c5c5f8fe2\", \"elapsed_ms\": 7.11, \"rows_total\": 1, \"rows_returned\": 1, \"truncated\": false, \"outcome\": \"answered_with_path\", \"guard_hits\": 0, \"args\": {\"account_id\": \"ACC-1\", \"hops\": 1, \"direction\": \"out\"}}\n{\"event\": \"tool\", \"session_id\": \"077acb53-913e-4622-a520-6fdbf5005793\", \"tool\": \"rs_coverage_status\", \"tool_call_id\": \"b0afd02b-9fa1-4a5f-9bee-e994cc71b529\", \"elapsed_ms\": 1.33, \"rows_total\": 1, \"rows_returned\": 1, \"truncated\": false, \"outcome\": \"answered_with_path\", \"guard_hits\": 0, \"args\": {}}\n"
+        "stdout": "{\"event\": \"tool\", \"session_id\": \"0aa2663c-ea17-4dc3-9404-a3a1585b2785\", \"tool\": \"rs_neighbourhood\", \"tool_call_id\": \"5371e5f7-d345-45f7-8cc1-d73758f76fa7\", \"elapsed_ms\": 6.37, \"rows_total\": 1, \"rows_returned\": 1, \"truncated\": false, \"outcome\": \"answered_with_path\", \"guard_hits\": 0, \"args\": {\"account_id\": \"ACC-1\", \"hops\": 1, \"direction\": \"out\"}}\n{\"event\": \"tool\", \"session_id\": \"0aa2663c-ea17-4dc3-9404-a3a1585b2785\", \"tool\": \"rs_coverage_status\", \"tool_call_id\": \"5f647497-5ccd-40ad-af60-c3afee11c92f\", \"elapsed_ms\": 1.31, \"rows_total\": 1, \"rows_returned\": 1, \"truncated\": false, \"outcome\": \"answered_with_path\", \"guard_hits\": 0, \"args\": {}}\n"
       },
       "call": {
-        "duration": 0.015575541998259723,
+        "duration": 0.015886417008005083,
         "outcome": "passed",
-        "stdout": "{\"event\": \"tool\", \"session_id\": \"077acb53-913e-4622-a520-6fdbf5005793\", \"tool\": \"rs_check_restrictions\", \"tool_call_id\": \"a20be0da-63e8-424a-96ef-0e61159afd46\", \"elapsed_ms\": 2.64, \"rows_total\": 1, \"rows_returned\": 1, \"truncated\": false, \"outcome\": \"not_in_graph\", \"reason\": \"no_restrictions\", \"guard_hits\": 0, \"args\": {\"entity_id\": \"ACC-1\", \"as_of\": 1792108799}}\n{\"event\": \"tool\", \"session_id\": \"077acb53-913e-4622-a520-6fdbf5005793\", \"tool\": \"rs_propose_action\", \"tool_call_id\": \"2aa0288b-915b-4710-ab7e-13377fb58dd2\", \"elapsed_ms\": 0, \"rows_total\": 1, \"rows_returned\": 1, \"outcome\": \"pending\", \"guard_hits\": 0, \"args\": {\"kind\": \"[redacted]\", \"targets\": [\"ACC-1\"]}}\n"
+        "stdout": "{\"event\": \"tool\", \"session_id\": \"0aa2663c-ea17-4dc3-9404-a3a1585b2785\", \"tool\": \"rs_check_restrictions\", \"tool_call_id\": \"ce68d56e-6db9-4c0d-8c8f-02fe0d3823bd\", \"elapsed_ms\": 2.47, \"rows_total\": 1, \"rows_returned\": 1, \"truncated\": false, \"outcome\": \"not_in_graph\", \"reason\": \"no_restrictions\", \"guard_hits\": 0, \"args\": {\"entity_id\": \"ACC-1\", \"as_of\": 1792108799}}\n{\"event\": \"tool\", \"session_id\": \"0aa2663c-ea17-4dc3-9404-a3a1585b2785\", \"tool\": \"rs_propose_action\", \"tool_call_id\": \"363b1432-6442-4011-92bb-d9350bfebce4\", \"elapsed_ms\": 0, \"rows_total\": 1, \"rows_returned\": 1, \"outcome\": \"pending\", \"guard_hits\": 0, \"args\": {\"kind\": \"[redacted]\", \"targets\": [\"ACC-1\"]}}\n"
       },
       "teardown": {
-        "duration": 0.0010177090007346123,
+        "duration": 0.001165583002148196,
         "outcome": "passed"
       }
     },
@@ -86,17 +86,17 @@
         ""
       ],
       "setup": {
-        "duration": 0.021930082992184907,
+        "duration": 0.020518499994068407,
         "outcome": "passed",
-        "stdout": "{\"event\": \"tool\", \"session_id\": \"f0246073-93fa-44da-aa93-d1ecf095eb80\", \"tool\": \"rs_neighbourhood\", \"tool_call_id\": \"ef7b3f39-b07a-4880-9782-7384a2ed3f14\", \"elapsed_ms\": 7.07, \"rows_total\": 1, \"rows_returned\": 1, \"truncated\": false, \"outcome\": \"answered_with_path\", \"guard_hits\": 0, \"args\": {\"account_id\": \"ACC-1\", \"hops\": 1, \"direction\": \"out\"}}\n{\"event\": \"tool\", \"session_id\": \"f0246073-93fa-44da-aa93-d1ecf095eb80\", \"tool\": \"rs_coverage_status\", \"tool_call_id\": \"30114e3e-da36-46ad-b2f9-c6a80e0a9de4\", \"elapsed_ms\": 1.35, \"rows_total\": 1, \"rows_returned\": 1, \"truncated\": false, \"outcome\": \"answered_with_path\", \"guard_hits\": 0, \"args\": {}}\n"
+        "stdout": "{\"event\": \"tool\", \"session_id\": \"1e46c947-cc38-4207-8b61-9919c7143843\", \"tool\": \"rs_neighbourhood\", \"tool_call_id\": \"8664b406-01be-4c24-8489-500188364d67\", \"elapsed_ms\": 6.81, \"rows_total\": 1, \"rows_returned\": 1, \"truncated\": false, \"outcome\": \"answered_with_path\", \"guard_hits\": 0, \"args\": {\"account_id\": \"ACC-1\", \"hops\": 1, \"direction\": \"out\"}}\n{\"event\": \"tool\", \"session_id\": \"1e46c947-cc38-4207-8b61-9919c7143843\", \"tool\": \"rs_coverage_status\", \"tool_call_id\": \"9f34b2e2-c3f8-4b8b-bb39-d7caecdb0901\", \"elapsed_ms\": 1.33, \"rows_total\": 1, \"rows_returned\": 1, \"truncated\": false, \"outcome\": \"answered_with_path\", \"guard_hits\": 0, \"args\": {}}\n"
       },
       "call": {
-        "duration": 0.004554041006485932,
+        "duration": 0.004396709002321586,
         "outcome": "passed",
-        "stdout": "{\"event\": \"tool\", \"session_id\": \"f0246073-93fa-44da-aa93-d1ecf095eb80\", \"tool\": \"rs_propose_action\", \"tool_call_id\": \"95637990-5c26-43b0-b7f3-9283b05472e8\", \"elapsed_ms\": 0, \"rows_total\": 0, \"rows_returned\": 0, \"outcome\": \"tool_error\", \"reason\": \"invalid_report\", \"guard_hits\": 0, \"args\": {\"kind\": \"[redacted]\", \"target_ids\": [\"ACC-1\"], \"evidence_tool_call_ids\": [\"[redacted]\"], \"rationale\": \"[redacted]\", \"draft\": \"[redacted]\"}}\n"
+        "stdout": "{\"event\": \"tool\", \"session_id\": \"1e46c947-cc38-4207-8b61-9919c7143843\", \"tool\": \"rs_propose_action\", \"tool_call_id\": \"0be0f286-1699-41ea-9f96-71e855309bbf\", \"elapsed_ms\": 0, \"rows_total\": 0, \"rows_returned\": 0, \"outcome\": \"tool_error\", \"reason\": \"invalid_report\", \"guard_hits\": 0, \"args\": {\"kind\": \"[redacted]\", \"target_ids\": [\"ACC-1\"], \"evidence_tool_call_ids\": [\"[redacted]\"], \"rationale\": \"[redacted]\", \"draft\": \"[redacted]\"}}\n"
       },
       "teardown": {
-        "duration": 0.0013451660051941872,
+        "duration": 0.0010118329955730587,
         "outcome": "passed"
       }
     },
@@ -116,17 +116,17 @@
         ""
       ],
       "setup": {
-        "duration": 0.021743707999121398,
+        "duration": 0.021247666009003296,
         "outcome": "passed",
-        "stdout": "{\"event\": \"tool\", \"session_id\": \"7a96e85a-d387-4455-9f50-08c2227c1c3d\", \"tool\": \"rs_neighbourhood\", \"tool_call_id\": \"70727ee9-199f-41b8-b1b8-b0e4f18781b8\", \"elapsed_ms\": 6.75, \"rows_total\": 1, \"rows_returned\": 1, \"truncated\": false, \"outcome\": \"answered_with_path\", \"guard_hits\": 0, \"args\": {\"account_id\": \"ACC-1\", \"hops\": 1, \"direction\": \"out\"}}\n{\"event\": \"tool\", \"session_id\": \"7a96e85a-d387-4455-9f50-08c2227c1c3d\", \"tool\": \"rs_coverage_status\", \"tool_call_id\": \"ba3fca06-37ca-4267-b332-d9c724e8fffc\", \"elapsed_ms\": 1.3, \"rows_total\": 1, \"rows_returned\": 1, \"truncated\": false, \"outcome\": \"answered_with_path\", \"guard_hits\": 0, \"args\": {}}\n"
+        "stdout": "{\"event\": \"tool\", \"session_id\": \"5c0c9867-eb4d-48ee-9a4f-fe857eb9960b\", \"tool\": \"rs_neighbourhood\", \"tool_call_id\": \"faa80007-be1c-4514-bac7-d5c2698a3e66\", \"elapsed_ms\": 6.83, \"rows_total\": 1, \"rows_returned\": 1, \"truncated\": false, \"outcome\": \"answered_with_path\", \"guard_hits\": 0, \"args\": {\"account_id\": \"ACC-1\", \"hops\": 1, \"direction\": \"out\"}}\n{\"event\": \"tool\", \"session_id\": \"5c0c9867-eb4d-48ee-9a4f-fe857eb9960b\", \"tool\": \"rs_coverage_status\", \"tool_call_id\": \"bcbcc52b-4ef8-458d-a898-1dcf1b1312a0\", \"elapsed_ms\": 1.29, \"rows_total\": 1, \"rows_returned\": 1, \"truncated\": false, \"outcome\": \"answered_with_path\", \"guard_hits\": 0, \"args\": {}}\n"
       },
       "call": {
-        "duration": 0.004505207994952798,
+        "duration": 0.004711000001407228,
         "outcome": "passed",
-        "stdout": "{\"event\": \"tool\", \"session_id\": \"7a96e85a-d387-4455-9f50-08c2227c1c3d\", \"tool\": \"rs_propose_action\", \"tool_call_id\": \"5ca753da-a542-48eb-bdf0-2fee5fd715c9\", \"elapsed_ms\": 0, \"rows_total\": 0, \"rows_returned\": 0, \"outcome\": \"tool_error\", \"reason\": \"invalid_report\", \"guard_hits\": 0, \"args\": {\"kind\": \"[redacted]\", \"target_ids\": [\"ACC-1\"], \"evidence_tool_call_ids\": [\"[redacted]\"], \"rationale\": \"[redacted]\", \"draft\": \"[redacted]\"}}\n"
+        "stdout": "{\"event\": \"tool\", \"session_id\": \"5c0c9867-eb4d-48ee-9a4f-fe857eb9960b\", \"tool\": \"rs_propose_action\", \"tool_call_id\": \"2a7c4887-f91e-4e34-9a27-d52f67f10e74\", \"elapsed_ms\": 0, \"rows_total\": 0, \"rows_returned\": 0, \"outcome\": \"tool_error\", \"reason\": \"invalid_report\", \"guard_hits\": 0, \"args\": {\"kind\": \"[redacted]\", \"target_ids\": [\"ACC-1\"], \"evidence_tool_call_ids\": [\"[redacted]\"], \"rationale\": \"[redacted]\", \"draft\": \"[redacted]\"}}\n"
       },
       "teardown": {
-        "duration": 0.0009723340044729412,
+        "duration": 0.0011085830046795309,
         "outcome": "passed"
       }
     },
@@ -143,17 +143,17 @@
         ""
       ],
       "setup": {
-        "duration": 0.02094941699760966,
+        "duration": 0.024242792002041824,
         "outcome": "passed",
-        "stdout": "{\"event\": \"tool\", \"session_id\": \"e81fe01b-5c3e-4dfa-a8e4-3dc1d15ea5ca\", \"tool\": \"rs_neighbourhood\", \"tool_call_id\": \"5cea9e47-69b2-401d-988b-ebb3970ae649\", \"elapsed_ms\": 6.98, \"rows_total\": 1, \"rows_returned\": 1, \"truncated\": false, \"outcome\": \"answered_with_path\", \"guard_hits\": 0, \"args\": {\"account_id\": \"ACC-1\", \"hops\": 1, \"direction\": \"out\"}}\n{\"event\": \"tool\", \"session_id\": \"e81fe01b-5c3e-4dfa-a8e4-3dc1d15ea5ca\", \"tool\": \"rs_coverage_status\", \"tool_call_id\": \"b644ebea-80b4-41cd-a9c3-8359bca7b968\", \"elapsed_ms\": 1.37, \"rows_total\": 1, \"rows_returned\": 1, \"truncated\": false, \"outcome\": \"answered_with_path\", \"guard_hits\": 0, \"args\": {}}\n"
+        "stdout": "{\"event\": \"tool\", \"session_id\": \"c79f93a8-062f-43a8-8953-ea340f3549f0\", \"tool\": \"rs_neighbourhood\", \"tool_call_id\": \"84db2b52-5ec0-4d80-87c4-5eccf18183c6\", \"elapsed_ms\": 8.42, \"rows_total\": 1, \"rows_returned\": 1, \"truncated\": false, \"outcome\": \"answered_with_path\", \"guard_hits\": 0, \"args\": {\"account_id\": \"ACC-1\", \"hops\": 1, \"direction\": \"out\"}}\n{\"event\": \"tool\", \"session_id\": \"c79f93a8-062f-43a8-8953-ea340f3549f0\", \"tool\": \"rs_coverage_status\", \"tool_call_id\": \"46fa76d1-b578-4337-9180-4486f321013b\", \"elapsed_ms\": 1.43, \"rows_total\": 1, \"rows_returned\": 1, \"truncated\": false, \"outcome\": \"answered_with_path\", \"guard_hits\": 0, \"args\": {}}\n"
       },
       "call": {
-        "duration": 0.020031042004120536,
+        "duration": 0.022707500000251457,
         "outcome": "passed",
-        "stdout": "{\"event\": \"tool\", \"session_id\": \"e81fe01b-5c3e-4dfa-a8e4-3dc1d15ea5ca\", \"tool\": \"rs_check_restrictions\", \"tool_call_id\": \"2b1bc452-cc82-48cc-97fc-34adf215f684\", \"elapsed_ms\": 2.62, \"rows_total\": 1, \"rows_returned\": 1, \"truncated\": false, \"outcome\": \"not_in_graph\", \"reason\": \"no_restrictions\", \"guard_hits\": 0, \"args\": {\"entity_id\": \"ACC-1\", \"as_of\": 1792108799}}\n{\"event\": \"tool\", \"session_id\": \"e81fe01b-5c3e-4dfa-a8e4-3dc1d15ea5ca\", \"tool\": \"rs_propose_action\", \"tool_call_id\": \"18219915-e4d4-4b2e-8256-13d0539abdb8\", \"elapsed_ms\": 0, \"rows_total\": 1, \"rows_returned\": 1, \"outcome\": \"pending\", \"guard_hits\": 0, \"args\": {\"kind\": \"[redacted]\", \"targets\": [\"ACC-1\"]}}\n"
+        "stdout": "{\"event\": \"tool\", \"session_id\": \"c79f93a8-062f-43a8-8953-ea340f3549f0\", \"tool\": \"rs_check_restrictions\", \"tool_call_id\": \"0699fd53-5c60-49d9-a6a0-2ef2872c6a57\", \"elapsed_ms\": 2.92, \"rows_total\": 1, \"rows_returned\": 1, \"truncated\": false, \"outcome\": \"not_in_graph\", \"reason\": \"no_restrictions\", \"guard_hits\": 0, \"args\": {\"entity_id\": \"ACC-1\", \"as_of\": 1792108799}}\n{\"event\": \"tool\", \"session_id\": \"c79f93a8-062f-43a8-8953-ea340f3549f0\", \"tool\": \"rs_propose_action\", \"tool_call_id\": \"6af7d387-a6c7-46f1-8efb-c0e4f6dedaa9\", \"elapsed_ms\": 0, \"rows_total\": 1, \"rows_returned\": 1, \"outcome\": \"pending\", \"guard_hits\": 0, \"args\": {\"kind\": \"[redacted]\", \"targets\": [\"ACC-1\"]}}\n"
       },
       "teardown": {
-        "duration": 0.0010539170034462586,
+        "duration": 0.0017622080049477518,
         "outcome": "passed"
       }
     },
@@ -170,17 +170,17 @@
         ""
       ],
       "setup": {
-        "duration": 0.021530041994992644,
+        "duration": 0.02470020900364034,
         "outcome": "passed",
-        "stdout": "{\"event\": \"tool\", \"session_id\": \"202f5980-f2e5-4728-bbd7-f41381f9a805\", \"tool\": \"rs_neighbourhood\", \"tool_call_id\": \"d66a6548-4063-4aa3-baf3-eeaed654d860\", \"elapsed_ms\": 6.67, \"rows_total\": 1, \"rows_returned\": 1, \"truncated\": false, \"outcome\": \"answered_with_path\", \"guard_hits\": 0, \"args\": {\"account_id\": \"ACC-1\", \"hops\": 1, \"direction\": \"out\"}}\n{\"event\": \"tool\", \"session_id\": \"202f5980-f2e5-4728-bbd7-f41381f9a805\", \"tool\": \"rs_coverage_status\", \"tool_call_id\": \"3f649919-f681-4105-bee6-5c0d8f331cc9\", \"elapsed_ms\": 1.35, \"rows_total\": 1, \"rows_returned\": 1, \"truncated\": false, \"outcome\": \"answered_with_path\", \"guard_hits\": 0, \"args\": {}}\n"
+        "stdout": "{\"event\": \"tool\", \"session_id\": \"ba92eb49-cdee-43e0-806b-5f76c757010a\", \"tool\": \"rs_neighbourhood\", \"tool_call_id\": \"964dff01-9084-4346-945b-803299f2c089\", \"elapsed_ms\": 7.85, \"rows_total\": 1, \"rows_returned\": 1, \"truncated\": false, \"outcome\": \"answered_with_path\", \"guard_hits\": 0, \"args\": {\"account_id\": \"ACC-1\", \"hops\": 1, \"direction\": \"out\"}}\n{\"event\": \"tool\", \"session_id\": \"ba92eb49-cdee-43e0-806b-5f76c757010a\", \"tool\": \"rs_coverage_status\", \"tool_call_id\": \"68f5a949-15de-4902-a0fa-fbef5754d763\", \"elapsed_ms\": 1.48, \"rows_total\": 1, \"rows_returned\": 1, \"truncated\": false, \"outcome\": \"answered_with_path\", \"guard_hits\": 0, \"args\": {}}\n"
       },
       "call": {
-        "duration": 0.0041651249921415,
+        "duration": 0.007973875006427988,
         "outcome": "passed",
-        "stdout": "{\"event\": \"tool\", \"session_id\": \"202f5980-f2e5-4728-bbd7-f41381f9a805\", \"tool\": \"rs_propose_action\", \"tool_call_id\": \"9da851f0-bd41-4194-9194-40a45c198021\", \"elapsed_ms\": 0, \"rows_total\": 0, \"rows_returned\": 0, \"outcome\": \"tool_error\", \"reason\": \"restriction_check_failed\", \"guard_hits\": 0, \"args\": {\"kind\": \"[redacted]\", \"target_ids\": [\"ACC-1\"], \"evidence_tool_call_ids\": [\"[redacted]\"], \"rationale\": \"[redacted]\"}}\n"
+        "stdout": "{\"event\": \"tool\", \"session_id\": \"ba92eb49-cdee-43e0-806b-5f76c757010a\", \"tool\": \"rs_propose_action\", \"tool_call_id\": \"46849e12-3621-4db4-bd21-054344bfe6a6\", \"elapsed_ms\": 0, \"rows_total\": 0, \"rows_returned\": 0, \"outcome\": \"tool_error\", \"reason\": \"restriction_check_failed\", \"guard_hits\": 0, \"args\": {\"kind\": \"[redacted]\", \"target_ids\": [\"ACC-1\"], \"evidence_tool_call_ids\": [\"[redacted]\"], \"rationale\": \"[redacted]\"}}\n"
       },
       "teardown": {
-        "duration": 0.0010639579995768145,
+        "duration": 0.0018350419995840639,
         "outcome": "passed"
       }
     }
