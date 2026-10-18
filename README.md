@@ -18,7 +18,7 @@ The judge key maps on the server to `user=judge`, `role=analyst`, `tenant=bank_a
 
 Ask about `ACC-99999` for unknown_entity. Ask whether `ACC-4471` deposited cash for rail_not_ingested. Use the manual **Run a tool** form when the model is disabled, unavailable or out of budget.
 
-Video: [three-minute script](docs/demo-script.md). A recording link is added only after an actual screen recording exists.
+Video: [three-minute screen recording](docs/ringsight-demo.mp4) · [captions](docs/demo-captions.vtt) · [recording evidence](evals/results/demo-video.json).
 
 ## 2. Complete local setup
 
@@ -64,7 +64,7 @@ The original transfer-density estimate exceeded the memory budget. The measured 
 
 Cloud initial seed: **25,000 accounts, 39 MB, 21.169 seconds, engine 4.22.0**. Native Redis allocation and RSS can exceed the graph-size measure; [memory-ceiling evidence](evals/results/memory-ceiling.json) records the transient peaks.
 
-Current `rs-synthetic-v2` shipment remeasured locally: **25,000 accounts, 39 MB, 4.554 seconds, engine 4.22.1** ([raw evidence](evals/results/local-foundation-v2.json)).
+Current `rs-synthetic-v2` shipment remeasured locally: **25,000 accounts, 39 MB, 4.446 seconds, engine 4.22.1** ([raw evidence](evals/results/local-foundation-v2.json)).
 
 ## 4. Fixed queries and graph algorithms
 
@@ -153,17 +153,23 @@ No detection result is a claim about real banking data. Model evaluations mutate
 | Artifact | Recorded status |
 |---|---|
 
-| [actions-tests.json](evals/results/actions-tests.json) | 15 passed; 0 failed; 0 error; 0 skipped; exit 0 |
+| [actions-tests.json](evals/results/actions-tests.json) | 16 passed; 0 failed; 0 error; 0 skipped; exit 0 |
 
 | [audit-regressions.json](evals/results/audit-regressions.json) | 88 passed; 0 failed; 0 error; 0 skipped; exit 0 |
 
 | [audited-graph-contracts.json](evals/results/audited-graph-contracts.json) | 28 passed; 0 failed; 0 error; 0 skipped; exit 0 |
+
+| [browser-audit-preflight.json](evals/results/browser-audit-preflight.json) | passed |
 
 | [browser-preflight.json](evals/results/browser-preflight.json) | passed |
 
 | [catalogue-audit-tests.json](evals/results/catalogue-audit-tests.json) | 20 passed; 0 failed; 0 error; 0 skipped; exit 0 |
 
 | [catalogue-tests.json](evals/results/catalogue-tests.json) | 10 passed; 0 failed; 0 error; 0 skipped; exit 0 |
+
+| [ci-6.0.2.json](evals/results/ci-6.0.2.json) | 370 passed; 0 failed; 0 error; 0 skipped; exit 0 |
+
+| [ci-v4.22.1.json](evals/results/ci-v4.22.1.json) | 370 passed; 0 failed; 0 error; 0 skipped; exit 0 |
 
 | [cloud-foundation.json](evals/results/cloud-foundation.json) | passed |
 
@@ -173,7 +179,7 @@ No detection result is a claim about real banking data. Model evaluations mutate
 
 | [completion.json](evals/results/completion.json) | failed |
 
-| [compose-acceptance.json](evals/results/compose-acceptance.json) | failed |
+| [compose-acceptance.json](evals/results/compose-acceptance.json) | passed |
 
 | [compose-wrapper-tests.json](evals/results/compose-wrapper-tests.json) | 5 passed; 0 failed; 0 error; 0 skipped; exit 0 |
 
@@ -189,11 +195,13 @@ No detection result is a claim about real banking data. Model evaluations mutate
 
 | [demo-path-generator.json](evals/results/demo-path-generator.json) | passed |
 
+| [demo-video.json](evals/results/demo-video.json) | passed |
+
 | [engine-foundation.json](evals/results/engine-foundation.json) | measurement artifact |
 
 | [engine6-compatibility.json](evals/results/engine6-compatibility.json) | 22 passed; 0 failed; 0 error; 0 skipped; exit 0 |
 
-| [engine6-full-local.json](evals/results/engine6-full-local.json) | 356 passed; 0 failed; 0 error; 0 skipped; exit 0 |
+| [engine6-full-local.json](evals/results/engine6-full-local.json) | 370 passed; 0 failed; 0 error; 0 skipped; exit 0 |
 
 | [execution-logging-tests.json](evals/results/execution-logging-tests.json) | 13 passed; 0 failed; 0 error; 0 skipped; exit 0 |
 
@@ -211,6 +219,12 @@ No detection result is a claim about real banking data. Model evaluations mutate
 
 | [indexed-traversal-tests.json](evals/results/indexed-traversal-tests.json) | 15 passed; 0 failed; 0 error; 0 skipped; exit 0 |
 
+| [live-acceptance.json](evals/results/live-acceptance.json) | passed |
+
+| [live-five_concurrent.json](evals/results/live-five_concurrent.json) | passed |
+
+| [local-eval-budget-restored.json](evals/results/local-eval-budget-restored.json) | passed |
+
 | [local-foundation-v2.json](evals/results/local-foundation-v2.json) | passed |
 
 | [local-foundation.json](evals/results/local-foundation.json) | measurement artifact |
@@ -219,25 +233,33 @@ No detection result is a claim about real banking data. Model evaluations mutate
 
 | [local-validation.json](evals/results/local-validation.json) | passed |
 
-| [local-workflow.json](evals/results/local-workflow.json) | failed |
+| [local-workflow.json](evals/results/local-workflow.json) | passed |
 
 | [memory-ceiling.json](evals/results/memory-ceiling.json) | passed |
 
 | [memory-projection-tests.json](evals/results/memory-projection-tests.json) | 11 passed; 0 failed; 0 error; 0 skipped; exit 0 |
 
-| [model-evaluations.json](evals/results/model-evaluations.json) | running |
+| [model-abstention.json](evals/results/model-abstention.json) | passed |
 
-| [model-paths.json](evals/results/model-paths.json) | in progress: 2/120 |
+| [model-evaluations.json](evals/results/model-evaluations.json) | passed |
 
-| [model-paths.previous-1792218290789650000.json](evals/results/model-paths.previous-1792218290789650000.json) | stopped: InvalidOperation |
+| [model-injections.json](evals/results/model-injections.json) | passed |
 
-| [model-paths.previous-1792219678485686000.json](evals/results/model-paths.previous-1792219678485686000.json) | in progress: 7/120 |
+| [model-paths.json](evals/results/model-paths.json) | passed |
 
-| [model-paths.previous-1792249324173658000.json](evals/results/model-paths.previous-1792249324173658000.json) | in progress: 12/120 |
+| [model-paths.previous-1792218290789650000.json](evals/results/model-paths.previous-1792218290789650000.json) | Historical interrupted trial; stopped: InvalidOperation |
+
+| [model-paths.previous-1792219678485686000.json](evals/results/model-paths.previous-1792219678485686000.json) | Historical interrupted trial; in progress: 7/120 |
+
+| [model-paths.previous-1792249324173658000.json](evals/results/model-paths.previous-1792249324173658000.json) | Historical interrupted trial; in progress: 12/120 |
+
+| [model-paths.previous-1792251612457092000.json](evals/results/model-paths.previous-1792251612457092000.json) | Historical interrupted trial; in progress: 83/120 |
 
 | [narrative.json](evals/results/narrative.json) | 3 passed; 0 failed; 0 error; 0 skipped; exit 0 |
 
 | [offline-tests.json](evals/results/offline-tests.json) | 173 passed; 0 failed; 0 error; 0 skipped; exit 0 |
+
+| [operational-probes.json](evals/results/operational-probes.json) | passed |
 
 | [operations.json](evals/results/operations.json) | measurement artifact |
 
@@ -245,7 +267,7 @@ No detection result is a claim about real banking data. Model evaluations mutate
 
 | [ops-tooling-tests.json](evals/results/ops-tooling-tests.json) | 11 passed; 0 failed; 0 error; 0 skipped; exit 0 |
 
-| [pytest.json](evals/results/pytest.json) | 356 passed; 0 failed; 0 error; 0 skipped; exit 0 |
+| [pytest.json](evals/results/pytest.json) | 370 passed; 0 failed; 0 error; 0 skipped; exit 0 |
 
 | [recovery-tests.json](evals/results/recovery-tests.json) | 4 passed; 0 failed; 0 error; 0 skipped; exit 0 |
 
@@ -271,6 +293,8 @@ No detection result is a claim about real banking data. Model evaluations mutate
 
 | [secrets-scan.json](evals/results/secrets-scan.json) | passed |
 
+| [seeded-path-facts.json](evals/results/seeded-path-facts.json) | 16 passed; 0 failed; 0 error; 0 skipped; exit 0 |
+
 | [sizing.json](evals/results/sizing.json) | measurement artifact |
 
 | [snapshot-contract.json](evals/results/snapshot-contract.json) | 15 passed; 0 failed; 0 error; 0 skipped; exit 0 |
@@ -283,11 +307,24 @@ No detection result is a claim about real banking data. Model evaluations mutate
 
 | [ui-browser.json](evals/results/ui-browser.json) | passed |
 
-| [ui-real-local.json](evals/results/ui-real-local.json) | failed |
+| [ui-real-local.json](evals/results/ui-real-local.json) | passed |
 
 | [ui-unit-tests.json](evals/results/ui-unit-tests.json) | 6 UI unit tests passed |
 
 | [ui-unit.json](evals/results/ui-unit.json) | 6 UI unit tests passed |
+
+
+**Path correctness: 120/120 cases passed**, $3.842460 actual model cost. Every cited path was checked against authoritative graph facts; first selected tool matched the expected pattern in 100% of cases. The verifier replaced 120 generated answers with evidence-built text.
+
+
+**Exposed injection attacks: 40/40 cases passed**, $2.519709 actual model cost. 40 attacks reached the model's guarded evidence; 0 unapproved effects and 0 instruction stores.
+
+
+**Deleted-ring abstentions: 20/20 cases passed**, $0.256669 actual model cost. 100% valid abstention; 0% false path answers.
+
+Local model timing execution: up to 3 concurrent path investigations; injection/abstention remain serial.
+
+The owner explicitly approved $12 total for the local `eval_model` evaluation on UTC 20261017, preserving prior liability. The temporary approval applied only on that day; the public bank and Console limits were unchanged.
 
 
 Observed end-to-end latency (nearest-rank percentiles; small samples are labelled by N):
@@ -298,6 +335,18 @@ Observed end-to-end latency (nearest-rank percentiles; small samples are labelle
 | Local runtime smoke | 1 | 1 | 18.207 | 18.207 |
 
 | Local runtime smoke | 4 | 1 | 41.872 | 41.872 |
+
+| Local model protocol | 1 | 40 | 15.340 | 18.653 |
+
+| Local model protocol | 2 | 40 | 15.631 | 20.957 |
+
+| Local model protocol | 4 | 40 | 15.179 | 19.321 |
+
+| Live acceptance | 1 | 1 | 36.434 | 36.434 |
+
+| Live acceptance | 4 | 1 | 36.045 | 36.045 |
+
+| Live concurrent load | 4 | 3 | 38.190 | 39.371 |
 
 
 Pattern results:
@@ -326,9 +375,10 @@ About 15 seconds is a demo target, not a guarantee. Local measurements are not l
 ```sh
 # Both runners select LOCAL Redis themselves; no shell export is needed.
 .venv/bin/python ops/verify_local.py
-.venv/bin/python ops/verify_evals.py
+# Archive the checked-in trial before a new paid evaluation.
+.venv/bin/python ops/verify_evals.py --new-trial
 ```
-The evaluation runner measures 35 rings on the 25k local graph, then runs 40 questions × depths 1/2/4, 20 memo attacks twice, and 20 deleted-ring abstentions. It saves progress after every case. Resume retains completed failures and the graph spending ledger; an explicit new trial archives its predecessor. No Cloud graph is used for model evaluation fixtures.
+The evaluation runner measures 35 rings on the 25k local graph, then runs 40 questions × depths 1/2/4, 20 memo attacks twice, and 20 deleted-ring abstentions. It saves progress after every case. Omit `--new-trial` only to resume an interrupted trial with the same source, budget and concurrency signature. Resume retains completed failures and the graph spending ledger; an explicit new trial archives its predecessor. No Cloud graph is used for model evaluation fixtures.
 
 ## 11. Deployment and operations
 
@@ -338,7 +388,7 @@ Auto-reseed triggers only when Account count is zero or Meta.seed_complete is mi
 
 Planned rebuilds bridge Tenant settings and all Spend days through a private atomic checkpoint scoped to the database fingerprint and bank. Caps can only decrease and pending reservations are conservatively charged. The bridge is removed after success and is never a second runtime store. Sudden Cloud loss without a bridge still has the Console limit as the outer wall.
 
-Actions cron pings `/health` every twelve minutes with curl -f; a daily question checks the agent. Cloudflare’s independent Worker cron and UptimeRobot email monitor follow setup.md items 6–7. The owner confirmed UptimeRobot, Cloudflare cron and GitHub keepalive setup ([configuration evidence](evals/results/operations.json)). Current-source successful scheduled health/daily-question execution has not been recorded. Configuration confirmation does not establish a successful job or email delivery. Keep one Render free service to stay within the shared free-hour pool.
+Actions cron pings `/health` every twelve minutes with curl -f; a daily question checks the agent. Cloudflare’s independent Worker cron and UptimeRobot email monitor follow setup.md items 6–7. The owner confirmed UptimeRobot, Cloudflare cron and GitHub keepalive setup ([configuration evidence](evals/results/operations.json)). Current-source CI, health and daily-question jobs succeeded: [keepalive.yml](https://github.com/Baharul0111/RingSight/actions/runs/39083716142), [daily-probe.yml](https://github.com/Baharul0111/RingSight/actions/runs/39087562823), [ci.yml](https://github.com/Baharul0111/RingSight/actions/runs/39046049271). This does not independently verify email delivery. Keep one Render free service to stay within the shared free-hour pool.
 
 **If the demo is down:** wait for cold start; inspect `/health`; use the manual tool form during a model outage/cap; check Cloud connectivity; force a demo-only reseed if failed; rotate compromised demo keys; use local Compose for judging. [Full runbook](docs/runbook.md) includes stuck reseeds, persisted ledgers, backups, and Fly.io fallback. Cloud Free has no persistence/backups/TLS; synthetic data only. Recovery point is the last checked-in findings snapshot and synthetic seed, not every judge decision.
 
@@ -521,10 +571,12 @@ RETURN a.id AS account,n_cp,n_tx,total,first_ts,last_ts,legs[0..$limit] AS legs,
 
 ```cypher
 MATCH (src:Account)-[t1:TX]->(c:Account {id:$id})-[t2:TX]->(dst:Account)
-WHERE t1.ts>$as_of-$win AND t1.ts<=$as_of AND t2.ts<=$as_of AND t1.ts<t2.ts AND t2.ts-t1.ts<=$win AND src<>dst AND src<>c AND dst<>c
+WHERE CASE WHEN t1.ts>$as_of-$win AND t1.ts<=$as_of AND t2.ts<=$as_of AND t1.ts<t2.ts AND t2.ts-t1.ts<=$win AND src<>dst AND src<>c AND dst<>c
+ AND endNode(t1).id=$id AND startNode(t2).id=$id
+ AND startNode(t1).id=src.id AND endNode(t2).id=dst.id THEN true ELSE false END
 WITH c,collect(DISTINCT src.id) AS sources,count(DISTINCT src) AS n_src,collect(DISTINCT dst.id) AS dests,count(DISTINCT dst) AS n_dst,
- collect(DISTINCT {id:t1.id,source:src.id,target:c.id,amount:t1.amount,ts:t1.ts,rail:t1.rail,memo:t1.memo,type:'TX'}) AS in_legs,
- collect(DISTINCT {id:t2.id,source:c.id,target:dst.id,amount:t2.amount,ts:t2.ts,rail:t2.rail,memo:t2.memo,type:'TX'}) AS out_legs
+ collect(DISTINCT {id:t1.id,source:startNode(t1).id,target:endNode(t1).id,amount:t1.amount,ts:t1.ts,rail:t1.rail,memo:t1.memo,type:'TX'}) AS in_legs,
+ collect(DISTINCT {id:t2.id,source:startNode(t2).id,target:endNode(t2).id,amount:t2.amount,ts:t2.ts,rail:t2.rail,memo:t2.memo,type:'TX'}) AS out_legs
 WHERE n_src >= $min AND n_dst >= $min
 RETURN c.id AS collector,n_src,sources,n_dst,dests,
  reduce(total=0,leg IN in_legs | total+leg.amount) AS gathered,
@@ -691,9 +743,11 @@ RETURN cid,computed_at,n,(n >= $min AND n <= $max) AS in_bounds
 
 ```cypher
 MATCH (s:Account {id:$id})-[t1:TX]->(m:Account)-[t2:TX]->(g:Account)
-WHERE t1.ts>$as_of-$win AND t1.ts<=$as_of AND t2.ts<=$as_of AND t1.ts<t2.ts AND t2.ts-t1.ts<=$win AND g<>s AND m<>g AND m<>s
+WHERE CASE WHEN t1.ts>$as_of-$win AND t1.ts<=$as_of AND t2.ts<=$as_of AND t1.ts<t2.ts AND t2.ts-t1.ts<=$win AND g<>s AND m<>g AND m<>s
+ AND startNode(t1).id=$id AND endNode(t1).id=startNode(t2).id
+ AND endNode(t1).id=m.id AND endNode(t2).id=g.id THEN true ELSE false END
 WITH s,g,collect(DISTINCT m.id) AS mules,count(DISTINCT m) AS n_mules,
- collect({out_tx:t1.id,in_tx:t2.id,mule:m.id,out_amt:t1.amount,in_amt:t2.amount,out_ts:t1.ts,in_ts:t2.ts,source:s.id,gatherer:g.id,out_rail:t1.rail,in_rail:t2.rail}) AS legs,
+ collect({out_tx:t1.id,in_tx:t2.id,mule:endNode(t1).id,out_amt:t1.amount,in_amt:t2.amount,out_ts:t1.ts,in_ts:t2.ts,source:startNode(t1).id,gatherer:endNode(t2).id,out_rail:t1.rail,in_rail:t2.rail}) AS legs,
  collect(DISTINCT {id:t1.id,amount:t1.amount}) AS out_transfers,
  collect(DISTINCT {id:t2.id,amount:t2.amount}) AS in_transfers
 WHERE n_mules >= $min

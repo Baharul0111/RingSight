@@ -2,7 +2,16 @@
   "suite": "local-evaluations",
   "local_only": true,
   "synthetic_demo_only": true,
-  "status": "running",
-  "started_at": 1792219671,
-  "structural_passed": true
+  "status": "passed",
+  "started_at": 1792251585,
+  "explicit_local_eval_budget": {
+    "tenant": "eval_model",
+    "cap_usd": 12.0,
+    "approved_day": 20261017
+  },
+  "path_concurrency": 3,
+  "path_latency_execution": "up to 3 concurrent path investigations; injection/abstention remain serial",
+  "structural_passed": true,
+  "model_suites_passed": true,
+  "finished_at": 1792253567
 }

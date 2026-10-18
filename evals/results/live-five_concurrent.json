@@ -1,7 +1,7 @@
 {
   "suite": "live-acceptance",
   "target": "https://ringsight.onrender.com",
-  "started_at": 1792249970,
+  "started_at": 1792287475,
   "status": "passed",
   "synthetic": true,
   "mode": "five_concurrent",
@@ -22,7 +22,7 @@
       "status": "passed",
       "detail": {
         "accounts": 25000,
-        "graph_mb": 37,
+        "graph_mb": 39,
         "engine_version": "4.22.0",
         "reseed_s": 66.1437290199101
       }
@@ -61,7 +61,7 @@
     "observed_rss_within_render_memory": {
       "status": "passed",
       "detail": {
-        "peak_observed_rss_mb": 217.34
+        "peak_observed_rss_mb": 203.19
       }
     }
   },
@@ -72,7 +72,7 @@
   ],
   "health": {
     "status": "ready",
-    "catalogue_hash": "7365b2e1b981c5c9523e8ddf6eee68570302d44d1a73e570a708824c694327c6",
+    "catalogue_hash": "646cf5a0e31e477ffaf3e0484b45efdbc293376ca1007939f9c50e8886c10de3",
     "reseeding": false,
     "eta_s": 0,
     "reseed_failed": false,
@@ -81,14 +81,14 @@
     "seed_complete": true,
     "seed_version": "rs-synthetic-v2",
     "reseed_s": 66.1437290199101,
-    "pending": 2,
-    "spend_usd": 0.2633546,
+    "pending": 9,
+    "spend_usd": 0.2764906,
     "daily_usd_cap": 8.0,
     "engine_version": "4.22.0",
-    "graph_mb": 37,
+    "graph_mb": 39,
     "graph_mb_warning": false,
     "db": "ok",
-    "rss_mb": 208.22,
+    "rss_mb": 195.16,
     "model": "ok",
     "coverage": {
       "rails": [
@@ -7712,36 +7712,871 @@
   "load": {
     "requests": [
       {
-        "index": 0,
+        "status_code": 429,
+        "reason": "busy",
+        "elapsed_s": 1.326
+      },
+      {
+        "status_code": 429,
+        "reason": "busy",
+        "elapsed_s": 1.938
+      },
+      {
+        "index": 2,
         "status_code": 200,
-        "session_id": "b28e3a64-37db-479a-ad43-a53d1fb7d747",
+        "session_id": "bcfa6453-c747-4898-8cda-aae4abadcfe2",
         "shape": "answered_with_path",
         "reason": null,
         "text": "The graph returned this evidence path: ACC-4471 → DEV-f31c → ACC-10477 → DEV-r00-1 → ACC-1. Review the transfer evidence before deciding. These connections do not establish laundering; a named analyst must assess them.",
-        "as_of": 1792249976,
+        "as_of": 1792287482,
         "tokens": {
-          "input": 20702,
-          "output": 1400,
-          "cache_read": 5795
+          "input": 17423,
+          "output": 1237,
+          "cache_read": 4195
         },
-        "cost_usd": 0.044393,
-        "model_requests": 4,
+        "cost_usd": 0.039246,
+        "model_requests": 3,
         "tool_calls": 8,
         "judge": {
           "verdict": "weak",
           "unsupported_claims": [
-            "The thesis only asserts a graph path, and the evidence supports only that: a shared-device chain (ACC-4471 to ACC-10477 to ACC-1) with no review of the transfers along it.",
-            "ACC-4471 shows roughly 55M outbound to ACC-3 and 11M to ACC-10477 against many ~11M inbound transfers, but the thesis never ties the shared-device path to this flow pattern."
+            "The thesis itself states the path does not establish laundering, so it asserts nothing the evidence can confirm as wrongdoing.",
+            "Shared-device links (DEV-f31c, DEV-r00-1) show account connectivity only, not coordinated or illicit activity."
           ],
           "missing_queries": [
-            "Transfer history between ACC-10477, ACC-1 and ACC-4471 along the shared-device path, including timing and amounts relative to the device link",
-            "Onward flow from ACC-3 and ACC-10477 to determine where the ~66M outbound ended up",
-            "Device and person attributes (DEV-f31c, DEV-r00-1, PER-2291) such as usage dates and whether they are common or shared infrastructure"
+            "Transfer timeline and amount reconciliation for the ACC-4471 inflows (TX-1..7, roughly 11M each, over about 6 minutes) versus the outflows (TX-8 11M to ACC-10477, TX-12 55M to ACC-3), including whether the 55M is a pass-through",
+            "Device sharing details for DEV-f31c and DEV-r00-1: first and last seen, the number of accounts on each device, and whether it is a shared household or business device",
+            "Onward flow from ACC-3 and ACC-10477 and any link to ACC-55820 via PER-2291, to see whether funds exit the cluster"
           ]
         },
         "verifier": {
           "status": "replaced",
           "unsupported": [
+            "11",
+            "55",
+            "11",
+            "76",
+            "Seven"
+          ],
+          "normalizations": [],
+          "replacement_verified": "pass"
+        },
+        "stop_detail": null,
+        "memory": null,
+        "elapsed_s": 38.19,
+        "path_nodes": [
+          {
+            "id": "ACC-4471",
+            "label": "Account"
+          },
+          {
+            "id": "DEV-r00-0",
+            "label": "Device"
+          },
+          {
+            "id": "DEV-f31c",
+            "label": "Device"
+          },
+          {
+            "id": "ALERT-1",
+            "label": "Alert"
+          },
+          {
+            "id": "ACC-3",
+            "label": "Account"
+          },
+          {
+            "id": "ACC-10477",
+            "label": "Account"
+          },
+          {
+            "id": "ACC-1",
+            "label": "Account"
+          },
+          {
+            "id": "ACC-2",
+            "label": "Account"
+          },
+          {
+            "id": "ACC-4",
+            "label": "Account"
+          },
+          {
+            "id": "ACC-5",
+            "label": "Account"
+          },
+          {
+            "id": "ACC-6",
+            "label": "Account"
+          },
+          {
+            "id": "DEV-r00-1",
+            "label": "Device"
+          },
+          {
+            "id": "ACC-55820",
+            "label": "Account"
+          },
+          {
+            "id": "PER-2291",
+            "label": "Person"
+          }
+        ],
+        "path_edges": [
+          {
+            "id": "TX-12",
+            "source": "ACC-4471",
+            "target": "ACC-3",
+            "amount": 55000000,
+            "ts": 1792100699,
+            "rail": "UPI",
+            "memo": null,
+            "type": "TX"
+          },
+          {
+            "id": "TX-8",
+            "source": "ACC-4471",
+            "target": "ACC-10477",
+            "amount": 11000000,
+            "ts": 1792100099,
+            "rail": "UPI",
+            "memo": null,
+            "type": "TX"
+          },
+          {
+            "source": "ACC-4471",
+            "target": "ACC-1",
+            "type": "LINK"
+          },
+          {
+            "id": "TX-2",
+            "amount": 11010000,
+            "ts": 1792098059,
+            "rail": "UPI",
+            "memo": null,
+            "source": "ACC-1",
+            "target": "ACC-4471",
+            "type": "TX"
+          },
+          {
+            "source": "ACC-4471",
+            "target": "ACC-10477",
+            "type": "LINK"
+          },
+          {
+            "id": "TX-1",
+            "amount": 11000000,
+            "ts": 1792097999,
+            "rail": "UPI",
+            "memo": null,
+            "source": "ACC-10477",
+            "target": "ACC-4471",
+            "type": "TX"
+          },
+          {
+            "source": "ACC-4471",
+            "target": "ACC-2",
+            "type": "LINK"
+          },
+          {
+            "id": "TX-3",
+            "amount": 11020000,
+            "ts": 1792098119,
+            "rail": "UPI",
+            "memo": null,
+            "source": "ACC-2",
+            "target": "ACC-4471",
+            "type": "TX"
+          },
+          {
+            "source": "ACC-4471",
+            "target": "ACC-3",
+            "type": "LINK"
+          },
+          {
+            "id": "TX-4",
+            "amount": 11030000,
+            "ts": 1792098179,
+            "rail": "UPI",
+            "memo": null,
+            "source": "ACC-3",
+            "target": "ACC-4471",
+            "type": "TX"
+          },
+          {
+            "source": "ACC-4471",
+            "target": "ACC-4",
+            "type": "LINK"
+          },
+          {
+            "id": "TX-5",
+            "amount": 11040000,
+            "ts": 1792098239,
+            "rail": "UPI",
+            "memo": null,
+            "source": "ACC-4",
+            "target": "ACC-4471",
+            "type": "TX"
+          },
+          {
+            "source": "ACC-4471",
+            "target": "ACC-5",
+            "type": "LINK"
+          },
+          {
+            "id": "TX-6",
+            "amount": 11050000,
+            "ts": 1792098299,
+            "rail": "UPI",
+            "memo": null,
+            "source": "ACC-5",
+            "target": "ACC-4471",
+            "type": "TX"
+          },
+          {
+            "source": "ACC-4471",
+            "target": "ACC-6",
+            "type": "LINK"
+          },
+          {
+            "id": "TX-7",
+            "amount": 11060000,
+            "ts": 1792098359,
+            "rail": "UPI",
+            "memo": null,
+            "source": "ACC-6",
+            "target": "ACC-4471",
+            "type": "TX"
+          },
+          {
+            "source": "ACC-4471",
+            "target": "DEV-f31c",
+            "type": "USES_DEVICE"
+          },
+          {
+            "source": "ACC-10477",
+            "target": "DEV-f31c",
+            "type": "USES_DEVICE"
+          },
+          {
+            "source": "ACC-10477",
+            "target": "DEV-r00-1",
+            "type": "USES_DEVICE"
+          },
+          {
+            "source": "ACC-1",
+            "target": "DEV-r00-1",
+            "type": "USES_DEVICE"
+          },
+          {
+            "source": "PER-2291",
+            "target": "ACC-10477",
+            "type": "OWNS"
+          },
+          {
+            "source": "PER-2291",
+            "target": "ACC-55820",
+            "type": "OWNS"
+          }
+        ],
+        "trace": [
+          {
+            "tool": "rs_resolve_entity",
+            "args": {
+              "query": "<redacted>"
+            },
+            "tool_call_id": "a188269f-7d39-490f-a1cd-c644a62b2408",
+            "outcome": "resolved",
+            "reason": null,
+            "rows_total": 1,
+            "elapsed_ms": 454.55,
+            "guard_hits": 0
+          },
+          {
+            "tool": "rs_recall_findings",
+            "args": {
+              "entity_ids": [
+                "ACC-4471"
+              ]
+            },
+            "tool_call_id": "02646dca-fd5d-42c3-ab7d-344cb43c1a1e",
+            "outcome": "answered_from_memory",
+            "reason": null,
+            "rows_total": 8,
+            "elapsed_ms": 1952.21,
+            "guard_hits": 0
+          },
+          {
+            "tool": "rs_coverage_status",
+            "args": {
+              "rail": null
+            },
+            "tool_call_id": "c9153765-32ff-4db6-b74a-9170762e7001",
+            "outcome": "answered_with_path",
+            "reason": null,
+            "rows_total": 1,
+            "elapsed_ms": 1039.88,
+            "guard_hits": 0
+          },
+          {
+            "tool": "rs_account_profile",
+            "args": {
+              "as_of": 1792287482,
+              "limit": 50,
+              "cursor": null,
+              "account_id": "ACC-4471",
+              "window_days": 90
+            },
+            "tool_call_id": "c5babec2-7ded-494d-b825-973ca137adb9",
+            "outcome": "answered_with_path",
+            "reason": null,
+            "rows_total": 1,
+            "elapsed_ms": 2310.12,
+            "guard_hits": 0
+          },
+          {
+            "tool": "rs_neighbourhood",
+            "args": {
+              "as_of": 1792287482,
+              "limit": 50,
+              "cursor": null,
+              "account_id": "ACC-4471",
+              "window_days": 90,
+              "hops": 4,
+              "direction": "both",
+              "min_amount": 0
+            },
+            "tool_call_id": "73cb770f-63dd-41f0-810c-0cfb0e013dc7",
+            "outcome": "answered_with_path",
+            "reason": null,
+            "rows_total": 7,
+            "elapsed_ms": 3268.33,
+            "guard_hits": 0
+          },
+          {
+            "tool": "rs_shared_identifiers",
+            "args": {
+              "as_of": 1792287482,
+              "limit": 50,
+              "cursor": null,
+              "account_id": "ACC-4471",
+              "hops": 2,
+              "kinds": [
+                "device",
+                "phone",
+                "address",
+                "owner"
+              ],
+              "max_identifier_degree": 50
+            },
+            "tool_call_id": "47cbf3c1-b0d5-4882-8f9f-efeed6807726",
+            "outcome": "answered_with_path",
+            "reason": null,
+            "rows_total": 3,
+            "elapsed_ms": 3430.45,
+            "guard_hits": 0
+          },
+          {
+            "tool": "rs_record_finding",
+            "args": {
+              "entity_ids": [
+                "ACC-4471"
+              ]
+            },
+            "tool_call_id": "43fb00ee-6baf-44d6-bd98-a170796b6f49",
+            "outcome": "recorded",
+            "reason": null,
+            "rows_total": 1,
+            "elapsed_ms": 0,
+            "guard_hits": 0
+          },
+          {
+            "tool": "rs_check_restrictions",
+            "args": {
+              "entity_id": "ACC-4471",
+              "as_of": 1792287482
+            },
+            "tool_call_id": "7e4ac858-c26e-4895-87e5-6830e16e8a92",
+            "outcome": "not_in_graph",
+            "reason": "no_restrictions",
+            "rows_total": 1,
+            "elapsed_ms": 713.74,
+            "guard_hits": 0
+          },
+          {
+            "tool": "rs_propose_action",
+            "args": {
+              "kind": "escalate",
+              "targets": [
+                "ACC-4471"
+              ]
+            },
+            "tool_call_id": "bb35044d-f336-4a33-a1ce-e39e8da63fb2",
+            "outcome": "pending",
+            "reason": null,
+            "rows_total": 1,
+            "elapsed_ms": 0,
+            "guard_hits": 0
+          }
+        ],
+        "pending": [
+          {
+            "pending_id": "68fa9225-0f1c-4f13-818a-b7632cd2263f",
+            "kind": "escalate",
+            "status": "pending",
+            "targets": [
+              "ACC-4471"
+            ],
+            "session_id": "bcfa6453-c747-4898-8cda-aae4abadcfe2"
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "status_code": 200,
+        "session_id": "bcf8e51a-6353-49d9-b8c9-43f243b8c173",
+        "shape": "answered_with_path",
+        "reason": null,
+        "text": "The graph returned this evidence path: ACC-4471 → DEV-f31c → ACC-10477 → DEV-r00-1 → ACC-1. Review the transfer evidence before deciding. These connections do not establish laundering; a named analyst must assess them.",
+        "as_of": 1792287481,
+        "tokens": {
+          "input": 17436,
+          "output": 1352,
+          "cache_read": 4195
+        },
+        "cost_usd": 0.040421,
+        "model_requests": 3,
+        "tool_calls": 8,
+        "judge": {
+          "verdict": "weak",
+          "unsupported_claims": [
+            "The thesis names a path through shared devices, but it takes no position on what that path means; shared identifiers alone do not show laundering and the evidence contains no transfer on the full 5-node path.",
+            "The 11,000,000-scale inbound amounts from ACC-1 to ACC-6 are not actually reviewed in the thesis; the only direct ACC-4471 to ACC-10477 and ACC-3 flows are not tied to the shared-device path."
+          ],
+          "missing_queries": [
+            "Query the transfers between ACC-10477 and ACC-1 and the DEV-r00-1 device history to see whether money actually moved along the shared-identifier path.",
+            "Check whether ACC-4471 inbound sources (ACC-1 through ACC-6) share devices, persons, or timing, and what ACC-3 did with the 55,000,000 it received.",
+            "Retrieve account and device ownership context for DEV-f31c and PER-2291 to rule out benign sharing such as a household or shared business device."
+          ]
+        },
+        "verifier": {
+          "status": "replaced",
+          "unsupported": [
+            "11",
+            "86",
+            "55",
+            "11",
+            "20261011",
+            "20261013",
+            "Fresh",
+            "Seven"
+          ],
+          "normalizations": [],
+          "replacement_verified": "pass"
+        },
+        "stop_detail": null,
+        "memory": null,
+        "elapsed_s": 37.079,
+        "path_nodes": [
+          {
+            "id": "ACC-4471",
+            "label": "Account"
+          },
+          {
+            "id": "DEV-r00-0",
+            "label": "Device"
+          },
+          {
+            "id": "DEV-f31c",
+            "label": "Device"
+          },
+          {
+            "id": "ALERT-1",
+            "label": "Alert"
+          },
+          {
+            "id": "ACC-3",
+            "label": "Account"
+          },
+          {
+            "id": "ACC-10477",
+            "label": "Account"
+          },
+          {
+            "id": "ACC-1",
+            "label": "Account"
+          },
+          {
+            "id": "DEV-r00-1",
+            "label": "Device"
+          },
+          {
+            "id": "ACC-55820",
+            "label": "Account"
+          },
+          {
+            "id": "PER-2291",
+            "label": "Person"
+          },
+          {
+            "id": "ACC-2",
+            "label": "Account"
+          },
+          {
+            "id": "ACC-4",
+            "label": "Account"
+          },
+          {
+            "id": "ACC-5",
+            "label": "Account"
+          },
+          {
+            "id": "ACC-6",
+            "label": "Account"
+          }
+        ],
+        "path_edges": [
+          {
+            "id": "TX-12",
+            "source": "ACC-4471",
+            "target": "ACC-3",
+            "amount": 55000000,
+            "ts": 1792100699,
+            "rail": "UPI",
+            "memo": null,
+            "type": "TX"
+          },
+          {
+            "id": "TX-8",
+            "source": "ACC-4471",
+            "target": "ACC-10477",
+            "amount": 11000000,
+            "ts": 1792100099,
+            "rail": "UPI",
+            "memo": null,
+            "type": "TX"
+          },
+          {
+            "source": "ACC-4471",
+            "target": "DEV-f31c",
+            "type": "USES_DEVICE"
+          },
+          {
+            "source": "ACC-10477",
+            "target": "DEV-f31c",
+            "type": "USES_DEVICE"
+          },
+          {
+            "source": "ACC-10477",
+            "target": "DEV-r00-1",
+            "type": "USES_DEVICE"
+          },
+          {
+            "source": "ACC-1",
+            "target": "DEV-r00-1",
+            "type": "USES_DEVICE"
+          },
+          {
+            "source": "PER-2291",
+            "target": "ACC-10477",
+            "type": "OWNS"
+          },
+          {
+            "source": "PER-2291",
+            "target": "ACC-55820",
+            "type": "OWNS"
+          },
+          {
+            "source": "ACC-4471",
+            "target": "ACC-1",
+            "type": "LINK"
+          },
+          {
+            "id": "TX-2",
+            "amount": 11010000,
+            "ts": 1792098059,
+            "rail": "UPI",
+            "memo": null,
+            "source": "ACC-1",
+            "target": "ACC-4471",
+            "type": "TX"
+          },
+          {
+            "source": "ACC-4471",
+            "target": "ACC-10477",
+            "type": "LINK"
+          },
+          {
+            "id": "TX-1",
+            "amount": 11000000,
+            "ts": 1792097999,
+            "rail": "UPI",
+            "memo": null,
+            "source": "ACC-10477",
+            "target": "ACC-4471",
+            "type": "TX"
+          },
+          {
+            "source": "ACC-4471",
+            "target": "ACC-2",
+            "type": "LINK"
+          },
+          {
+            "id": "TX-3",
+            "amount": 11020000,
+            "ts": 1792098119,
+            "rail": "UPI",
+            "memo": null,
+            "source": "ACC-2",
+            "target": "ACC-4471",
+            "type": "TX"
+          },
+          {
+            "source": "ACC-4471",
+            "target": "ACC-3",
+            "type": "LINK"
+          },
+          {
+            "id": "TX-4",
+            "amount": 11030000,
+            "ts": 1792098179,
+            "rail": "UPI",
+            "memo": null,
+            "source": "ACC-3",
+            "target": "ACC-4471",
+            "type": "TX"
+          },
+          {
+            "source": "ACC-4471",
+            "target": "ACC-4",
+            "type": "LINK"
+          },
+          {
+            "id": "TX-5",
+            "amount": 11040000,
+            "ts": 1792098239,
+            "rail": "UPI",
+            "memo": null,
+            "source": "ACC-4",
+            "target": "ACC-4471",
+            "type": "TX"
+          },
+          {
+            "source": "ACC-4471",
+            "target": "ACC-5",
+            "type": "LINK"
+          },
+          {
+            "id": "TX-6",
+            "amount": 11050000,
+            "ts": 1792098299,
+            "rail": "UPI",
+            "memo": null,
+            "source": "ACC-5",
+            "target": "ACC-4471",
+            "type": "TX"
+          },
+          {
+            "source": "ACC-4471",
+            "target": "ACC-6",
+            "type": "LINK"
+          },
+          {
+            "id": "TX-7",
+            "amount": 11060000,
+            "ts": 1792098359,
+            "rail": "UPI",
+            "memo": null,
+            "source": "ACC-6",
+            "target": "ACC-4471",
+            "type": "TX"
+          }
+        ],
+        "trace": [
+          {
+            "tool": "rs_resolve_entity",
+            "args": {
+              "query": "<redacted>"
+            },
+            "tool_call_id": "c5ea1f45-9dc1-46f7-a24d-4c0407ecc173",
+            "outcome": "resolved",
+            "reason": null,
+            "rows_total": 1,
+            "elapsed_ms": 458.02,
+            "guard_hits": 0
+          },
+          {
+            "tool": "rs_recall_findings",
+            "args": {
+              "entity_ids": [
+                "ACC-4471"
+              ]
+            },
+            "tool_call_id": "30a9cded-2263-485d-845f-428bcb73b1a2",
+            "outcome": "answered_from_memory",
+            "reason": null,
+            "rows_total": 8,
+            "elapsed_ms": 1900.26,
+            "guard_hits": 0
+          },
+          {
+            "tool": "rs_coverage_status",
+            "args": {
+              "rail": null
+            },
+            "tool_call_id": "114dcc9d-eec9-4246-a782-90f35b1e6460",
+            "outcome": "answered_with_path",
+            "reason": null,
+            "rows_total": 1,
+            "elapsed_ms": 546.63,
+            "guard_hits": 0
+          },
+          {
+            "tool": "rs_account_profile",
+            "args": {
+              "as_of": 1792287481,
+              "limit": 50,
+              "cursor": null,
+              "account_id": "ACC-4471",
+              "window_days": 90
+            },
+            "tool_call_id": "9336c4ac-0654-4473-9567-396b69d8d11a",
+            "outcome": "answered_with_path",
+            "reason": null,
+            "rows_total": 1,
+            "elapsed_ms": 1679.12,
+            "guard_hits": 0
+          },
+          {
+            "tool": "rs_shared_identifiers",
+            "args": {
+              "as_of": 1792287481,
+              "limit": 50,
+              "cursor": null,
+              "account_id": "ACC-4471",
+              "hops": 2,
+              "kinds": [
+                "device",
+                "phone",
+                "address",
+                "owner"
+              ],
+              "max_identifier_degree": 50
+            },
+            "tool_call_id": "cbaf23dd-4eff-4828-9d7c-177006549f4f",
+            "outcome": "answered_with_path",
+            "reason": null,
+            "rows_total": 3,
+            "elapsed_ms": 3222.01,
+            "guard_hits": 0
+          },
+          {
+            "tool": "rs_neighbourhood",
+            "args": {
+              "as_of": 1792287481,
+              "limit": 50,
+              "cursor": null,
+              "account_id": "ACC-4471",
+              "window_days": 90,
+              "hops": 4,
+              "direction": "both",
+              "min_amount": 0
+            },
+            "tool_call_id": "8d071cb8-5ae6-4d49-ba20-14ce7d1053f5",
+            "outcome": "answered_with_path",
+            "reason": null,
+            "rows_total": 7,
+            "elapsed_ms": 3420.42,
+            "guard_hits": 0
+          },
+          {
+            "tool": "rs_record_finding",
+            "args": {
+              "entity_ids": [
+                "ACC-4471"
+              ]
+            },
+            "tool_call_id": "78539e48-7624-41ec-8724-3326acb6a834",
+            "outcome": "recorded",
+            "reason": null,
+            "rows_total": 1,
+            "elapsed_ms": 0,
+            "guard_hits": 0
+          },
+          {
+            "tool": "rs_check_restrictions",
+            "args": {
+              "entity_id": "ACC-4471",
+              "as_of": 1792287481
+            },
+            "tool_call_id": "fed1f369-df4a-4eab-9d67-1eb137e1fbac",
+            "outcome": "not_in_graph",
+            "reason": "no_restrictions",
+            "rows_total": 1,
+            "elapsed_ms": 712.36,
+            "guard_hits": 0
+          },
+          {
+            "tool": "rs_propose_action",
+            "args": {
+              "kind": "escalate",
+              "targets": [
+                "ACC-4471"
+              ]
+            },
+            "tool_call_id": "f451744e-9dd1-470e-9734-e8a7aaf7bde6",
+            "outcome": "pending",
+            "reason": null,
+            "rows_total": 1,
+            "elapsed_ms": 0,
+            "guard_hits": 0
+          }
+        ],
+        "pending": [
+          {
+            "pending_id": "2155ae23-cd69-4b71-9e51-ce629f631dd2",
+            "kind": "escalate",
+            "status": "pending",
+            "targets": [
+              "ACC-4471"
+            ],
+            "session_id": "bcf8e51a-6353-49d9-b8c9-43f243b8c173"
+          }
+        ]
+      },
+      {
+        "index": 4,
+        "status_code": 200,
+        "session_id": "cc4d98f5-e2c4-4740-b992-98dcdea1316f",
+        "shape": "answered_with_path",
+        "reason": null,
+        "text": "The graph returned this evidence path: ACC-4471 → DEV-f31c → ACC-10477 → DEV-r00-1 → ACC-1. Review the transfer evidence before deciding. These connections do not establish laundering; a named analyst must assess them.",
+        "as_of": 1792287482,
+        "tokens": {
+          "input": 17432,
+          "output": 1440,
+          "cache_read": 4195
+        },
+        "cost_usd": 0.041293,
+        "model_requests": 3,
+        "tool_calls": 8,
+        "judge": {
+          "verdict": "weak",
+          "unsupported_claims": [
+            "The thesis only reports that a graph path exists; it makes no claim of laundering, and the evidence cannot show laundering or its absence.",
+            "The path ACC-4471 → DEV-f31c → ACC-10477 → DEV-r00-1 → ACC-1 is confirmed by shared-identifier rows, but shared devices show linkage, not intent or control.",
+            "The ACC-4471 → ACC-3 TX-12 transfer (55,000,000) is not supported as part of the path or explained by the evidence."
+          ],
+          "missing_queries": [
+            "Check whether ACC-4471, ACC-10477 and ACC-1 are controlled by a single beneficial owner, using device history, KYC and person-identifier links (including PER-2291 and ACC-55820).",
+            "Establish the timing and fund-flow reconciliation of inbound (about 11M each from ACC-1 to ACC-6) against the outbound 55M to ACC-3 and the 11M round trip with ACC-10477, including ACC-3's own downstream activity.",
+            "Check the device usage dates and counts for DEV-f31c and DEV-r00-1 to distinguish shared household or office devices from coordinated mule-style use."
+          ]
+        },
+        "verifier": {
+          "status": "replaced",
+          "unsupported": [
+            "10477",
             "11",
             "55",
             "11",
@@ -7752,824 +8587,7 @@
         },
         "stop_detail": null,
         "memory": null,
-        "elapsed_s": 43.214,
-        "path_nodes": [
-          {
-            "id": "ACC-4471",
-            "label": "Account"
-          },
-          {
-            "id": "DEV-r00-0",
-            "label": "Device"
-          },
-          {
-            "id": "DEV-f31c",
-            "label": "Device"
-          },
-          {
-            "id": "ALERT-1",
-            "label": "Alert"
-          },
-          {
-            "id": "ACC-3",
-            "label": "Account"
-          },
-          {
-            "id": "ACC-10477",
-            "label": "Account"
-          },
-          {
-            "id": "ACC-1",
-            "label": "Account"
-          },
-          {
-            "id": "DEV-r00-1",
-            "label": "Device"
-          },
-          {
-            "id": "ACC-55820",
-            "label": "Account"
-          },
-          {
-            "id": "PER-2291",
-            "label": "Person"
-          },
-          {
-            "id": "ACC-2",
-            "label": "Account"
-          },
-          {
-            "id": "ACC-4",
-            "label": "Account"
-          },
-          {
-            "id": "ACC-5",
-            "label": "Account"
-          },
-          {
-            "id": "ACC-6",
-            "label": "Account"
-          }
-        ],
-        "path_edges": [
-          {
-            "id": "TX-12",
-            "source": "ACC-4471",
-            "target": "ACC-3",
-            "amount": 55000000,
-            "ts": 1792100699,
-            "rail": "UPI",
-            "memo": null,
-            "type": "TX"
-          },
-          {
-            "id": "TX-8",
-            "source": "ACC-4471",
-            "target": "ACC-10477",
-            "amount": 11000000,
-            "ts": 1792100099,
-            "rail": "UPI",
-            "memo": null,
-            "type": "TX"
-          },
-          {
-            "source": "ACC-4471",
-            "target": "DEV-f31c",
-            "type": "USES_DEVICE"
-          },
-          {
-            "source": "ACC-10477",
-            "target": "DEV-f31c",
-            "type": "USES_DEVICE"
-          },
-          {
-            "source": "ACC-10477",
-            "target": "DEV-r00-1",
-            "type": "USES_DEVICE"
-          },
-          {
-            "source": "ACC-1",
-            "target": "DEV-r00-1",
-            "type": "USES_DEVICE"
-          },
-          {
-            "source": "PER-2291",
-            "target": "ACC-10477",
-            "type": "OWNS"
-          },
-          {
-            "source": "PER-2291",
-            "target": "ACC-55820",
-            "type": "OWNS"
-          },
-          {
-            "source": "ACC-4471",
-            "target": "ACC-1",
-            "type": "LINK"
-          },
-          {
-            "id": "TX-2",
-            "amount": 11010000,
-            "ts": 1792098059,
-            "rail": "UPI",
-            "memo": null,
-            "source": "ACC-1",
-            "target": "ACC-4471",
-            "type": "TX"
-          },
-          {
-            "source": "ACC-4471",
-            "target": "ACC-10477",
-            "type": "LINK"
-          },
-          {
-            "id": "TX-1",
-            "amount": 11000000,
-            "ts": 1792097999,
-            "rail": "UPI",
-            "memo": null,
-            "source": "ACC-10477",
-            "target": "ACC-4471",
-            "type": "TX"
-          },
-          {
-            "source": "ACC-4471",
-            "target": "ACC-2",
-            "type": "LINK"
-          },
-          {
-            "id": "TX-3",
-            "amount": 11020000,
-            "ts": 1792098119,
-            "rail": "UPI",
-            "memo": null,
-            "source": "ACC-2",
-            "target": "ACC-4471",
-            "type": "TX"
-          },
-          {
-            "source": "ACC-4471",
-            "target": "ACC-3",
-            "type": "LINK"
-          },
-          {
-            "id": "TX-4",
-            "amount": 11030000,
-            "ts": 1792098179,
-            "rail": "UPI",
-            "memo": null,
-            "source": "ACC-3",
-            "target": "ACC-4471",
-            "type": "TX"
-          },
-          {
-            "source": "ACC-4471",
-            "target": "ACC-4",
-            "type": "LINK"
-          },
-          {
-            "id": "TX-5",
-            "amount": 11040000,
-            "ts": 1792098239,
-            "rail": "UPI",
-            "memo": null,
-            "source": "ACC-4",
-            "target": "ACC-4471",
-            "type": "TX"
-          },
-          {
-            "source": "ACC-4471",
-            "target": "ACC-5",
-            "type": "LINK"
-          },
-          {
-            "id": "TX-6",
-            "amount": 11050000,
-            "ts": 1792098299,
-            "rail": "UPI",
-            "memo": null,
-            "source": "ACC-5",
-            "target": "ACC-4471",
-            "type": "TX"
-          },
-          {
-            "source": "ACC-4471",
-            "target": "ACC-6",
-            "type": "LINK"
-          },
-          {
-            "id": "TX-7",
-            "amount": 11060000,
-            "ts": 1792098359,
-            "rail": "UPI",
-            "memo": null,
-            "source": "ACC-6",
-            "target": "ACC-4471",
-            "type": "TX"
-          }
-        ],
-        "trace": [
-          {
-            "tool": "rs_resolve_entity",
-            "args": {
-              "query": "<redacted>"
-            },
-            "tool_call_id": "454f011f-5b71-4822-907e-d65f10c843c9",
-            "outcome": "resolved",
-            "reason": null,
-            "rows_total": 1,
-            "elapsed_ms": 457.59,
-            "guard_hits": 0
-          },
-          {
-            "tool": "rs_recall_findings",
-            "args": {
-              "entity_ids": [
-                "ACC-4471"
-              ]
-            },
-            "tool_call_id": "86543bb9-93cb-45d4-90c4-da312354bf1e",
-            "outcome": "answered_from_memory",
-            "reason": null,
-            "rows_total": 4,
-            "elapsed_ms": 1822.74,
-            "guard_hits": 0
-          },
-          {
-            "tool": "rs_coverage_status",
-            "args": {
-              "rail": null
-            },
-            "tool_call_id": "41808e09-7f6e-4033-be85-0a74af1fa5a9",
-            "outcome": "answered_with_path",
-            "reason": null,
-            "rows_total": 1,
-            "elapsed_ms": 1233.85,
-            "guard_hits": 0
-          },
-          {
-            "tool": "rs_account_profile",
-            "args": {
-              "as_of": 1792249976,
-              "limit": 50,
-              "cursor": null,
-              "account_id": "ACC-4471",
-              "window_days": 90
-            },
-            "tool_call_id": "df4410f8-bd3b-4a04-b877-47f4dc1cc1db",
-            "outcome": "answered_with_path",
-            "reason": null,
-            "rows_total": 1,
-            "elapsed_ms": 2096.86,
-            "guard_hits": 0
-          },
-          {
-            "tool": "rs_shared_identifiers",
-            "args": {
-              "as_of": 1792249976,
-              "limit": 50,
-              "cursor": null,
-              "account_id": "ACC-4471",
-              "hops": 2,
-              "kinds": [
-                "device",
-                "phone",
-                "address",
-                "owner"
-              ],
-              "max_identifier_degree": 50
-            },
-            "tool_call_id": "b3960de2-5683-4415-92b1-b08179b8c719",
-            "outcome": "answered_with_path",
-            "reason": null,
-            "rows_total": 3,
-            "elapsed_ms": 3363.66,
-            "guard_hits": 0
-          },
-          {
-            "tool": "rs_neighbourhood",
-            "args": {
-              "as_of": 1792249976,
-              "limit": 50,
-              "cursor": null,
-              "account_id": "ACC-4471",
-              "window_days": 90,
-              "hops": 4,
-              "direction": "both",
-              "min_amount": 0
-            },
-            "tool_call_id": "c7626f8b-e560-4f4f-8436-c6ff65ea06bb",
-            "outcome": "answered_with_path",
-            "reason": null,
-            "rows_total": 7,
-            "elapsed_ms": 4110.85,
-            "guard_hits": 0
-          },
-          {
-            "tool": "rs_record_finding",
-            "args": {
-              "entity_ids": [
-                "ACC-4471"
-              ]
-            },
-            "tool_call_id": "c4fe7de5-41c9-4d17-ae2e-13c18f04d9eb",
-            "outcome": "recorded",
-            "reason": null,
-            "rows_total": 1,
-            "elapsed_ms": 0,
-            "guard_hits": 0
-          },
-          {
-            "tool": "rs_check_restrictions",
-            "args": {
-              "entity_id": "ACC-4471",
-              "as_of": 1792249976
-            },
-            "tool_call_id": "1c60abdb-90f8-4061-b477-f40458267094",
-            "outcome": "not_in_graph",
-            "reason": "no_restrictions",
-            "rows_total": 1,
-            "elapsed_ms": 686.51,
-            "guard_hits": 0
-          },
-          {
-            "tool": "rs_propose_action",
-            "args": {
-              "kind": "escalate",
-              "targets": [
-                "ACC-4471"
-              ]
-            },
-            "tool_call_id": "8d0ea258-906b-46a7-8f90-4f8d34355a26",
-            "outcome": "pending",
-            "reason": null,
-            "rows_total": 1,
-            "elapsed_ms": 0,
-            "guard_hits": 0
-          }
-        ],
-        "pending": [
-          {
-            "pending_id": "d2a14d3b-248f-45ef-9a8d-0b872ef7751b",
-            "kind": "escalate",
-            "status": "pending",
-            "targets": [
-              "ACC-4471"
-            ],
-            "session_id": "b28e3a64-37db-479a-ad43-a53d1fb7d747"
-          }
-        ]
-      },
-      {
-        "index": 1,
-        "status_code": 200,
-        "session_id": "1c59fd71-31e6-4065-a38d-77577044cb12",
-        "shape": "answered_with_path",
-        "reason": null,
-        "text": "The graph returned this evidence path: ACC-4471 → DEV-f31c → ACC-10477 → DEV-r00-1 → ACC-1. Review the transfer evidence before deciding. These connections do not establish laundering; a named analyst must assess them.",
-        "as_of": 1792249976,
-        "tokens": {
-          "input": 13783,
-          "output": 1308,
-          "cache_read": 4195
-        },
-        "cost_usd": 0.032676,
-        "model_requests": 3,
-        "tool_calls": 8,
-        "judge": {
-          "verdict": "weak",
-          "unsupported_claims": [
-            "The thesis only restates graph connectivity: the path ACC-4471 → DEV-f31c → ACC-10477 → DEV-r00-1 → ACC-1 reflects shared devices, not demonstrated fund movement or illicit intent.",
-            "The two-hop shared-device links (ACC-1, ACC-55820) carry no transfer evidence tying those accounts to ACC-4471's flows through the device path."
-          ],
-          "missing_queries": [
-            "Retrieve full transfer history and timing between ACC-10477 and ACC-1 (and ACC-55820) to test whether the device links coincide with fund movement",
-            "Check device-sharing context (DEV-f31c, DEV-r00-1): how many accounts share them, to rule out benign/common devices",
-            "Check incoming source accounts ACC-1 to ACC-6 and the 55M outflow to ACC-3 for onward flows and counterparties"
-          ]
-        },
-        "verifier": {
-          "status": "replaced",
-          "unsupported": [
-            "11",
-            "55",
-            "11"
-          ],
-          "normalizations": [],
-          "replacement_verified": "pass"
-        },
-        "stop_detail": null,
-        "memory": null,
-        "elapsed_s": 37.517,
-        "path_nodes": [
-          {
-            "id": "ACC-4471",
-            "label": "Account"
-          },
-          {
-            "id": "DEV-r00-0",
-            "label": "Device"
-          },
-          {
-            "id": "DEV-f31c",
-            "label": "Device"
-          },
-          {
-            "id": "ALERT-1",
-            "label": "Alert"
-          },
-          {
-            "id": "ACC-3",
-            "label": "Account"
-          },
-          {
-            "id": "ACC-10477",
-            "label": "Account"
-          },
-          {
-            "id": "ACC-1",
-            "label": "Account"
-          },
-          {
-            "id": "DEV-r00-1",
-            "label": "Device"
-          },
-          {
-            "id": "ACC-55820",
-            "label": "Account"
-          },
-          {
-            "id": "PER-2291",
-            "label": "Person"
-          },
-          {
-            "id": "ACC-2",
-            "label": "Account"
-          },
-          {
-            "id": "ACC-4",
-            "label": "Account"
-          },
-          {
-            "id": "ACC-5",
-            "label": "Account"
-          },
-          {
-            "id": "ACC-6",
-            "label": "Account"
-          }
-        ],
-        "path_edges": [
-          {
-            "id": "TX-12",
-            "source": "ACC-4471",
-            "target": "ACC-3",
-            "amount": 55000000,
-            "ts": 1792100699,
-            "rail": "UPI",
-            "memo": null,
-            "type": "TX"
-          },
-          {
-            "id": "TX-8",
-            "source": "ACC-4471",
-            "target": "ACC-10477",
-            "amount": 11000000,
-            "ts": 1792100099,
-            "rail": "UPI",
-            "memo": null,
-            "type": "TX"
-          },
-          {
-            "source": "ACC-4471",
-            "target": "DEV-f31c",
-            "type": "USES_DEVICE"
-          },
-          {
-            "source": "ACC-10477",
-            "target": "DEV-f31c",
-            "type": "USES_DEVICE"
-          },
-          {
-            "source": "ACC-10477",
-            "target": "DEV-r00-1",
-            "type": "USES_DEVICE"
-          },
-          {
-            "source": "ACC-1",
-            "target": "DEV-r00-1",
-            "type": "USES_DEVICE"
-          },
-          {
-            "source": "PER-2291",
-            "target": "ACC-10477",
-            "type": "OWNS"
-          },
-          {
-            "source": "PER-2291",
-            "target": "ACC-55820",
-            "type": "OWNS"
-          },
-          {
-            "source": "ACC-4471",
-            "target": "ACC-1",
-            "type": "LINK"
-          },
-          {
-            "id": "TX-2",
-            "amount": 11010000,
-            "ts": 1792098059,
-            "rail": "UPI",
-            "memo": null,
-            "source": "ACC-1",
-            "target": "ACC-4471",
-            "type": "TX"
-          },
-          {
-            "source": "ACC-4471",
-            "target": "ACC-10477",
-            "type": "LINK"
-          },
-          {
-            "id": "TX-1",
-            "amount": 11000000,
-            "ts": 1792097999,
-            "rail": "UPI",
-            "memo": null,
-            "source": "ACC-10477",
-            "target": "ACC-4471",
-            "type": "TX"
-          },
-          {
-            "source": "ACC-4471",
-            "target": "ACC-2",
-            "type": "LINK"
-          },
-          {
-            "id": "TX-3",
-            "amount": 11020000,
-            "ts": 1792098119,
-            "rail": "UPI",
-            "memo": null,
-            "source": "ACC-2",
-            "target": "ACC-4471",
-            "type": "TX"
-          },
-          {
-            "source": "ACC-4471",
-            "target": "ACC-3",
-            "type": "LINK"
-          },
-          {
-            "id": "TX-4",
-            "amount": 11030000,
-            "ts": 1792098179,
-            "rail": "UPI",
-            "memo": null,
-            "source": "ACC-3",
-            "target": "ACC-4471",
-            "type": "TX"
-          },
-          {
-            "source": "ACC-4471",
-            "target": "ACC-4",
-            "type": "LINK"
-          },
-          {
-            "id": "TX-5",
-            "amount": 11040000,
-            "ts": 1792098239,
-            "rail": "UPI",
-            "memo": null,
-            "source": "ACC-4",
-            "target": "ACC-4471",
-            "type": "TX"
-          },
-          {
-            "source": "ACC-4471",
-            "target": "ACC-5",
-            "type": "LINK"
-          },
-          {
-            "id": "TX-6",
-            "amount": 11050000,
-            "ts": 1792098299,
-            "rail": "UPI",
-            "memo": null,
-            "source": "ACC-5",
-            "target": "ACC-4471",
-            "type": "TX"
-          },
-          {
-            "source": "ACC-4471",
-            "target": "ACC-6",
-            "type": "LINK"
-          },
-          {
-            "id": "TX-7",
-            "amount": 11060000,
-            "ts": 1792098359,
-            "rail": "UPI",
-            "memo": null,
-            "source": "ACC-6",
-            "target": "ACC-4471",
-            "type": "TX"
-          }
-        ],
-        "trace": [
-          {
-            "tool": "rs_resolve_entity",
-            "args": {
-              "query": "<redacted>"
-            },
-            "tool_call_id": "f1f1324f-da3e-4166-a794-35b9cfa1b298",
-            "outcome": "resolved",
-            "reason": null,
-            "rows_total": 1,
-            "elapsed_ms": 453.58,
-            "guard_hits": 0
-          },
-          {
-            "tool": "rs_recall_findings",
-            "args": {
-              "entity_ids": [
-                "ACC-4471"
-              ]
-            },
-            "tool_call_id": "c92c6969-fe08-4bb9-8ba4-7d7c0b435d56",
-            "outcome": "answered_from_memory",
-            "reason": null,
-            "rows_total": 4,
-            "elapsed_ms": 1835.86,
-            "guard_hits": 0
-          },
-          {
-            "tool": "rs_coverage_status",
-            "args": {
-              "rail": null
-            },
-            "tool_call_id": "2eb78aa3-b653-4ddb-8920-e5f1121bdf3b",
-            "outcome": "answered_with_path",
-            "reason": null,
-            "rows_total": 1,
-            "elapsed_ms": 968.05,
-            "guard_hits": 0
-          },
-          {
-            "tool": "rs_account_profile",
-            "args": {
-              "as_of": 1792249976,
-              "limit": 50,
-              "cursor": null,
-              "account_id": "ACC-4471",
-              "window_days": 90
-            },
-            "tool_call_id": "fcd248b5-242a-44f5-9dcc-134a92dede9a",
-            "outcome": "answered_with_path",
-            "reason": null,
-            "rows_total": 1,
-            "elapsed_ms": 2072.81,
-            "guard_hits": 0
-          },
-          {
-            "tool": "rs_shared_identifiers",
-            "args": {
-              "as_of": 1792249976,
-              "limit": 50,
-              "cursor": null,
-              "account_id": "ACC-4471",
-              "hops": 2,
-              "kinds": [
-                "device",
-                "phone",
-                "address",
-                "owner"
-              ],
-              "max_identifier_degree": 50
-            },
-            "tool_call_id": "ad22ccfc-f6e1-4d9b-8a07-2b8325393aad",
-            "outcome": "answered_with_path",
-            "reason": null,
-            "rows_total": 3,
-            "elapsed_ms": 3061.56,
-            "guard_hits": 0
-          },
-          {
-            "tool": "rs_neighbourhood",
-            "args": {
-              "as_of": 1792249976,
-              "limit": 50,
-              "cursor": null,
-              "account_id": "ACC-4471",
-              "window_days": 90,
-              "hops": 4,
-              "direction": "both",
-              "min_amount": 0
-            },
-            "tool_call_id": "1bbb1a6d-c249-4ecf-a255-fb45a518c424",
-            "outcome": "answered_with_path",
-            "reason": null,
-            "rows_total": 7,
-            "elapsed_ms": 3292.3,
-            "guard_hits": 0
-          },
-          {
-            "tool": "rs_record_finding",
-            "args": {
-              "entity_ids": [
-                "ACC-4471"
-              ]
-            },
-            "tool_call_id": "d2f37b69-9eca-4070-899c-8251c9353b0f",
-            "outcome": "recorded",
-            "reason": null,
-            "rows_total": 1,
-            "elapsed_ms": 0,
-            "guard_hits": 0
-          },
-          {
-            "tool": "rs_check_restrictions",
-            "args": {
-              "entity_id": "ACC-4471",
-              "as_of": 1792249976
-            },
-            "tool_call_id": "1ed75b57-766d-4b38-b78c-9616b036f27d",
-            "outcome": "not_in_graph",
-            "reason": "no_restrictions",
-            "rows_total": 1,
-            "elapsed_ms": 686.93,
-            "guard_hits": 0
-          },
-          {
-            "tool": "rs_propose_action",
-            "args": {
-              "kind": "escalate",
-              "targets": [
-                "ACC-4471"
-              ]
-            },
-            "tool_call_id": "8cc238e7-cf62-47a1-8f4c-a3f03bae4f15",
-            "outcome": "pending",
-            "reason": null,
-            "rows_total": 1,
-            "elapsed_ms": 0,
-            "guard_hits": 0
-          }
-        ],
-        "pending": [
-          {
-            "pending_id": "46934577-e2c3-4e33-8272-f72853b88280",
-            "kind": "escalate",
-            "status": "pending",
-            "targets": [
-              "ACC-4471"
-            ],
-            "session_id": "1c59fd71-31e6-4065-a38d-77577044cb12"
-          }
-        ]
-      },
-      {
-        "index": 2,
-        "status_code": 200,
-        "session_id": "128ec92e-3175-4c52-b854-0b48c73bca16",
-        "shape": "answered_with_path",
-        "reason": null,
-        "text": "The graph returned this evidence path: ACC-4471 → DEV-f31c → ACC-10477 → DEV-r00-1 → ACC-1. Review the transfer evidence before deciding. These connections do not establish laundering; a named analyst must assess them.",
-        "as_of": 1792249976,
-        "tokens": {
-          "input": 20673,
-          "output": 1407,
-          "cache_read": 5795
-        },
-        "cost_usd": 0.044405,
-        "model_requests": 4,
-        "tool_calls": 8,
-        "judge": {
-          "verdict": "weak",
-          "unsupported_claims": [
-            "The thesis asserts a path via shared devices but does not interpret the transfer evidence; the evidence shows structure but not intent",
-            "Cited path ends at ACC-1 via device links, but the visible rows show only that ACC-1 sent funds to ACC-4471 (TX-2), so the device-linked chain does not by itself establish coordinated activity"
-          ],
-          "missing_queries": [
-            "Time-ordered transfer flow across the shared-device cluster (ACC-4471, ACC-10477, ACC-1) to test for layering or round-tripping",
-            "Inflow/outflow reconciliation for ACC-4471 (in_sum 86.89M vs out_sum 66M, with ~77M of inflow from ACC-1 to ACC-6 and TX-12 out of 55M to ACC-3)",
-            "Shared-device usage timestamps and counts for DEV-f31c and DEV-r00-1 to distinguish common-device coincidence from control"
-          ]
-        },
-        "verifier": {
-          "status": "replaced",
-          "unsupported": [
-            "11",
-            "55",
-            "11",
-            "Fresh"
-          ],
-          "normalizations": [],
-          "replacement_verified": "pass"
-        },
-        "stop_detail": null,
-        "memory": null,
-        "elapsed_s": 40.702,
+        "elapsed_s": 39.371,
         "path_nodes": [
           {
             "id": "ACC-4471",
@@ -8791,11 +8809,11 @@
             "args": {
               "query": "<redacted>"
             },
-            "tool_call_id": "05628d09-2cc5-4aac-99e5-470f12751e48",
+            "tool_call_id": "930e3df0-222b-4fec-9a04-b523dbc32cc7",
             "outcome": "resolved",
             "reason": null,
             "rows_total": 1,
-            "elapsed_ms": 468.89,
+            "elapsed_ms": 456.19,
             "guard_hits": 0
           },
           {
@@ -8805,11 +8823,11 @@
                 "ACC-4471"
               ]
             },
-            "tool_call_id": "735aaa13-b4f7-421f-86bc-26125697b699",
+            "tool_call_id": "c6c2b6a6-b54b-45c6-ae84-4190af85d6df",
             "outcome": "answered_from_memory",
             "reason": null,
-            "rows_total": 4,
-            "elapsed_ms": 1986.07,
+            "rows_total": 8,
+            "elapsed_ms": 1876.53,
             "guard_hits": 0
           },
           {
@@ -8817,33 +8835,33 @@
             "args": {
               "rail": null
             },
-            "tool_call_id": "38707ed9-ebcf-4803-885a-78bcda93e4f2",
+            "tool_call_id": "def8f675-6376-47b4-9e45-959b3a61154e",
             "outcome": "answered_with_path",
             "reason": null,
             "rows_total": 1,
-            "elapsed_ms": 1146.78,
+            "elapsed_ms": 834.98,
             "guard_hits": 0
           },
           {
             "tool": "rs_account_profile",
             "args": {
-              "as_of": 1792249976,
+              "as_of": 1792287482,
               "limit": 50,
               "cursor": null,
               "account_id": "ACC-4471",
               "window_days": 90
             },
-            "tool_call_id": "cc66c10e-3b30-4b76-a3cd-ea734fad9790",
+            "tool_call_id": "5ab23f71-e322-4a21-bf73-5deebd8e3450",
             "outcome": "answered_with_path",
             "reason": null,
             "rows_total": 1,
-            "elapsed_ms": 2026.13,
+            "elapsed_ms": 2297.02,
             "guard_hits": 0
           },
           {
             "tool": "rs_neighbourhood",
             "args": {
-              "as_of": 1792249976,
+              "as_of": 1792287482,
               "limit": 50,
               "cursor": null,
               "account_id": "ACC-4471",
@@ -8852,17 +8870,17 @@
               "direction": "both",
               "min_amount": 0
             },
-            "tool_call_id": "fadb39f8-af09-4c25-a855-833d068ce58c",
+            "tool_call_id": "3d56eafa-f16c-43db-8703-4c568cee0643",
             "outcome": "answered_with_path",
             "reason": null,
             "rows_total": 7,
-            "elapsed_ms": 2979.68,
+            "elapsed_ms": 3483.94,
             "guard_hits": 0
           },
           {
             "tool": "rs_shared_identifiers",
             "args": {
-              "as_of": 1792249976,
+              "as_of": 1792287482,
               "limit": 50,
               "cursor": null,
               "account_id": "ACC-4471",
@@ -8875,11 +8893,11 @@
               ],
               "max_identifier_degree": 50
             },
-            "tool_call_id": "dcca3c0b-3960-4766-9f3c-173afdfd0c7d",
+            "tool_call_id": "215d11c8-341c-4172-9183-33bd054706e9",
             "outcome": "answered_with_path",
             "reason": null,
             "rows_total": 3,
-            "elapsed_ms": 3026.48,
+            "elapsed_ms": 3711.8,
             "guard_hits": 0
           },
           {
@@ -8889,7 +8907,7 @@
                 "ACC-4471"
               ]
             },
-            "tool_call_id": "25e87847-c01a-4b4e-ade5-d97f97cc71bc",
+            "tool_call_id": "f87b9521-29be-4539-8b89-062b94d72636",
             "outcome": "recorded",
             "reason": null,
             "rows_total": 1,
@@ -8900,13 +8918,13 @@
             "tool": "rs_check_restrictions",
             "args": {
               "entity_id": "ACC-4471",
-              "as_of": 1792249976
+              "as_of": 1792287482
             },
-            "tool_call_id": "514d6ec8-9fcd-426f-a547-6d9088e714ce",
+            "tool_call_id": "cd8be756-02a5-4b05-89d9-8b8e2b53a261",
             "outcome": "not_in_graph",
             "reason": "no_restrictions",
             "rows_total": 1,
-            "elapsed_ms": 686.23,
+            "elapsed_ms": 711.77,
             "guard_hits": 0
           },
           {
@@ -8917,7 +8935,7 @@
                 "ACC-4471"
               ]
             },
-            "tool_call_id": "90c25296-3d73-4587-aad9-5b79d861946f",
+            "tool_call_id": "242bae66-3056-4821-b22c-e73d3a2eaa16",
             "outcome": "pending",
             "reason": null,
             "rows_total": 1,
@@ -8927,57 +8945,44 @@
         ],
         "pending": [
           {
-            "pending_id": "4111040a-72c6-4028-9a5f-5f846f39988f",
+            "pending_id": "915d209e-071e-43a1-a60f-70cd74b68072",
             "kind": "escalate",
             "status": "pending",
             "targets": [
               "ACC-4471"
             ],
-            "session_id": "128ec92e-3175-4c52-b854-0b48c73bca16"
+            "session_id": "cc4d98f5-e2c4-4740-b992-98dcdea1316f"
           }
         ]
-      },
-      {
-        "status_code": 429,
-        "reason": "busy",
-        "elapsed_s": 1.416
-      },
-      {
-        "status_code": 429,
-        "reason": "busy",
-        "elapsed_s": 1.243
       }
     ],
     "observed_rss_mb": [
-      208.22,
-      208.22,
-      208.22,
-      208.22,
-      208.22,
-      213.81,
-      213.81,
-      213.81,
-      213.81,
-      213.81,
-      213.81,
-      215.64,
-      215.64,
-      215.64,
-      215.64,
-      215.64,
-      215.64,
-      217.34
+      195.16,
+      195.16,
+      195.16,
+      195.16,
+      195.16,
+      200.2,
+      200.2,
+      200.2,
+      200.2,
+      200.2,
+      200.2,
+      203.19,
+      203.19,
+      203.19,
+      203.19
     ],
-    "peak_observed_rss_mb": 217.34,
+    "peak_observed_rss_mb": 203.19,
     "rss_sampling_note": "Health is cached for 15 seconds; this is sampled RSS, not a process high-water mark."
   },
   "latency": {
     "depth_4": {
       "n": 3,
-      "p50_s": 40.702,
-      "p95_s": 43.214,
+      "p50_s": 38.19,
+      "p95_s": 39.371,
       "concurrent": true
     }
   },
-  "finished_at": 1792250023
+  "finished_at": 1792287521
 }

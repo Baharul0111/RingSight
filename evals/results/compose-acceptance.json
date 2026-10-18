@@ -1,13 +1,13 @@
 {
   "suite": "isolated-compose-acceptance",
   "status": "passed",
-  "started_at": 1792249626,
-  "project": "rs_acceptance",
-  "target": "http://127.0.0.1:18000",
+  "started_at": 1792287613,
+  "project": "rs_fresh_acceptance",
+  "target": "http://127.0.0.1:18001",
   "ports": {
-    "app": 18000,
-    "redis": 16379,
-    "browser": 13000
+    "app": 18001,
+    "redis": 16380,
+    "browser": 13001
   },
   "dockerfile": "Dockerfile",
   "investigation_requests": 0,
@@ -20,55 +20,84 @@
         "smoke"
       ],
       "status": "passed",
-      "started_at": 1792249626.539437,
+      "started_at": 1792287613.638495,
       "artifact": {
         "path": "evals/results/local-smoke.json",
-        "sha256": "22f0485451a9470137890a11c52dd2c00f1049eaf24cd2413530aebc7e916cd1",
+        "sha256": "7cbb6e959612f93ac4f49b08d1e3d2b144d99dcf9fdb06090b94513e8205790b",
         "status": "passed"
       },
-      "elapsed_s": 7.028
+      "elapsed_s": 12.923
     },
     {
       "name": "Actual headless browser against the built app and graph",
       "command": [
-        "/Users/baharulislam/Desktop/RingSight/.venv/bin/python",
+        "/Users/baharulislam/Desktop/RingSight/.venv/bin/python3",
         "ops/ui_actual.py",
         "--url",
-        "http://127.0.0.1:18000"
+        "http://127.0.0.1:18001"
       ],
       "status": "passed",
-      "started_at": 1792249634.440119,
+      "started_at": 1792287627.406343,
       "artifact": {
         "path": "evals/results/ui-real-local.json",
-        "sha256": "06f468cdb0e6678b561b910677a3b00b26dee5404f740c766a5f37c21742636f",
+        "sha256": "999e14130ead60891a83dca10ed7cfbb4b0a9554d14f5fa02779e95c61e9ae3a",
         "status": "passed"
       },
-      "elapsed_s": 2.164
+      "elapsed_s": 2.078
     },
     {
       "name": "Frontend interaction contracts against built assets (API fixtures)",
       "command": [
-        "/Users/baharulislam/Desktop/RingSight/.venv/bin/python",
+        "/Users/baharulislam/Desktop/RingSight/.venv/bin/python3",
         "ops/ui_browser.py"
       ],
       "status": "passed",
-      "started_at": 1792249636.604254,
+      "started_at": 1792287629.484813,
       "artifact": {
         "path": "evals/results/ui-browser.json",
-        "sha256": "84de03aa920abc447a283bf147073e79695580ab1db67c29072ec0238104a598",
+        "sha256": "117de95af70185e46437b52b191f1e59e3ecd84ad4dc6aa1b14f876aa823e121",
         "status": "passed"
       },
-      "elapsed_s": 2.142
+      "elapsed_s": 2.188
     }
   ],
   "volume_existed_before_run": true,
   "fresh_volume_note": "Existing acceptance volume retained; this proves rebuild/start/persistence, not an empty-volume start.",
   "built_app_image": {
-    "id": "sha256:aa7d485ce277ca8ac3c52aba6149e0c699e4f3a2a0fd489fe50516bf2cf6d4ed",
+    "id": "sha256:ce7596f85071e44e24af82b30a0f02a58d417bea9f07175dc650de157a650130",
     "architecture": "arm64",
     "dockerfile_sha256": "0c69b907fac061ffbaeadc33b1cd36ab8ef5448c006285edd15788b893354d7c",
     "uv_lock_sha256": "33584958c7b3807ccc79ecfbd334b4821369c2f296445bcb401c05f011d19241",
     "frontend_lock_sha256": "0808401bdfc950cf77d7fddf26c73f8f1c1da7a3cc81fae56efb986e803cfb7a"
   },
-  "finished_at": 1792249638
+  "finished_at": 1792287631,
+  "no_model_verification": {
+    "model_calls": 0,
+    "isolated_graph_llm_enabled_during_checks": false,
+    "original_llm_enabled_restored": true,
+    "spend_unchanged": true,
+    "spend_before": [
+      [
+        20261017,
+        1.6e-06,
+        1
+      ]
+    ],
+    "spend_after": [
+      [
+        20261017,
+        1.6e-06,
+        1
+      ]
+    ]
+  },
+  "built_snapshot_provenance": {
+    "status": "passed",
+    "path": "data/findings_snapshot.json",
+    "sha256": "4f594c39b4788415a3dcea95c09d3744d7f047051f6957e7e90b2bb067b39cf7",
+    "comparison": "Exact bytes copied from the built acceptance app image match the current exported snapshot.",
+    "findings": 16,
+    "sessions": 16,
+    "tool_calls": 55
+  }
 }

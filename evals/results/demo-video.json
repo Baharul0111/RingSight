@@ -1,0 +1,376 @@
+{
+  "suite": "demo-video",
+  "status": "passed",
+  "target": "https://ringsight.onrender.com",
+  "started_at": 1792251727,
+  "synthetic": true,
+  "captions": true,
+  "audio": false,
+  "mocked_responses": false,
+  "chapters": [
+    {
+      "title": "An alert needs reasons",
+      "caption": "RingSight follows synthetic accounts, people, devices and transfers. A named human owns every decision.",
+      "source_start_s": 2.032,
+      "source_duration_s": 4.083,
+      "duration_s": 15,
+      "speed_factor": 1
+    },
+    {
+      "title": "Depth 1",
+      "caption": "The planner selects bounded graph tools. It never writes Cypher. A shallow view cannot reveal the hidden exit.",
+      "source_start_s": 6.115,
+      "source_duration_s": 51.477,
+      "duration_s": 20,
+      "speed_factor": 2.574
+    },
+    {
+      "title": "Depth 4",
+      "caption": "Follow the actual device → account → owner → exit path. The evidence table itemises dates in IST and amounts in rupees.",
+      "source_start_s": 57.594,
+      "source_duration_s": 40.147,
+      "duration_s": 30,
+      "speed_factor": 1.338
+    },
+    {
+      "title": "Human authority",
+      "caption": "Approve a case and deny a hold with written reasons. A hold is only a recommendation to the Principal Officer.",
+      "source_start_s": 97.742,
+      "source_duration_s": 57.172,
+      "duration_s": 30,
+      "speed_factor": 1.906
+    },
+    {
+      "title": "The graph is the record",
+      "caption": "FalkorDB Browser shows the live Finding, PendingAction and named Decision nodes connected to the alerted account.",
+      "source_start_s": 152.959,
+      "source_duration_s": 2.768,
+      "duration_s": 15,
+      "speed_factor": 1
+    },
+    {
+      "title": "Memory has a date",
+      "caption": "A new investigation recalls earlier findings, their learned date, author and human review status.",
+      "source_start_s": 157.684,
+      "source_duration_s": 21.787,
+      "duration_s": 15,
+      "speed_factor": 1.452
+    },
+    {
+      "title": "Two honest abstentions",
+      "caption": "An unknown account is unknown. CASH is not loaded. Not in the graph does not mean nothing wrong.",
+      "source_start_s": 179.473,
+      "source_duration_s": 17.072,
+      "duration_s": 15,
+      "speed_factor": 1.138
+    },
+    {
+      "title": "A planted instruction is data",
+      "caption": "The memo was planted in the synthetic graph. The read guard flags it as untrusted. No action is approved by the model.",
+      "source_start_s": 196.561,
+      "source_duration_s": 59.208,
+      "duration_s": 20,
+      "speed_factor": 2.96
+    },
+    {
+      "title": "The model can be switched off",
+      "caption": "An analyst can still run the fourteen read-only tools and inspect their graph paths without an AI call.",
+      "source_start_s": 255.771,
+      "source_duration_s": 8.695,
+      "duration_s": 10,
+      "speed_factor": 1
+    },
+    {
+      "title": "Honest limits",
+      "caption": "Synthetic, demo-only detection. No real filings. Indian report-format facts remain unverified-primary. Cloud Free has no TLS. Remove FalkorDB and the work stops.",
+      "source_start_s": 264.467,
+      "source_duration_s": 2.248,
+      "duration_s": 10,
+      "speed_factor": 1
+    }
+  ],
+  "answers": [
+    {
+      "session_id": "2e0fd6de-db3e-4747-9a36-1da7b93b39aa",
+      "shape": "answered_with_path",
+      "reason": null,
+      "tokens": {
+        "input": 23247,
+        "output": 1772,
+        "cache_read": 5795
+      },
+      "cost_usd": 0.053204,
+      "model_requests": 4,
+      "tool_calls": 8,
+      "judge": {
+        "verdict": "weak",
+        "unsupported_claims": [
+          "The thesis only asserts a shared-device link between ACC-4471 and ACC-10477; the rows show this link but nothing about intent or illicit purpose.",
+          "ACC-4471 profile shows out_sum of 66,000,000 but only two outbound edges (55M + 11M) are listed, so the full outflow pattern is not verified."
+        ],
+        "missing_queries": [
+          "Full list of DEV-f31c linked accounts and the device's usage history (timestamps, sessions)",
+          "Complete inbound/outbound edge list for ACC-4471 and ACC-10477 beyond the 1-hop sample",
+          "Account age, KYC and baseline transaction behaviour for ACC-4471 to judge whether the 55M outflow to ACC-3 is anomalous"
+        ]
+      },
+      "verifier": {
+        "status": "replaced",
+        "unsupported": [
+          "11",
+          "55",
+          "11",
+          "Seven"
+        ],
+        "normalizations": [],
+        "replacement_verified": "pass"
+      },
+      "elapsed_s": 49.163,
+      "depth": 1
+    },
+    {
+      "session_id": "be0d2a22-631f-4afb-814d-fdbe6fa32f29",
+      "shape": "answered_with_path",
+      "reason": null,
+      "tokens": {
+        "input": 15605,
+        "output": 1293,
+        "cache_read": 4195
+      },
+      "cost_usd": 0.03617,
+      "model_requests": 3,
+      "tool_calls": 8,
+      "judge": {
+        "verdict": "weak",
+        "unsupported_claims": [
+          "The thesis only asserts a graph path exists and explicitly does not establish laundering; shared devices alone don't show illicit intent",
+          "Ownership/relationships of DEV-f31c and DEV-r00-1 (shared identifiers) are not characterized, e.g. whether they are common public or shared household devices",
+          "Transfer evidence is inconclusive: ACC-4471's inflows and outflows fit a fan-in/fan-out pattern, but no baseline or counterparty context was checked"
+        ],
+        "missing_queries": [
+          "Transaction history and timing between ACC-10477, ACC-1 and ACC-55820 to see whether funds actually moved along the shared-device path",
+          "Device usage details (first/last seen, number of accounts per device) for DEV-f31c and DEV-r00-1 to assess how distinctive the link is",
+          "Account profile and baseline activity for the fan-in sources ACC-1 to ACC-6 and the outflow target ACC-3 for comparison"
+        ]
+      },
+      "verifier": {
+        "status": "replaced",
+        "unsupported": [
+          "110",
+          "550",
+          "110",
+          "Seven"
+        ],
+        "normalizations": [],
+        "replacement_verified": "pass"
+      },
+      "elapsed_s": 37.774,
+      "depth": 4
+    },
+    {
+      "session_id": "a94f0722-2b09-40fa-bd17-ea5c829f3da0",
+      "shape": "answered_with_path",
+      "reason": null,
+      "tokens": {
+        "input": 36567,
+        "output": 1963,
+        "cache_read": 8849
+      },
+      "cost_usd": 0.075951,
+      "model_requests": 5,
+      "tool_calls": 9,
+      "judge": {
+        "verdict": "support",
+        "unsupported_claims": [
+          "The thesis path via DEV-r00-1 to ACC-1 is supported, but the evidence does not show what the shared devices mean (shared household vs. mule ring)."
+        ],
+        "missing_queries": [
+          "Full inbound and outbound transfer list for ACC-4471 (in_sum 86.89M vs the 7 inbound edges shown) and onward flows from ACC-3",
+          "Account profiles for ACC-10477, ACC-1 and ACC-55820, plus other accounts on DEV-f31c and DEV-r00-1",
+          "Account ages, KYC details and prior alert history for ACC-4471, to rule out a legitimate explanation"
+        ]
+      },
+      "verifier": {
+        "status": "replaced",
+        "unsupported": [
+          "Fresh"
+        ],
+        "normalizations": [],
+        "replacement_verified": "pass"
+      },
+      "elapsed_s": 49.108,
+      "depth": 4
+    },
+    {
+      "session_id": "20c18b6b-6fc8-4884-9a87-678123412f52",
+      "shape": "answered_from_memory",
+      "reason": null,
+      "tokens": {
+        "input": 11553,
+        "output": 464,
+        "cache_read": 2595
+      },
+      "cost_usd": 0.022815,
+      "model_requests": 2,
+      "tool_calls": 3,
+      "judge": {
+        "verdict": "support",
+        "unsupported_claims": [
+          "The thesis says the hold proposal was denied and the escalation approved, but the evidence rows contain no decision or approval records.",
+          "The rail_not_ingested caveat for CASH and XB has no supporting row; it can only be taken as a stated limitation."
+        ],
+        "missing_queries": [
+          "Fetch the hold and escalation action records to confirm the denied and approved outcomes",
+          "Check ingestion status for the CASH and XB rails"
+        ]
+      },
+      "verifier": {
+        "status": "pass",
+        "unsupported": [],
+        "normalizations": []
+      },
+      "elapsed_s": 19.461,
+      "depth": 4
+    },
+    {
+      "session_id": "135a162a-dd82-4c51-8d7f-6c1b16e3d0a0",
+      "shape": "unknown_entity",
+      "reason": "unknown_entity",
+      "tokens": {
+        "input": 0,
+        "output": 0,
+        "cache_read": 0
+      },
+      "cost_usd": 0.0,
+      "model_requests": 0,
+      "tool_calls": 1,
+      "judge": {
+        "verdict": "not_required"
+      },
+      "verifier": {
+        "status": "pass"
+      },
+      "elapsed_s": 5.252,
+      "depth": 1
+    },
+    {
+      "session_id": "fe0cff51-ef2f-45d6-91f4-beac9501c46a",
+      "shape": "not_in_graph",
+      "reason": "rail_not_ingested",
+      "tokens": {
+        "input": 0,
+        "output": 0,
+        "cache_read": 0
+      },
+      "cost_usd": 0.0,
+      "model_requests": 0,
+      "tool_calls": 3,
+      "judge": {
+        "verdict": "not_required"
+      },
+      "verifier": {
+        "status": "pass"
+      },
+      "elapsed_s": 7.628,
+      "depth": 1
+    },
+    {
+      "session_id": "e4ca17d4-65a9-4f50-bd23-f17aa586f4c4",
+      "shape": "answered_with_path",
+      "reason": null,
+      "tokens": {
+        "input": 35620,
+        "output": 2256,
+        "cache_read": 10449
+      },
+      "cost_usd": 0.073947,
+      "model_requests": 6,
+      "tool_calls": 10,
+      "judge": {
+        "verdict": "weak",
+        "unsupported_claims": [
+          "The path ACC-7731 → PER-103865 → ACC-7732 shows only a shared identifier (PER-103865); no transfer between ACC-7731 and ACC-7732 appears in the evidence.",
+          "Escalation of ACC-7732 has no direct transaction evidence; all returned TX rows are inbound to ACC-7731 only.",
+          "Inbound pattern (~20 sequential UPI credits of 10,000-11,800 at ~60s intervals) is notable but no outbound flows are shown, so onward movement is not established."
+        ],
+        "missing_queries": [
+          "Outbound transactions from ACC-7731 and any transfers between ACC-7731 and ACC-7732",
+          "Transactions and activity profile for ACC-7732, plus other accounts linked to PER-103865",
+          "Source and context of the burst of inbound credits (e.g., common upstream sources, expected account activity)"
+        ]
+      },
+      "verifier": {
+        "status": "replaced",
+        "unsupported": [
+          "Inbound",
+          "Escalation"
+        ],
+        "normalizations": [],
+        "replacement_verified": "pass"
+      },
+      "elapsed_s": 55.245,
+      "depth": 1
+    }
+  ],
+  "checks": {
+    "browser_account_preflight": {
+      "status": "passed",
+      "labels": [
+        "Account"
+      ],
+      "completed_results": 1,
+      "blocked_mutations": []
+    },
+    "case_approved": {
+      "status": "passed",
+      "pending_id": "9e6c9a88-bee0-44e7-98e0-5a0151c1cdeb",
+      "decision_id": "a5907bf6-70c0-48c8-9f64-1651dfb05455",
+      "case_id": "fdcc19ff-5fe1-4fb6-a9b9-7eed00534053",
+      "reason": "The connected evidence warrants a synthetic case for named human investigation."
+    },
+    "hold_denied": {
+      "status": "passed",
+      "pending_id": "4df56adf-7168-48d3-99f9-93eeed198fcc",
+      "decision_id": "32eb1ca2-cf9f-416f-8ef3-3615b4415da3",
+      "case_id": null,
+      "reason": "A case is warranted; a hold recommendation needs additional human assessment."
+    },
+    "actual_falkordb_browser_nodes": {
+      "status": "passed",
+      "labels": [
+        "Account",
+        "Decision",
+        "Finding",
+        "PendingAction"
+      ],
+      "completed_results": 1,
+      "blocked_mutations": []
+    },
+    "all_scripted_live_ui_behaviours": {
+      "status": "passed"
+    },
+    "model_restored": {
+      "status": "passed"
+    }
+  },
+  "editing": "Actual screen captures, cut into chapters. Waiting is accelerated only when a chapter exceeds its allocation; short chapters hold their final frame. App timings are retained on screen and actual seconds/speed factors are recorded here.",
+  "finished_at": 1792287249,
+  "assembly_recovery": {
+    "original_error": {
+      "type": "Error",
+      "message": "Event loop is closed! Is Playwright already stopped?"
+    },
+    "method": "Assembled original successful captures after inspecting both raw recordings; no model calls or replacement scenes.",
+    "raw_sha256": {
+      "app": "2ce18b2250e59cc82b3710cf3d20c92d7aa1aa8d96d081561cf607d3bc84bfa8",
+      "browser": "4986f53ab3bf735466bfb8c061d219e57045761599b9f8182cd0b3fd3164a365"
+    }
+  },
+  "artifact": {
+    "video": "docs/ringsight-demo.mp4",
+    "captions": "docs/demo-captions.vtt",
+    "duration_s": 180.0,
+    "bytes": 3023846,
+    "sha256": "5715ec09fe6fbdc31706ea24029ca365439e35ab626c9b49d527b7999dd3d645"
+  }
+}

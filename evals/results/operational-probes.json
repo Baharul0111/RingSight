@@ -1,0 +1,52 @@
+{
+  "suite": "operational-workflows",
+  "status": "passed",
+  "repository": "Baharul0111/RingSight",
+  "collected_at": 1792287943,
+  "workflows": {
+    "keepalive.yml": {
+      "databaseId": 39083716142,
+      "headSha": "1afe8e5b12052fb71aaa7f7c290a491c1696e087",
+      "workflowName": "Keep RingSight awake",
+      "url": "https://github.com/Baharul0111/RingSight/actions/runs/39083716142",
+      "conclusion": "success",
+      "status": "completed",
+      "event": "schedule",
+      "createdAt": "2026-10-18T00:41:53Z",
+      "updatedAt": "2026-10-18T00:42:01Z",
+      "source_fingerprint": "bb4466c84359196bcf02550144606e46f7222ae034239b2e88026cf38b609e9a"
+    },
+    "daily-probe.yml": {
+      "databaseId": 39087562823,
+      "headSha": "1afe8e5b12052fb71aaa7f7c290a491c1696e087",
+      "workflowName": "Daily investigation probe",
+      "url": "https://github.com/Baharul0111/RingSight/actions/runs/39087562823",
+      "conclusion": "success",
+      "status": "completed",
+      "event": "workflow_dispatch",
+      "createdAt": "2026-10-18T01:44:16Z",
+      "updatedAt": "2026-10-18T01:45:03Z",
+      "source_fingerprint": "bb4466c84359196bcf02550144606e46f7222ae034239b2e88026cf38b609e9a"
+    },
+    "ci.yml": {
+      "databaseId": 39046049271,
+      "headSha": "1afe8e5b12052fb71aaa7f7c290a491c1696e087",
+      "workflowName": "Graph contracts and console",
+      "url": "https://github.com/Baharul0111/RingSight/actions/runs/39046049271",
+      "conclusion": "success",
+      "status": "completed",
+      "event": "push",
+      "createdAt": "2026-10-17T15:40:04Z",
+      "updatedAt": "2026-10-17T15:41:10Z",
+      "source_fingerprint": "bb4466c84359196bcf02550144606e46f7222ae034239b2e88026cf38b609e9a"
+    }
+  },
+  "notes": [
+    "Actual public GitHub run metadata, not owner confirmation.",
+    "No model request or workflow dispatch is made by this collector.",
+    "Each selected run's committed Git blobs must match current relevant sources; documentation/evidence-only commits may differ.",
+    "Successful jobs prove scheduled code execution; they do not independently prove UptimeRobot email delivery."
+  ],
+  "head_sha": "1afe8e5b12052fb71aaa7f7c290a491c1696e087",
+  "source_fingerprint": "bb4466c84359196bcf02550144606e46f7222ae034239b2e88026cf38b609e9a"
+}

@@ -135,6 +135,24 @@ instructions. Model experiments use a local graph copy, never the live demo
 graph. A clean result on planted synthetic rings is not a production detection
 claim; measured recall, precision and latency stay labelled demo-only.
 
+The completed local protocol passed all 180 model cases: 120/120 graph paths
+were correct, 40/40 planted memo attacks were exposed and guarded with zero
+unapproved effects or instruction stores, and 20/20 deleted-ring questions
+abstained correctly. The measured trial cost was **$6.6188376**. All 120 path
+answers used the deterministic verifier replacement, so path correctness is
+not a claim that unchecked model prose was correct. Both engine suites and
+the current GitHub CI run passed 370/370 tests. These are synthetic, demo-only
+results, not measured detection performance on real banking data.
+
+The current public acceptance passed 39 checks; depth 1 took 36.434 seconds and
+depth 4 took 36.045 seconds, with one sample at each depth. In the five-request
+concurrency check, three requests answered and two received the busy response;
+accepted depth 4 timings had p50 **38.190 seconds** and p95 **39.371 seconds**
+(N=3). The roughly 15-second demo target was missed. The largest sampled app
+RSS was 203.19 MB; health is cached for 15 seconds, so this is an observed sample,
+not a process high-water mark. The [raw results](../evals/results/) retain the
+sample sizes and actual costs rather than promising a free-tier latency SLO.
+
 The scale path starts with a nightly recent-transfer projection, sampled
 centrality, a queue-buffered writer and cached bounded reads. It adds replicas
 and region/tenant shards when one graph no longer fits in memory. A billion

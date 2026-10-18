@@ -101,7 +101,19 @@ for p in sorted((ROOT/'evals/results').glob('*.json')):
  elif d.get('success') is not None:status=f"{d.get('numPassedTests',0)} UI unit tests passed" if d['success'] else 'failed'
  elif p.name=='structural-patterns.json':status='35-ring measurement; see recall and precision below'
  else:status='measurement artifact'
+ if '.previous-' in p.name:status='Historical interrupted trial; '+status
  lines.append(f'| [{p.name}](evals/results/{p.name}) | {status} |')
+for filename,label in [('model-paths.json','Path correctness'),('model-injections.json','Exposed injection attacks'),('model-abstention.json','Deleted-ring abstentions')]:
+ result=load(filename,{})
+ if result.get('complete') and result.get('passed'):
+  metrics=result['metrics']
+  lines.append(f"\n**{label}: {result['completed_cases']}/{result['planned_cases']} cases passed**, ${metrics['cost_usd']:.6f} actual model cost. "+('Every cited path was checked against authoritative graph facts; first selected tool matched the expected pattern in '+f"{metrics['first_tool_exact_match']:.0%} of cases. The verifier replaced {metrics['verifier_replacements']} generated answers with evidence-built text." if filename=='model-paths.json' else f"{metrics['model_exposed_cases']} attacks reached the model's guarded evidence; {metrics['unapproved_effects']} unapproved effects and {metrics['instruction_stores']} instruction stores." if filename=='model-injections.json' else f"{metrics['not_in_graph_rate']:.0%} valid abstention; {metrics['false_answered_with_path_rate']:.0%} false path answers."))
+execution=load('model-evaluations.json',{})
+if execution.get('path_latency_execution'):
+ lines.append('Local model timing execution: '+execution['path_latency_execution']+'.')
+if execution.get('explicit_local_eval_budget'):
+ approval=execution['explicit_local_eval_budget']
+ lines.append(f"The owner explicitly approved ${approval['cap_usd']:g} total for the local `{approval['tenant']}` evaluation on UTC {approval['approved_day']}, preserving prior liability. The temporary approval applied only on that day; the public bank and Console limits were unchanged.")
 latencies=[]
 runtime=load('runtime-smoke.json',{})
 if runtime.get('passed'):
@@ -136,7 +148,7 @@ if patterns:
  metrics=patterns.get('hub_metrics',{})
  if metrics:lines.append('Global planted-hub precision@10: '+', '.join(f"**{name}: {metric['precision_at_10']:.3f}**" for name,metric in metrics.items())+'. Legitimate merchant/payroll/exchange hubs remain present and are excluded from this ranking. Weak global hub precision is an explicit limitation.')
 lines += ['About 15 seconds is a demo target, not a guarantee. Local measurements are not live free-tier measurements. Missing live measurements are not inferred from local timings.',
-'```sh\n# Both runners select LOCAL Redis themselves; no shell export is needed.\n.venv/bin/python ops/verify_local.py\n.venv/bin/python ops/verify_evals.py\n```\nThe evaluation runner measures 35 rings on the 25k local graph, then runs 40 questions × depths 1/2/4, 20 memo attacks twice, and 20 deleted-ring abstentions. It saves progress after every case. Resume retains completed failures and the graph spending ledger; an explicit new trial archives its predecessor. No Cloud graph is used for model evaluation fixtures.',
+'```sh\n# Both runners select LOCAL Redis themselves; no shell export is needed.\n.venv/bin/python ops/verify_local.py\n# Archive the checked-in trial before a new paid evaluation.\n.venv/bin/python ops/verify_evals.py --new-trial\n```\nThe evaluation runner measures 35 rings on the 25k local graph, then runs 40 questions × depths 1/2/4, 20 memo attacks twice, and 20 deleted-ring abstentions. It saves progress after every case. Omit `--new-trial` only to resume an interrupted trial with the same source, budget and concurrency signature. Resume retains completed failures and the graph spending ledger; an explicit new trial archives its predecessor. No Cloud graph is used for model evaluation fixtures.',
 '## 11. Deployment and operations',
 'Render Free runs one Docker service, one worker, health path `/live`. `/health` reports population, completion, graph size, pending count, today’s spend, engine, catalogue, RSS and a cached one-token model reachability probe. It returns 503 for incomplete seeding or failed model reachability. The health body is cached 15 seconds and the model probe ten minutes. `/live` only checks process responsiveness.',
 'Auto-reseed triggers only when Account count is zero or Meta.seed_complete is missing. A background subprocess lets the UI show warming up and ETA. The deadline is max(15 minutes, 3 × previous reseed time); timeout kills the loader and requires an explicit forced retry. The final Meta write occurs only after schema, algorithms and same-tenant snapshot restoration.',

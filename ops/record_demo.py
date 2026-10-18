@@ -196,7 +196,7 @@ class Recording:
         require(bool(ffmpeg and ffprobe), "ffmpeg and ffprobe must be installed before recording.")
         parts = []
         for index, (video, chapter) in enumerate(self.clips):
-            source = video.path()
+            source = video if isinstance(video, Path) else video.path()
             part = PRIVATE / f"chapter-{index:02d}.mp4"
             actual, target = chapter["source_duration_s"], chapter["duration_s"]
             factor = min(1., target / actual)
@@ -354,8 +354,10 @@ def main(args):
             prep.close()
             browser.close()
             run.save()
-    require(run.report["status"] != "failed", "Recording failed; sanitized evidence and private raw clips are retained.")
-    run.assemble()
+        require(run.report["status"] != "failed", "Recording failed; sanitized evidence and private raw clips are retained.")
+        # Video handles require the Playwright event loop even after their
+        # contexts have closed and flushed the captures.
+        run.assemble()
     run.report.update(status="passed", finished_at=int(time.time()))
     run.save()
     print(json.dumps({"status": "passed", "video": str(VIDEO.relative_to(ROOT)), "evidence": str(OUT.relative_to(ROOT)), "duration_s": run.report["artifact"]["duration_s"]}))

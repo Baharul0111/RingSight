@@ -1,14 +1,14 @@
 {
   "suite": "local-compose-smoke",
   "status": "passed",
-  "started_at": 1792249631,
-  "target": "http://127.0.0.1:18000",
+  "started_at": 1792287618,
+  "target": "http://127.0.0.1:18001",
   "graph": "rs_bank_a",
-  "compose_project": "rs_acceptance",
+  "compose_project": "rs_fresh_acceptance",
   "ports": {
-    "app": 18000,
-    "redis": 16379,
-    "browser": 13000
+    "app": 18001,
+    "redis": 16380,
+    "browser": 13001
   },
   "model_calls": 0,
   "health_cache_used": false,
@@ -19,8 +19,8 @@
         "accounts": 25000,
         "seed_complete": true,
         "seed_version": "rs-synthetic-v2",
-        "seeded_at": 1792170718,
-        "reseed_s": 4.78275620999921
+        "seeded_at": 1792250144,
+        "reseed_s": 4.49175866900009
       }
     },
     "compiled_investigator_page_served": {
@@ -38,15 +38,15 @@
     "aof_enabled_everysec": {
       "status": "passed",
       "details": {
-        "appendonly": "yes",
-        "appendfsync": "everysec"
+        "appendfsync": "everysec",
+        "appendonly": "yes"
       }
     },
     "unique_persistence_probe_created": {
       "status": "passed",
       "details": {
-        "id": "f006df10-fcb1-4c76-b231-8b7636ab6c37",
-        "created_at": 1792249631
+        "id": "dbcac194-d757-474a-a7ca-6f01a744fe9b",
+        "created_at": 1792287622
       }
     },
     "compose_database_restarted": {
@@ -58,14 +58,14 @@
       "details": {
         "actual": [
           [
-            "f006df10-fcb1-4c76-b231-8b7636ab6c37",
-            1792249631
+            "dbcac194-d757-474a-a7ca-6f01a744fe9b",
+            1792287622
           ]
         ],
         "expected": [
           [
-            "f006df10-fcb1-4c76-b231-8b7636ab6c37",
-            1792249631
+            "dbcac194-d757-474a-a7ca-6f01a744fe9b",
+            1792287622
           ]
         ]
       }
@@ -73,8 +73,8 @@
     "original_seed_not_regenerated": {
       "status": "passed",
       "details": {
-        "seeded_at_before": 1792170718,
-        "seeded_at_after": 1792170718
+        "seeded_at_before": 1792250144,
+        "seeded_at_after": 1792250144
       }
     }
   },
@@ -82,15 +82,15 @@
     "accounts": 25000,
     "seed_complete": true,
     "seed_version": "rs-synthetic-v2",
-    "seeded_at": 1792170718,
-    "reseed_s": 4.78275620999921
+    "seeded_at": 1792250144,
+    "reseed_s": 4.49175866900009
   },
   "after_restart": {
     "accounts": 25000,
     "seed_complete": true,
     "seed_version": "rs-synthetic-v2",
-    "seeded_at": 1792170718,
-    "reseed_s": 4.78275620999921
+    "seeded_at": 1792250144,
+    "reseed_s": 4.49175866900009
   },
-  "finished_at": 1792249633
+  "finished_at": 1792287626
 }

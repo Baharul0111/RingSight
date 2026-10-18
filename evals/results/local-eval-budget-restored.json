@@ -1,0 +1,16 @@
+{
+  "status": "passed",
+  "local_only": true,
+  "tenant": "eval_model",
+  "approval_day_utc": 20261017,
+  "approved_total_cap_usd": 12,
+  "restored_tenant_cap_usd": 8.0,
+  "actual_preserved_day_ledger": {
+    "usd": 10.3802161,
+    "reserved": 6.24500451351651e-17,
+    "calls": 1102
+  },
+  "reservation_zero_tolerance_usd": 1e-12,
+  "public_cap_changed": false,
+  "console_limit_changed": false
+}

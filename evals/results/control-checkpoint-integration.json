@@ -1,7 +1,7 @@
 {
-  "created": 1792249295.686917,
+  "created": 1792288029.753969,
   "source": "evals/results/pytest.json",
-  "source_sha256": "e0f805c56e5ad3ea92a032a1fb5da5a5e5f2ba43f0d5ec7f67d08db76645d66d",
+  "source_sha256": "3fefcf883dcaeedd094c8d4025cd4f954dafba86a02d6b57de2d37728049866a",
   "derived_without_rerun": true,
   "exitcode": 0,
   "summary": {
@@ -22,16 +22,16 @@
         ""
       ],
       "setup": {
-        "duration": 0.0005994160019326955,
+        "duration": 0.0006954160053282976,
         "outcome": "passed"
       },
       "call": {
-        "duration": 0.4933645409910241,
+        "duration": 0.5475522909982828,
         "outcome": "passed",
         "stdout": "Account\nPerson\nBank\nMerchant\nDevice\nPhone\nAddress\nRail\nIngestionDay\nRestriction\nAlert\nTX\nOWNS\nAT_BANK\nUSES_DEVICE\nHAS_PHONE\nHAS_ADDRESS\nSHARES\nSHARES_STRONG\nPAID\nON\n"
       },
       "teardown": {
-        "duration": 0.0023050000017974526,
+        "duration": 0.0028795830003218725,
         "outcome": "passed"
       }
     },
@@ -47,16 +47,16 @@
         ""
       ],
       "setup": {
-        "duration": 0.0010606249998090789,
+        "duration": 0.0015864169981796294,
         "outcome": "passed"
       },
       "call": {
-        "duration": 0.6130251659924397,
+        "duration": 0.6963642499904381,
         "outcome": "passed",
         "stdout": "Account\nPerson\nBank\nMerchant\nDevice\nPhone\nAddress\nRail\nIngestionDay\nRestriction\nAlert\nTX\nOWNS\nAT_BANK\nUSES_DEVICE\nHAS_PHONE\nHAS_ADDRESS\nSHARES\nSHARES_STRONG\nPAID\nON\n"
       },
       "teardown": {
-        "duration": 0.0012498750002123415,
+        "duration": 0.00098804100707639,
         "outcome": "passed"
       }
     },
@@ -72,15 +72,15 @@
         ""
       ],
       "setup": {
-        "duration": 0.0009952920081559569,
+        "duration": 0.001000457996269688,
         "outcome": "passed"
       },
       "call": {
-        "duration": 0.016793499991763383,
+        "duration": 0.015382167010102421,
         "outcome": "passed"
       },
       "teardown": {
-        "duration": 0.000958333010203205,
+        "duration": 0.00096750000375323,
         "outcome": "passed"
       }
     }

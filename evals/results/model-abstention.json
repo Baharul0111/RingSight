@@ -1,0 +1,1142 @@
+{
+  "cases": [
+    {
+      "case_key": "abstention:1",
+      "cost_usd": 0.01958,
+      "deleted_transfer_count": 12,
+      "elapsed_s": 15.977,
+      "first_completed_read": "rs_path_between",
+      "first_investigation_tool": "rs_path_between",
+      "first_selected_tool_batch": [
+        "rs_path_between"
+      ],
+      "judge": {
+        "missing_queries": [],
+        "unsupported_claims": [],
+        "verdict": "support"
+      },
+      "model_requests": 3,
+      "path_node_count": 0,
+      "question_id": 1,
+      "reason": "no_path_within_depth",
+      "ring_id": "RING-01",
+      "session_id": "5c9367c5-6423-4f10-8bde-2adda160679d",
+      "shape": "not_in_graph",
+      "stop_detail": null,
+      "text": "The available graph evidence is insufficient. Not in the graph \u2260 nothing wrong.",
+      "tokens": {
+        "cache": 1600,
+        "input": 6698,
+        "output": 488
+      },
+      "tool_error_count": 0,
+      "tool_names": [
+        "rs_resolve_entity",
+        "rs_resolve_entity",
+        "rs_recall_findings",
+        "rs_coverage_status",
+        "rs_path_between"
+      ],
+      "valid_abstention": true,
+      "verifier": {
+        "normalizations": [],
+        "replacement_verified": "pass",
+        "status": "replaced",
+        "unsupported": [
+          "ACC-4471",
+          "ACC-10477",
+          "TX",
+          "2026-10-11",
+          "2026-10-13"
+        ]
+      }
+    },
+    {
+      "case_key": "abstention:2",
+      "cost_usd": 0.0123972,
+      "deleted_transfer_count": 7,
+      "elapsed_s": 9.76,
+      "first_completed_read": "rs_path_between",
+      "first_investigation_tool": "rs_path_between",
+      "first_selected_tool_batch": [
+        "rs_path_between"
+      ],
+      "judge": {
+        "missing_queries": [
+          "Direct and multi-hop transactions/neighbors for ACC-7 and ACC-8 separately",
+          "Coverage window and completeness for each account's data, since not_in_graph for path_between is not proof of no relationship"
+        ],
+        "unsupported_claims": [
+          "The thesis that evidence is insufficient is reasonable, but the coverage_status row is empty so graph completeness is not established"
+        ],
+        "verdict": "weak"
+      },
+      "model_requests": 3,
+      "path_node_count": 0,
+      "question_id": 2,
+      "reason": "no_path_within_depth",
+      "ring_id": "RING-02",
+      "session_id": "e4a9b284-1f13-46bc-8825-78d939efecc3",
+      "shape": "not_in_graph",
+      "stop_detail": null,
+      "text": "The available graph evidence is insufficient. Not in the graph \u2260 nothing wrong.",
+      "tokens": {
+        "cache": 3772,
+        "input": 6702,
+        "output": 616
+      },
+      "tool_error_count": 0,
+      "tool_names": [
+        "rs_resolve_entity",
+        "rs_resolve_entity",
+        "rs_recall_findings",
+        "rs_coverage_status",
+        "rs_path_between"
+      ],
+      "valid_abstention": true,
+      "verifier": {
+        "normalizations": [],
+        "replacement_verified": "pass",
+        "status": "replaced",
+        "unsupported": [
+          "ACC-7",
+          "ACC-8",
+          "4",
+          "1792108799"
+        ]
+      }
+    },
+    {
+      "case_key": "abstention:3",
+      "cost_usd": 0.014299200000000001,
+      "deleted_transfer_count": 7,
+      "elapsed_s": 10.968,
+      "first_completed_read": "rs_path_between",
+      "first_investigation_tool": "rs_path_between",
+      "first_selected_tool_batch": [
+        "rs_path_between"
+      ],
+      "judge": {
+        "missing_queries": [],
+        "unsupported_claims": [],
+        "verdict": "support"
+      },
+      "model_requests": 4,
+      "path_node_count": 0,
+      "question_id": 3,
+      "reason": "no_path_within_depth",
+      "ring_id": "RING-03",
+      "session_id": "d3a04d56-c3b7-40f0-972b-4a7301820bc0",
+      "shape": "not_in_graph",
+      "stop_detail": null,
+      "text": "The available graph evidence is insufficient. Not in the graph \u2260 nothing wrong.",
+      "tokens": {
+        "cache": 5372,
+        "input": 9618,
+        "output": 527
+      },
+      "tool_error_count": 0,
+      "tool_names": [
+        "rs_resolve_entity",
+        "rs_resolve_entity",
+        "rs_recall_findings",
+        "rs_coverage_status",
+        "rs_path_between"
+      ],
+      "valid_abstention": true,
+      "verifier": {
+        "normalizations": [],
+        "replacement_verified": "pass",
+        "status": "replaced",
+        "unsupported": [
+          "ACC-15",
+          "ACC-16",
+          "7",
+          "2026-10-11",
+          "2026-10-13"
+        ]
+      }
+    },
+    {
+      "case_key": "abstention:4",
+      "cost_usd": 0.012505200000000001,
+      "deleted_transfer_count": 7,
+      "elapsed_s": 10.168,
+      "first_completed_read": "rs_path_between",
+      "first_investigation_tool": "rs_path_between",
+      "first_selected_tool_batch": [
+        "rs_path_between"
+      ],
+      "judge": {
+        "missing_queries": [
+          "Transaction history and counterparties for ACC-23 and ACC-24 (amounts, times)",
+          "Neighborhood/multi-hop expansion around ACC-23 and ACC-24 to confirm no indirect link",
+          "Coverage details clarifying what the graph does and does not contain for these accounts"
+        ],
+        "unsupported_claims": [
+          "Thesis correctly declines to infer innocence, but evidence only shows entity resolution and absence of a path/memory; no transaction, amount, or time rows were retrieved to assess activity."
+        ],
+        "verdict": "weak"
+      },
+      "model_requests": 3,
+      "path_node_count": 0,
+      "question_id": 4,
+      "reason": "no_path_within_depth",
+      "ring_id": "RING-04",
+      "session_id": "7848f272-7468-47bb-9639-3145a0b8aa10",
+      "shape": "not_in_graph",
+      "stop_detail": null,
+      "text": "The available graph evidence is insufficient. Not in the graph \u2260 nothing wrong.",
+      "tokens": {
+        "cache": 3772,
+        "input": 6676,
+        "output": 632
+      },
+      "tool_error_count": 0,
+      "tool_names": [
+        "rs_resolve_entity",
+        "rs_resolve_entity",
+        "rs_recall_findings",
+        "rs_coverage_status",
+        "rs_path_between"
+      ],
+      "valid_abstention": true,
+      "verifier": {
+        "normalizations": [],
+        "replacement_verified": "pass",
+        "status": "replaced",
+        "unsupported": [
+          "ACC-23",
+          "ACC-24",
+          "1792108799",
+          "7"
+        ]
+      }
+    },
+    {
+      "case_key": "abstention:5",
+      "cost_usd": 0.0117232,
+      "deleted_transfer_count": 7,
+      "elapsed_s": 9.563,
+      "first_completed_read": "rs_path_between",
+      "first_investigation_tool": "rs_path_between",
+      "first_selected_tool_batch": [
+        "rs_path_between"
+      ],
+      "judge": {
+        "missing_queries": [
+          "Transaction history and counterparties for ACC-31 and ACC-32",
+          "Indirect links between ACC-31 and ACC-32 (shared devices, owners, intermediate accounts)",
+          "Coverage details showing which data sources the empty path query actually searched"
+        ],
+        "unsupported_claims": [],
+        "verdict": "weak"
+      },
+      "model_requests": 3,
+      "path_node_count": 0,
+      "question_id": 5,
+      "reason": "no_path_within_depth",
+      "ring_id": "RING-05",
+      "session_id": "270c94b6-d9f2-4e3d-8f8f-72269ae9c1d7",
+      "shape": "not_in_graph",
+      "stop_detail": null,
+      "text": "The available graph evidence is insufficient. Not in the graph \u2260 nothing wrong.",
+      "tokens": {
+        "cache": 3772,
+        "input": 6680,
+        "output": 553
+      },
+      "tool_error_count": 0,
+      "tool_names": [
+        "rs_resolve_entity",
+        "rs_resolve_entity",
+        "rs_recall_findings",
+        "rs_coverage_status",
+        "rs_path_between"
+      ],
+      "valid_abstention": true,
+      "verifier": {
+        "normalizations": [],
+        "replacement_verified": "pass",
+        "status": "replaced",
+        "unsupported": [
+          "ACC-31",
+          "ACC-32",
+          "4",
+          "1792108799"
+        ]
+      }
+    },
+    {
+      "case_key": "abstention:6",
+      "cost_usd": 0.0114692,
+      "deleted_transfer_count": 7,
+      "elapsed_s": 8.766,
+      "first_completed_read": "rs_path_between",
+      "first_investigation_tool": "rs_path_between",
+      "first_selected_tool_batch": [
+        "rs_path_between"
+      ],
+      "judge": {
+        "missing_queries": [
+          "Transaction history for ACC-39 and ACC-40 from sources outside the graph",
+          "Coverage gaps shown by rs_coverage_status (its row is empty)"
+        ],
+        "unsupported_claims": [],
+        "verdict": "support"
+      },
+      "model_requests": 3,
+      "path_node_count": 0,
+      "question_id": 6,
+      "reason": "no_path_within_depth",
+      "ring_id": "RING-06",
+      "session_id": "209dc875-ca5c-4087-adf7-5afcfe49e6c5",
+      "shape": "not_in_graph",
+      "stop_detail": null,
+      "text": "The available graph evidence is insufficient. Not in the graph \u2260 nothing wrong.",
+      "tokens": {
+        "cache": 3772,
+        "input": 6643,
+        "output": 535
+      },
+      "tool_error_count": 0,
+      "tool_names": [
+        "rs_resolve_entity",
+        "rs_resolve_entity",
+        "rs_recall_findings",
+        "rs_coverage_status",
+        "rs_path_between"
+      ],
+      "valid_abstention": true,
+      "verifier": {
+        "normalizations": [],
+        "replacement_verified": "pass",
+        "status": "replaced",
+        "unsupported": [
+          "ACC-39",
+          "ACC-40",
+          "4",
+          "1792108799",
+          "2026-10-11",
+          "2026-10-13"
+        ]
+      }
+    },
+    {
+      "case_key": "abstention:7",
+      "cost_usd": 0.0127992,
+      "deleted_transfer_count": 7,
+      "elapsed_s": 9.638,
+      "first_completed_read": "rs_path_between",
+      "first_investigation_tool": "rs_path_between",
+      "first_selected_tool_batch": [
+        "rs_path_between"
+      ],
+      "judge": {
+        "missing_queries": [
+          "Transaction/transfer history for ACC-47 and ACC-48 (direct and via intermediaries)",
+          "Coverage details showing which data sources/time ranges the graph includes for these accounts",
+          "Multi-hop or shared-attribute links (owners, devices, counterparties) between ACC-47 and ACC-48"
+        ],
+        "unsupported_claims": [
+          "The thesis states evidence is insufficient, but coverage_status returned an empty row, so completeness of graph coverage is unconfirmed either way."
+        ],
+        "verdict": "weak"
+      },
+      "model_requests": 3,
+      "path_node_count": 0,
+      "question_id": 7,
+      "reason": "no_path_within_depth",
+      "ring_id": "RING-07",
+      "session_id": "87ee96d0-54c2-4c5b-9377-14200437160c",
+      "shape": "not_in_graph",
+      "stop_detail": null,
+      "text": "The available graph evidence is insufficient. Not in the graph \u2260 nothing wrong.",
+      "tokens": {
+        "cache": 3772,
+        "input": 6668,
+        "output": 663
+      },
+      "tool_error_count": 0,
+      "tool_names": [
+        "rs_resolve_entity",
+        "rs_resolve_entity",
+        "rs_recall_findings",
+        "rs_coverage_status",
+        "rs_path_between"
+      ],
+      "valid_abstention": true,
+      "verifier": {
+        "normalizations": [],
+        "replacement_verified": "pass",
+        "status": "replaced",
+        "unsupported": [
+          "ACC-47",
+          "ACC-48",
+          "1792108799",
+          "7",
+          "Do",
+          "2026-10-11",
+          "2026-10-13"
+        ]
+      }
+    },
+    {
+      "case_key": "abstention:8",
+      "cost_usd": 0.0123372,
+      "deleted_transfer_count": 7,
+      "elapsed_s": 9.801,
+      "first_completed_read": "rs_path_between",
+      "first_investigation_tool": "rs_path_between",
+      "first_selected_tool_batch": [
+        "rs_path_between"
+      ],
+      "judge": {
+        "missing_queries": [
+          "Direct transaction history (amounts, times, counterparties) for ACC-55 and ACC-56",
+          "Coverage scope details: why path_between returned not_in_graph despite coverage status answering with a path",
+          "Neighbor/shared-counterparty expansion for both accounts"
+        ],
+        "unsupported_claims": [
+          "Thesis correctly states evidence is insufficient but implies nothing about the accounts' risk; empty path/memory results cannot establish innocence"
+        ],
+        "verdict": "weak"
+      },
+      "model_requests": 3,
+      "path_node_count": 0,
+      "question_id": 8,
+      "reason": "no_path_within_depth",
+      "ring_id": "RING-08",
+      "session_id": "9f67fb88-9d21-498d-91c8-587e06bd7aa5",
+      "shape": "not_in_graph",
+      "stop_detail": null,
+      "text": "The available graph evidence is insufficient. Not in the graph \u2260 nothing wrong.",
+      "tokens": {
+        "cache": 3772,
+        "input": 6712,
+        "output": 608
+      },
+      "tool_error_count": 0,
+      "tool_names": [
+        "rs_resolve_entity",
+        "rs_resolve_entity",
+        "rs_recall_findings",
+        "rs_coverage_status",
+        "rs_path_between"
+      ],
+      "valid_abstention": true,
+      "verifier": {
+        "normalizations": [],
+        "replacement_verified": "pass",
+        "status": "replaced",
+        "unsupported": [
+          "ACC-55",
+          "ACC-56",
+          "1792108799"
+        ]
+      }
+    },
+    {
+      "case_key": "abstention:9",
+      "cost_usd": 0.0123792,
+      "deleted_transfer_count": 7,
+      "elapsed_s": 9.825,
+      "first_completed_read": "rs_path_between",
+      "first_investigation_tool": "rs_path_between",
+      "first_selected_tool_batch": [
+        "rs_path_between"
+      ],
+      "judge": {
+        "missing_queries": [
+          "Transaction history and counterparties for ACC-63 and ACC-64 individually",
+          "Shared attributes (devices, addresses, owners) linking ACC-63 and ACC-64 beyond direct paths",
+          "Coverage details: which graph scopes and time ranges were checked, given the empty coverage row"
+        ],
+        "unsupported_claims": [],
+        "verdict": "weak"
+      },
+      "model_requests": 3,
+      "path_node_count": 0,
+      "question_id": 9,
+      "reason": "no_path_within_depth",
+      "ring_id": "RING-09",
+      "session_id": "e1d58fe2-97d6-4f01-a34d-abf2570dd709",
+      "shape": "not_in_graph",
+      "stop_detail": null,
+      "text": "The available graph evidence is insufficient. Not in the graph \u2260 nothing wrong.",
+      "tokens": {
+        "cache": 3772,
+        "input": 6683,
+        "output": 618
+      },
+      "tool_error_count": 0,
+      "tool_names": [
+        "rs_resolve_entity",
+        "rs_resolve_entity",
+        "rs_recall_findings",
+        "rs_coverage_status",
+        "rs_path_between"
+      ],
+      "valid_abstention": true,
+      "verifier": {
+        "normalizations": [],
+        "replacement_verified": "pass",
+        "status": "replaced",
+        "unsupported": [
+          "ACC-63",
+          "ACC-64"
+        ]
+      }
+    },
+    {
+      "case_key": "abstention:10",
+      "cost_usd": 0.0122332,
+      "deleted_transfer_count": 7,
+      "elapsed_s": 9.688,
+      "first_completed_read": "rs_path_between",
+      "first_investigation_tool": "rs_path_between",
+      "first_selected_tool_batch": [
+        "rs_path_between"
+      ],
+      "judge": {
+        "missing_queries": [
+          "Direct transaction history for ACC-71 and ACC-72, including amounts and times",
+          "Neighbor/counterparty expansion for each account to check indirect links",
+          "Coverage details showing which graph sources were searched, since the path query returned not_in_graph"
+        ],
+        "unsupported_claims": [],
+        "verdict": "weak"
+      },
+      "model_requests": 3,
+      "path_node_count": 0,
+      "question_id": 10,
+      "reason": "no_path_within_depth",
+      "ring_id": "RING-10",
+      "session_id": "6710f1f8-72b2-402e-99a2-b7fc6f3faab2",
+      "shape": "not_in_graph",
+      "stop_detail": null,
+      "text": "The available graph evidence is insufficient. Not in the graph \u2260 nothing wrong.",
+      "tokens": {
+        "cache": 3772,
+        "input": 6655,
+        "output": 609
+      },
+      "tool_error_count": 0,
+      "tool_names": [
+        "rs_resolve_entity",
+        "rs_resolve_entity",
+        "rs_recall_findings",
+        "rs_coverage_status",
+        "rs_path_between"
+      ],
+      "valid_abstention": true,
+      "verifier": {
+        "normalizations": [],
+        "replacement_verified": "pass",
+        "status": "replaced",
+        "unsupported": [
+          "ACC-71",
+          "ACC-72"
+        ]
+      }
+    },
+    {
+      "case_key": "abstention:11",
+      "cost_usd": 0.012731200000000002,
+      "deleted_transfer_count": 3,
+      "elapsed_s": 9.871,
+      "first_completed_read": "rs_path_between",
+      "first_investigation_tool": "rs_path_between",
+      "first_selected_tool_batch": [
+        "rs_path_between"
+      ],
+      "judge": {
+        "missing_queries": [
+          "Transaction history and counterparties for ACC-79 and ACC-80 beyond the single path query",
+          "Coverage details showing which data sources and time windows the path search actually spanned",
+          "Neighborhood or multi-hop connections for ACC-79 and ACC-80 independent of a direct path"
+        ],
+        "unsupported_claims": [
+          "The thesis is a non-committal statement; the evidence neither confirms nor refutes any wrongdoing, so it cannot establish either guilt or innocence."
+        ],
+        "verdict": "weak"
+      },
+      "model_requests": 3,
+      "path_node_count": 0,
+      "question_id": 11,
+      "reason": "no_path_within_depth",
+      "ring_id": "RING-11",
+      "session_id": "ab4fbed6-ad25-4aa4-8057-1dfdca361d4d",
+      "shape": "not_in_graph",
+      "stop_detail": null,
+      "text": "The available graph evidence is insufficient. Not in the graph \u2260 nothing wrong.",
+      "tokens": {
+        "cache": 3772,
+        "input": 6674,
+        "output": 655
+      },
+      "tool_error_count": 0,
+      "tool_names": [
+        "rs_resolve_entity",
+        "rs_resolve_entity",
+        "rs_recall_findings",
+        "rs_coverage_status",
+        "rs_path_between"
+      ],
+      "valid_abstention": true,
+      "verifier": {
+        "normalizations": [],
+        "replacement_verified": "pass",
+        "status": "replaced",
+        "unsupported": [
+          "ACC-79",
+          "ACC-80",
+          "1792108799",
+          "2026-10-11",
+          "2026-10-13"
+        ]
+      }
+    },
+    {
+      "case_key": "abstention:12",
+      "cost_usd": 0.0120632,
+      "deleted_transfer_count": 4,
+      "elapsed_s": 9.802,
+      "first_completed_read": "rs_path_between",
+      "first_investigation_tool": "rs_path_between",
+      "first_selected_tool_batch": [
+        "rs_path_between"
+      ],
+      "judge": {
+        "missing_queries": [
+          "Transaction history and counterparties for ACC-82 and ACC-83",
+          "Shared attributes (devices, addresses, owners) between ACC-82 and ACC-83",
+          "Coverage scope to confirm what the empty path_between result actually excludes"
+        ],
+        "unsupported_claims": [],
+        "verdict": "weak"
+      },
+      "model_requests": 3,
+      "path_node_count": 0,
+      "question_id": 12,
+      "reason": "no_path_within_depth",
+      "ring_id": "RING-12",
+      "session_id": "e42e6147-8ef7-40f3-92c1-3e514d158ad5",
+      "shape": "not_in_graph",
+      "stop_detail": null,
+      "text": "The available graph evidence is insufficient. Not in the graph \u2260 nothing wrong.",
+      "tokens": {
+        "cache": 3772,
+        "input": 6680,
+        "output": 587
+      },
+      "tool_error_count": 0,
+      "tool_names": [
+        "rs_resolve_entity",
+        "rs_resolve_entity",
+        "rs_recall_findings",
+        "rs_coverage_status",
+        "rs_path_between"
+      ],
+      "valid_abstention": true,
+      "verifier": {
+        "normalizations": [],
+        "replacement_verified": "pass",
+        "status": "replaced",
+        "unsupported": [
+          "ACC-82",
+          "ACC-83",
+          "1792108799",
+          "20261011",
+          "20261013"
+        ]
+      }
+    },
+    {
+      "case_key": "abstention:13",
+      "cost_usd": 0.012367200000000002,
+      "deleted_transfer_count": 5,
+      "elapsed_s": 9.317,
+      "first_completed_read": "rs_path_between",
+      "first_investigation_tool": "rs_path_between",
+      "first_selected_tool_batch": [
+        "rs_path_between"
+      ],
+      "judge": {
+        "missing_queries": [
+          "Transactions/transfers involving ACC-86 and ACC-87 (direct and via intermediaries)",
+          "Neighbor/counterparty expansion for ACC-86 and ACC-87",
+          "Coverage scope: whether the graph covers the relevant time window and account types, given the empty coverage row"
+        ],
+        "unsupported_claims": [],
+        "verdict": "weak"
+      },
+      "model_requests": 3,
+      "path_node_count": 0,
+      "question_id": 13,
+      "reason": "no_path_within_depth",
+      "ring_id": "RING-13",
+      "session_id": "a9775733-3099-49ce-8836-7b70ef28e359",
+      "shape": "not_in_graph",
+      "stop_detail": null,
+      "text": "The available graph evidence is insufficient. Not in the graph \u2260 nothing wrong.",
+      "tokens": {
+        "cache": 3772,
+        "input": 6692,
+        "output": 615
+      },
+      "tool_error_count": 0,
+      "tool_names": [
+        "rs_resolve_entity",
+        "rs_resolve_entity",
+        "rs_recall_findings",
+        "rs_coverage_status",
+        "rs_path_between"
+      ],
+      "valid_abstention": true,
+      "verifier": {
+        "normalizations": [],
+        "replacement_verified": "pass",
+        "status": "replaced",
+        "unsupported": [
+          "ACC-86",
+          "ACC-87",
+          "1792108799",
+          "20261011",
+          "20261013",
+          "8",
+          "1",
+          "10",
+          "3"
+        ]
+      }
+    },
+    {
+      "case_key": "abstention:14",
+      "cost_usd": 0.0123552,
+      "deleted_transfer_count": 3,
+      "elapsed_s": 10.379,
+      "first_completed_read": "rs_path_between",
+      "first_investigation_tool": "rs_path_between",
+      "first_selected_tool_batch": [
+        "rs_path_between"
+      ],
+      "judge": {
+        "missing_queries": [
+          "Direct transaction/transfer history for ACC-91 and ACC-92 independent of the path search",
+          "Counterparty or neighbor expansion for ACC-91 and ACC-92 to check for indirect links",
+          "Whether graph coverage for these accounts' time window is complete (coverage row is empty)"
+        ],
+        "unsupported_claims": [],
+        "verdict": "weak"
+      },
+      "model_requests": 3,
+      "path_node_count": 0,
+      "question_id": 14,
+      "reason": "no_path_within_depth",
+      "ring_id": "RING-14",
+      "session_id": "88e8df02-5eff-4197-a957-52d1c3a977da",
+      "shape": "not_in_graph",
+      "stop_detail": null,
+      "text": "The available graph evidence is insufficient. Not in the graph \u2260 nothing wrong.",
+      "tokens": {
+        "cache": 3772,
+        "input": 6706,
+        "output": 611
+      },
+      "tool_error_count": 0,
+      "tool_names": [
+        "rs_resolve_entity",
+        "rs_resolve_entity",
+        "rs_recall_findings",
+        "rs_coverage_status",
+        "rs_path_between"
+      ],
+      "valid_abstention": true,
+      "verifier": {
+        "normalizations": [],
+        "replacement_verified": "pass",
+        "status": "replaced",
+        "unsupported": [
+          "ACC-91",
+          "ACC-92",
+          "1792108799",
+          "7",
+          "20261011",
+          "20261013"
+        ]
+      }
+    },
+    {
+      "case_key": "abstention:15",
+      "cost_usd": 0.0117812,
+      "deleted_transfer_count": 4,
+      "elapsed_s": 9.717,
+      "first_completed_read": "rs_path_between",
+      "first_investigation_tool": "rs_path_between",
+      "first_selected_tool_batch": [
+        "rs_path_between"
+      ],
+      "judge": {
+        "missing_queries": [
+          "Direct transaction history for ACC-94 and ACC-95",
+          "Shared attributes (devices, addresses, counterparties) between the two accounts",
+          "Coverage detail confirming the graph spans the relevant period and account types"
+        ],
+        "unsupported_claims": [],
+        "verdict": "weak"
+      },
+      "model_requests": 3,
+      "path_node_count": 0,
+      "question_id": 15,
+      "reason": "no_path_within_depth",
+      "ring_id": "RING-15",
+      "session_id": "e6d996ee-c883-4ea7-81cf-368efc91a335",
+      "shape": "not_in_graph",
+      "stop_detail": null,
+      "text": "The available graph evidence is insufficient. Not in the graph \u2260 nothing wrong.",
+      "tokens": {
+        "cache": 3772,
+        "input": 6669,
+        "output": 561
+      },
+      "tool_error_count": 0,
+      "tool_names": [
+        "rs_resolve_entity",
+        "rs_resolve_entity",
+        "rs_recall_findings",
+        "rs_coverage_status",
+        "rs_path_between"
+      ],
+      "valid_abstention": true,
+      "verifier": {
+        "normalizations": [],
+        "replacement_verified": "pass",
+        "status": "replaced",
+        "unsupported": [
+          "ACC-94",
+          "ACC-95",
+          "7",
+          "2026-10-11",
+          "2026-10-13"
+        ]
+      }
+    },
+    {
+      "case_key": "abstention:16",
+      "cost_usd": 0.0116492,
+      "deleted_transfer_count": 16,
+      "elapsed_s": 9.808,
+      "first_completed_read": "rs_path_between",
+      "first_investigation_tool": "rs_path_between",
+      "first_selected_tool_batch": [
+        "rs_path_between"
+      ],
+      "judge": {
+        "missing_queries": [
+          "Direct transfers or shared counterparties between ACC-98 and ACC-99 outside the graph's coverage window",
+          "Coverage status details: whether the empty path result reflects true absence or incomplete data"
+        ],
+        "unsupported_claims": [],
+        "verdict": "support"
+      },
+      "model_requests": 3,
+      "path_node_count": 0,
+      "question_id": 16,
+      "reason": "no_path_within_depth",
+      "ring_id": "RING-16",
+      "session_id": "7ab33ded-3ec2-4423-be7a-0a0150b0aa8e",
+      "shape": "not_in_graph",
+      "stop_detail": null,
+      "text": "The available graph evidence is insufficient. Not in the graph \u2260 nothing wrong.",
+      "tokens": {
+        "cache": 3772,
+        "input": 6688,
+        "output": 544
+      },
+      "tool_error_count": 0,
+      "tool_names": [
+        "rs_resolve_entity",
+        "rs_resolve_entity",
+        "rs_recall_findings",
+        "rs_coverage_status",
+        "rs_path_between"
+      ],
+      "valid_abstention": true,
+      "verifier": {
+        "normalizations": [],
+        "replacement_verified": "pass",
+        "status": "replaced",
+        "unsupported": [
+          "ACC-98",
+          "ACC-99",
+          "4",
+          "2026-10-11",
+          "2026-10-13"
+        ]
+      }
+    },
+    {
+      "case_key": "abstention:17",
+      "cost_usd": 0.0127872,
+      "deleted_transfer_count": 16,
+      "elapsed_s": 10.128,
+      "first_completed_read": "rs_path_between",
+      "first_investigation_tool": "rs_path_between",
+      "first_selected_tool_batch": [
+        "rs_path_between"
+      ],
+      "judge": {
+        "missing_queries": [
+          "Transaction history and counterparties for ACC-106 and ACC-107",
+          "Coverage details showing which data sources and time windows the graph includes",
+          "Neighbor and shared-attribute lookups for both accounts"
+        ],
+        "unsupported_claims": [
+          "The thesis that evidence is insufficient is only partially backed: entity resolution succeeded, but the path query returned not_in_graph with empty rows, which cannot establish innocence.",
+          "Coverage status row is empty, so graph completeness for ACC-106 and ACC-107 is unverified."
+        ],
+        "verdict": "weak"
+      },
+      "model_requests": 3,
+      "path_node_count": 0,
+      "question_id": 17,
+      "reason": "no_path_within_depth",
+      "ring_id": "RING-17",
+      "session_id": "b11f75b4-d945-40b2-abc8-28b353389e13",
+      "shape": "not_in_graph",
+      "stop_detail": null,
+      "text": "The available graph evidence is insufficient. Not in the graph \u2260 nothing wrong.",
+      "tokens": {
+        "cache": 3772,
+        "input": 6672,
+        "output": 661
+      },
+      "tool_error_count": 0,
+      "tool_names": [
+        "rs_resolve_entity",
+        "rs_resolve_entity",
+        "rs_recall_findings",
+        "rs_coverage_status",
+        "rs_path_between"
+      ],
+      "valid_abstention": true,
+      "verifier": {
+        "normalizations": [],
+        "replacement_verified": "pass",
+        "status": "replaced",
+        "unsupported": [
+          "ACC-106",
+          "ACC-107",
+          "1792108799",
+          "20261011",
+          "8",
+          "1",
+          "20261013",
+          "10",
+          "3"
+        ]
+      }
+    },
+    {
+      "case_key": "abstention:18",
+      "cost_usd": 0.015323199999999999,
+      "deleted_transfer_count": 16,
+      "elapsed_s": 11.72,
+      "first_completed_read": "rs_path_between",
+      "first_investigation_tool": "rs_path_between",
+      "first_selected_tool_batch": [
+        "rs_path_between"
+      ],
+      "judge": {
+        "missing_queries": [
+          "Transaction history and counterparties for ACC-114 and ACC-115",
+          "Indirect paths (multi-hop) or shared neighbors between ACC-114 and ACC-115",
+          "Coverage window and data completeness details for both accounts"
+        ],
+        "unsupported_claims": [
+          "The thesis claims evidence is insufficient, but the single coverage row is empty and shows no actual coverage; it neither confirms nor refutes insufficiency."
+        ],
+        "verdict": "weak"
+      },
+      "model_requests": 4,
+      "path_node_count": 0,
+      "question_id": 18,
+      "reason": "no_path_within_depth",
+      "ring_id": "RING-18",
+      "session_id": "fe3fe979-3650-4525-b3a2-8af87af57b8f",
+      "shape": "not_in_graph",
+      "stop_detail": null,
+      "text": "The available graph evidence is insufficient. Not in the graph \u2260 nothing wrong.",
+      "tokens": {
+        "cache": 5372,
+        "input": 9575,
+        "output": 638
+      },
+      "tool_error_count": 0,
+      "tool_names": [
+        "rs_resolve_entity",
+        "rs_resolve_entity",
+        "rs_recall_findings",
+        "rs_coverage_status",
+        "rs_path_between"
+      ],
+      "valid_abstention": true,
+      "verifier": {
+        "normalizations": [],
+        "replacement_verified": "pass",
+        "status": "replaced",
+        "unsupported": [
+          "ACC-114",
+          "ACC-115",
+          "2026-10-11",
+          "2026-10-13"
+        ]
+      }
+    },
+    {
+      "case_key": "abstention:19",
+      "cost_usd": 0.0115572,
+      "deleted_transfer_count": 16,
+      "elapsed_s": 9.468,
+      "first_completed_read": "rs_path_between",
+      "first_investigation_tool": "rs_path_between",
+      "first_selected_tool_batch": [
+        "rs_path_between"
+      ],
+      "judge": {
+        "missing_queries": [
+          "Direct transaction history for ACC-122 and ACC-123 (not just path search)",
+          "Coverage details confirming which edge types and time windows were searched in rs_path_between"
+        ],
+        "unsupported_claims": [],
+        "verdict": "support"
+      },
+      "model_requests": 3,
+      "path_node_count": 0,
+      "question_id": 19,
+      "reason": "no_path_within_depth",
+      "ring_id": "RING-19",
+      "session_id": "c43d31dc-11e8-48af-93f0-ffd62c2c7344",
+      "shape": "not_in_graph",
+      "stop_detail": null,
+      "text": "The available graph evidence is insufficient. Not in the graph \u2260 nothing wrong.",
+      "tokens": {
+        "cache": 3772,
+        "input": 6672,
+        "output": 538
+      },
+      "tool_error_count": 0,
+      "tool_names": [
+        "rs_resolve_entity",
+        "rs_resolve_entity",
+        "rs_recall_findings",
+        "rs_coverage_status",
+        "rs_path_between"
+      ],
+      "valid_abstention": true,
+      "verifier": {
+        "normalizations": [],
+        "replacement_verified": "pass",
+        "status": "replaced",
+        "unsupported": [
+          "ACC-122",
+          "ACC-123",
+          "1792108799",
+          "20261011",
+          "20261013"
+        ]
+      }
+    },
+    {
+      "case_key": "abstention:20",
+      "cost_usd": 0.012331199999999999,
+      "deleted_transfer_count": 16,
+      "elapsed_s": 9.851,
+      "first_completed_read": "rs_path_between",
+      "first_investigation_tool": "rs_path_between",
+      "first_selected_tool_batch": [
+        "rs_path_between"
+      ],
+      "judge": {
+        "missing_queries": [
+          "Expand transactions and counterparties for ACC-130 and ACC-131 over the relevant time window",
+          "Check shared attributes (devices, addresses, owners) between ACC-130 and ACC-131",
+          "Review the coverage_status row details to confirm what the graph does and does not cover for these accounts"
+        ],
+        "unsupported_claims": [],
+        "verdict": "weak"
+      },
+      "model_requests": 3,
+      "path_node_count": 0,
+      "question_id": 20,
+      "reason": "no_path_within_depth",
+      "ring_id": "RING-20",
+      "session_id": "e1864995-8889-44ef-a13a-4da5fd299a48",
+      "shape": "not_in_graph",
+      "stop_detail": null,
+      "text": "The available graph evidence is insufficient. Not in the graph \u2260 nothing wrong.",
+      "tokens": {
+        "cache": 3772,
+        "input": 6674,
+        "output": 615
+      },
+      "tool_error_count": 0,
+      "tool_names": [
+        "rs_resolve_entity",
+        "rs_resolve_entity",
+        "rs_recall_findings",
+        "rs_coverage_status",
+        "rs_path_between"
+      ],
+      "valid_abstention": true,
+      "verifier": {
+        "normalizations": [],
+        "replacement_verified": "pass",
+        "status": "replaced",
+        "unsupported": [
+          "ACC-130",
+          "ACC-131",
+          "1792108799",
+          "2026-10-11",
+          "2026-10-13"
+        ]
+      }
+    }
+  ],
+  "complete": true,
+  "completed_cases": 20,
+  "local_only": true,
+  "metrics": {
+    "cost_usd": 0.25666880000000003,
+    "false_answered_with_path_rate": 0.0,
+    "not_in_graph_rate": 1.0
+  },
+  "passed": true,
+  "planned_cases": 20,
+  "protocol": 2,
+  "resume_policy": "Completed attempts, including failures, are retained without resampling. Spend is preserved across reseeds.",
+  "signature": {
+    "hash": "acfa07599baba86234456c01a29440d0549879a6b5706087cf687a038f2a2a45",
+    "inputs": {
+      "approved_eval_cap_day": 20261017,
+      "approved_eval_tenant": "eval_model",
+      "as_of": 1792108799,
+      "catalogue_hash": "646cf5a0e31e477ffaf3e0484b45efdbc293376ca1007939f9c50e8886c10de3",
+      "daily_cap_usd": 12.0,
+      "dataset_sha256": "1bd7d5739735978c122029ec71ea3191756e1d4dff973d1e8af4b9b0190fa450",
+      "dimensions": {
+        "questions": 20
+      },
+      "harness_sha256": "5f5851c1d18d420ec7a554ca57902b299dce11b7146bcf92fb07d967936283fb",
+      "model_judge": "claude-sonnet-5-5",
+      "model_planner": "claude-sonnet-5-5",
+      "prompt_sha256": "94b761359a1ee58022bcc202e1f23a0b3bb6f89e580ce223fd999a86ed74b20a",
+      "protocol": 2,
+      "seed_version": "rs-synthetic-v2",
+      "suite": "abstention"
+    }
+  },
+  "suite": "model-abstention",
+  "synthetic_demo_only": true
+}
