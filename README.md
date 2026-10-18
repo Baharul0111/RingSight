@@ -2,7 +2,7 @@ Live: https://ringsight.onrender.com · Judge access key: `424b676a8a7818860fe95
 
 # RingSight
 
-**Track 01 (primary) · Track 02 (memory)**
+**Track 01 **
 
 ## The problem
 
