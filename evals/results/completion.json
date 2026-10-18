@@ -1,7 +1,7 @@
 {
   "suite": "goal-completion",
   "status": "passed",
-  "audited_at": 1792288063,
+  "audited_at": 1792333609,
   "catalogue_hash": "646cf5a0e31e477ffaf3e0484b45efdbc293376ca1007939f9c50e8886c10de3",
   "checks": {
     "all_local_contracts": {
@@ -89,8 +89,8 @@
       "detail": {
         "status": "passed",
         "check": "public_candidate_secrets",
-        "files_checked": 477,
-        "candidate_files": 237,
+        "files_checked": 478,
+        "candidate_files": 238,
         "indexed_files": 237,
         "built_ui_checked": true,
         "violations": [],
